@@ -6,8 +6,8 @@
 
 <script>
   export default {
-    name: 'request-rocket'
-  }
+    name: 'request-rocket',
+  };
 </script>
 
 <style>
