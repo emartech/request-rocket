@@ -1,13 +1,15 @@
-import Vue from 'vue';
+import { shallowMount } from '@vue/test-utils';
 import MainWindow from '@/components/MainWindow';
 
 describe('MainWindow.vue', () => {
-  it('should render correct contents', () => {
-    const vm = new Vue({
-      el: document.createElement('div'),
-      render: h => h(MainWindow),
-    }).$mount();
+  it('should render correct contents', async () => {
+    const component = shallowMount(MainWindow, {});
 
-    expect(vm.$el.querySelector('.title').textContent).to.contain('Request Rocket');
+    expect(component.find('.title').element.textContent).to.equal('Request Rocket');
+  });
+  it('should contain a request editor', async () => {
+    const component = shallowMount(MainWindow, {});
+
+    expect(component.find({ name: 'request-editor' }).exists()).to.eql(true);
   });
 });
