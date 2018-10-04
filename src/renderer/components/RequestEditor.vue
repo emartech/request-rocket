@@ -1,7 +1,7 @@
 <template>
     <div>
         <input type="text" id="request-editor-url-field" :value="url" @input="setUrl($event.target.value)">
-        <input type="button" value="Submit">
+        <input type="button" id="request-editor-send-button" @click="sendRequest" value="Send">
     </div>
 </template>
 
@@ -14,7 +14,10 @@
       ...mapState(['url']),
     },
     methods: {
-      ...mapActions(['setUrl']),
+      ...mapActions([
+        'sendRequest',
+        'setUrl',
+      ]),
     },
   };
 </script>
