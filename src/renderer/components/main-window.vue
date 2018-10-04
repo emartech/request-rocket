@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import RequestEditor from './RequestEditor';
+  import RequestEditor from './request-editor';
 
   export default {
     name: 'main-window',

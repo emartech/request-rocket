@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import sinon from 'sinon';
 import { mount } from '@vue/test-utils';
-import RequestEditor from '@/components/RequestEditor';
+import RequestEditor from '@/components/request-editor';
 import createStore from '@/store';
 
 

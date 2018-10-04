@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import MainWindow from '@/components/MainWindow';
+import MainWindow from '@/components/main-window';
 
 describe('MainWindow.vue', () => {
   it('should render correct contents', async () => {
