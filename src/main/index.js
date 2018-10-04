@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from 'electron' // eslint-disable-line
+import { app, BrowserWindow, ipcMain } from 'electron' // eslint-disable-line
+import SendRequestHandler from './send-request-handler';
 
 /**
  * Set `__static` path to static files in production
@@ -42,6 +43,10 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+ipcMain.on('send-request', (event, args) => {
+  SendRequestHandler.handle(event);
 });
 
 /**
