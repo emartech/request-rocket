@@ -1,3 +1,4 @@
 export default {
   UPDATE_URL: 'UPDATE_URL',
+  UPDATE_RESPONSE: 'UPDATE_RESPONSE',
 };

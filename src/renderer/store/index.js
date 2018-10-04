@@ -11,10 +11,14 @@ export default function () {
     strict: process.env.NODE_ENV !== 'production',
     state: {
       url: '',
+      response: {},
     },
     mutations: {
       [Mutation.UPDATE_URL](state, url) {
         state.url = url;
+      },
+      [Mutation.UPDATE_RESPONSE](state, response) {
+        state.response = response;
       },
     },
     actions: {
@@ -23,6 +27,9 @@ export default function () {
       },
       async [Action.sendRequest]({ state }) {
         await ipcRenderer.send('send-request', { url: state.url });
+      },
+      [Action.receiveResponse]({ commit }, response) {
+        commit(Mutation.UPDATE_RESPONSE, response);
       },
     },
   });
