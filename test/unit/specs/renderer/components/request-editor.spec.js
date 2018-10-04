@@ -4,6 +4,8 @@ import sinon from 'sinon';
 import { mount } from '@vue/test-utils';
 import RequestEditor from '@/components/request-editor';
 import createStore from '@/store';
+import Action from '../../../../src/renderer/store/action-types';
+import Mutation from '../../../../src/renderer/store/mutation-types';
 
 
 describe('RequestEditor.vue', () => {
@@ -14,7 +16,7 @@ describe('RequestEditor.vue', () => {
   });
 
   it('should render correct contents', async () => {
-    store.commit('UPDATE_URL', 'https://some.url');
+    store.commit(Mutation.UPDATE_URL, 'https://some.url');
     await Vue.nextTick();
     const component = mount(RequestEditor, { store });
 
@@ -38,7 +40,7 @@ describe('RequestEditor.vue', () => {
 
       const store = new Vuex.Store({
         actions: {
-          sendRequest: requestSender,
+          [Action.sendRequest]: requestSender,
         },
       });
 

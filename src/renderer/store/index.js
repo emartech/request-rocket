@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
+import Mutation from './mutation-types';
+import Action from './action-types';
 
 Vue.use(Vuex);
 
@@ -11,15 +13,15 @@ export default function () {
       url: '',
     },
     mutations: {
-      UPDATE_URL(state, url) {
+      [Mutation.UPDATE_URL](state, url) {
         state.url = url;
       },
     },
     actions: {
-      setUrl({ commit }, url) {
-        commit('UPDATE_URL', url);
+      [Action.setUrl]({ commit }, url) {
+        commit(Mutation.UPDATE_URL, url);
       },
-      async sendRequest({ state }) {
+      async [Action.sendRequest]({ state }) {
         await ipcRenderer.send('send-request', { url: state.url });
       },
     },

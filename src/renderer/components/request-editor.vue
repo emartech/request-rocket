@@ -7,6 +7,7 @@
 
 <script>
   import { mapActions, mapState } from 'vuex';
+  import Action from '../store/action-types';
 
   export default {
     name: 'request-editor',
@@ -15,8 +16,8 @@
     },
     methods: {
       ...mapActions([
-        'sendRequest',
-        'setUrl',
+        Action.sendRequest,
+        Action.setUrl,
       ]),
     },
   };
