@@ -22,4 +22,12 @@ describe('Store', () => {
       });
     });
   });
+  describe('actions', () => {
+    describe('setUrl', () => {
+      it('should modify the URL of the state', () => {
+        store.dispatch('setUrl', 'https://new.url');
+        expect(store.state.url).to.eql('https://new.url');
+      });
+    });
+  });
 });

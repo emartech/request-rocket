@@ -14,5 +14,10 @@ export default function () {
         state.url = url;
       },
     },
+    actions: {
+      setUrl({ commit }, url) {
+        commit('UPDATE_URL', url);
+      },
+    },
   });
 }

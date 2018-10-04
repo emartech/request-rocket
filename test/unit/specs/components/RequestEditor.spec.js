@@ -18,4 +18,16 @@ describe('RequestEditor.vue', () => {
 
     expect(component.find('#request-editor-url-field').element.value).to.equal('https://some.url');
   });
+  context('editing the URL content', () => {
+    it('should set the URL in the store', () => {
+      const component = mount(RequestEditor, { store });
+
+      const input = component.find('#request-editor-url-field');
+
+      input.element.value = 'https://new.url';
+      input.trigger('input');
+
+      expect(store.state.url).to.equal('https://new.url');
+    });
+  });
 });
