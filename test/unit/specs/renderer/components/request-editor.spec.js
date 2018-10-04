@@ -4,8 +4,8 @@ import sinon from 'sinon';
 import { mount } from '@vue/test-utils';
 import RequestEditor from '@/components/request-editor';
 import createStore from '@/store';
-import Action from '../../../../src/renderer/store/action-types';
-import Mutation from '../../../../src/renderer/store/mutation-types';
+import Action from '@/store/action-types';
+import Mutation from '@/store/mutation-types';
 
 
 describe('RequestEditor.vue', () => {

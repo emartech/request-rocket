@@ -1,8 +1,8 @@
 import { ipcRenderer } from 'electron';
 import sinon from 'sinon';
 import createStore from '@/store';
-import Action from '../../../../src/renderer/store/action-types';
-import Mutation from '../../../../src/renderer/store/mutation-types';
+import Action from '@/store/action-types';
+import Mutation from '@/store/mutation-types';
 
 describe('Store', () => {
   let store;
