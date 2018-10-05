@@ -13,8 +13,7 @@
     computed: {
       ...mapState(['response']),
     },
-  };
-</script>
+  };</script>
 
 <style scoped>
 </style>

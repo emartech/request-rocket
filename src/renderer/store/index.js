@@ -6,7 +6,7 @@ import Action from './action-types';
 
 Vue.use(Vuex);
 
-export default function () {
+export default function() {
   return new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     state: {

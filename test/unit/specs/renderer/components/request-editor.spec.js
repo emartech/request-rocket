@@ -7,7 +7,6 @@ import createStore from '@/store';
 import Action from '@/store/action-types';
 import Mutation from '@/store/mutation-types';
 
-
 describe('RequestEditor.vue', () => {
   let store;
 

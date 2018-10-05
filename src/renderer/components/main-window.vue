@@ -15,8 +15,7 @@
   export default {
     name: 'main-window',
     components: { RequestEditor, ResponseInspector },
-  };
-</script>
+  };</script>
 
 <style>
 </style>

@@ -20,8 +20,7 @@
         Action.setUrl,
       ]),
     },
-  };
-</script>
+  };</script>
 
 <style>
 </style>

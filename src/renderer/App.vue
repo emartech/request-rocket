@@ -7,8 +7,7 @@
 <script>
   export default {
     name: 'request-rocket',
-  };
-</script>
+  };</script>
 
 <style>
   /* CSS */
