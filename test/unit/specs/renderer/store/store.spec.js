@@ -12,9 +12,9 @@ describe('Store', () => {
   });
 
   describe('state', () => {
-    describe('url', () => {
-      it('should have empty string as initial value', () => {
-        expect(store.state.url).to.eql('');
+    describe('request', () => {
+      it('should have url property as string value', () => {
+        expect(store.state.request.url).to.eql('');
       });
     });
     describe('response', () => {
@@ -27,7 +27,7 @@ describe('Store', () => {
     describe('UPDATE_URL', () => {
       it('should set the URL', () => {
         store.commit(Mutation.UPDATE_URL, 'https://some.url');
-        expect(store.state.url).to.eql('https://some.url');
+        expect(store.state.request.url).to.eql('https://some.url');
       });
     });
     describe('UPDATE_RESPONSE', () => {
@@ -41,7 +41,7 @@ describe('Store', () => {
     describe('setUrl', () => {
       it('should modify the URL of the state', () => {
         store.dispatch(Action.setUrl, 'https://new.url');
-        expect(store.state.url).to.eql('https://new.url');
+        expect(store.state.request.url).to.eql('https://new.url');
       });
     });
     describe('sendRequest', () => {

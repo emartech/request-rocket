@@ -11,9 +11,9 @@
 
   export default {
     name: 'request-editor',
-    computed: {
-      ...mapState(['url']),
-    },
+    computed: mapState({
+      url: state => state.request.url,
+    }),
     methods: {
       ...mapActions([
         Action.sendRequest,

@@ -30,7 +30,7 @@ describe('RequestEditor.vue', () => {
       input.element.value = 'https://new.url';
       input.trigger('input');
 
-      expect(store.state.url).to.equal('https://new.url');
+      expect(store.state.request.url).to.equal('https://new.url');
     });
   });
   context('clicking the send button', () => {
@@ -38,6 +38,9 @@ describe('RequestEditor.vue', () => {
       const requestSender = sinon.spy();
 
       const store = new Vuex.Store({
+        state: {
+          request: {},
+        },
         actions: {
           [Action.sendRequest]: requestSender,
         },

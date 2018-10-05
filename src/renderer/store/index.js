@@ -10,12 +10,14 @@ export default function() {
   return new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     state: {
-      url: '',
+      request: {
+        url: '',
+      },
       response: {},
     },
     mutations: {
       [Mutation.UPDATE_URL](state, url) {
-        state.url = url;
+        state.request.url = url;
       },
       [Mutation.UPDATE_RESPONSE](state, response) {
         state.response = response;
@@ -26,7 +28,7 @@ export default function() {
         commit(Mutation.UPDATE_URL, url);
       },
       async [Action.sendRequest]({ state }) {
-        await ipcRenderer.send('send-request', { url: state.url });
+        await ipcRenderer.send('send-request', { url: state.request.url });
       },
       [Action.receiveResponse]({ commit }, response) {
         commit(Mutation.UPDATE_RESPONSE, response);
