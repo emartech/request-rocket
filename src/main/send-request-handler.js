@@ -11,6 +11,6 @@ export default class Handler {
   async handle(event, args) {
     const response = await this.httpClient.get(args.url);
     const message = Handler.createIpcResponse(response);
-    event.sender.send('receive-response', message);
+    await event.sender.send('receive-response', message);
   }
 }
