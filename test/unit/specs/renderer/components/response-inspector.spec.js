@@ -4,9 +4,6 @@ import ResponseInspector from '@/components/response-inspector';
 import Mutation from '@/store/mutation-types';
 import Vue from 'vue';
 
-const chai = require('chai');
-chai.use(require('chai-json'));
-
 describe('ResponseInspector.vue', () => {
   let store;
 
