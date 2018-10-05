@@ -1,5 +1,6 @@
+import axios from 'axios';
 import { app, BrowserWindow, ipcMain } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
-import SendRequestHandler from './send-request-handler';
+import Handler from './send-request-handler';
 
 /**
  * Set `__static` path to static files in production
@@ -46,7 +47,8 @@ app.on('activate', () => {
 });
 
 ipcMain.on('send-request', (event, args) => {
-  SendRequestHandler.handle(event);
+  const requestHandler = new Handler(axios);
+  requestHandler.handle(event, args);
 });
 
 /**
