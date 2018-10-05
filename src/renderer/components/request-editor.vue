@@ -1,7 +1,7 @@
 <template>
     <div>
         <input type="text" id="request-editor-url-field" :value="url" @input="setUrl($event.target.value)">
-        <input type="button" id="request-editor-send-button" @click="sendRequest" value="Send">
+        <button type="button" id="request-editor-send-button" @click="sendRequest">Send</button>
     </div>
 </template>
 
