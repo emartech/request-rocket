@@ -1,19 +1,19 @@
 <template>
-    <div>
-        <pre id="response-body">{{response.body}}</pre>
-    </div>
-
+  <div>
+    <pre id="response-body">{{ response.body }}</pre>
+  </div>
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+import { mapState } from 'vuex';
 
-  export default {
-    name: 'response-inspector',
-    computed: {
-      ...mapState(['response']),
-    },
-  };</script>
+export default {
+  name: 'ResponseInspector',
+  computed: {
+    ...mapState(['response']),
+  },
+};
+</script>
 
 <style scoped>
 </style>

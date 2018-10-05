@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
   parserOptions: {
+    parser: 'babel-eslint',
     sourceType: 'module'
   },
   env: {
@@ -9,14 +9,15 @@ module.exports = {
     node: true
   },
   extends: [
-    'airbnb-base', 
+    'airbnb-base',
+    'plugin:vue/recommended',
     'plugin:prettier/recommended'
   ],
   globals: {
     __static: true
   },
   plugins: [
-    'html',
+    'vue',
     'prettier'
   ],
   rules: {
