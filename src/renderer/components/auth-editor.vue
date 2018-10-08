@@ -1,20 +1,27 @@
 <template>
   <div>
-    <select class="auth-type">
+    <select
+      :value="selectedAuthTypeId"
+      class="auth-type"
+      @input="selectAuthType($event.target.value)">
       <option
         v-for="auth in authTypes"
-        :value="auth.type"
-        :key="auth.type">{{ auth.label }}</option>
+        :value="auth.id"
+        :key="auth.id">{{ auth.label }}</option>
     </select>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import Action from '../store/action-types';
 
 export default {
   name: 'AuthEditor',
   computed: {
-    ...mapGetters(['authTypes']),
+    ...mapGetters(['authTypes', 'selectedAuthTypeId']),
+  },
+  methods: {
+    ...mapActions([Action.selectAuthType]),
   },
 };
 </script>

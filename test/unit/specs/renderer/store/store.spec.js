@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import sinon from 'sinon';
 import createStore from '@/store';
+import Actions from '@/store/actions';
 import Action from '@/store/action-types';
 import Mutation from '@/store/mutation-types';
 import Auth from '../../../../../src/common/auth-types';
@@ -17,6 +18,17 @@ describe('Store', () => {
       it('should have a list of type mapping', () => {
         expect(Array.isArray(store.state.auth.types)).to.eql(true);
         expect(store.state.auth.types.length).to.eql(Object.keys(Auth).length);
+      });
+    });
+    describe('selected auth type', () => {
+      it('should have none auth type as initial value', () => {
+        const noneAuthType = store.state.auth.types.find(auth => auth.id === 'none');
+        expect(store.state.auth.selected).to.eql(noneAuthType);
+      });
+    });
+    describe('auth parameters', () => {
+      it('should have empty object as initial value', () => {
+        expect(store.state.auth.parameters).to.eql({});
       });
     });
     describe('request', () => {
@@ -43,6 +55,13 @@ describe('Store', () => {
         expect(store.state.response).to.eql({ body: '{}' });
       });
     });
+    describe('SELECT_AUTH_TYPE', () => {
+      it('should set the selected authentication type', () => {
+        const wsseAuthType = { id: 'wsse', label: 'WSSE' };
+        store.commit(Mutation.SELECT_AUTH_TYPE, wsseAuthType);
+        expect(store.state.auth.selected).to.eql(wsseAuthType);
+      });
+    });
   });
   describe('actions', () => {
     describe('setUrl', () => {
@@ -65,6 +84,14 @@ describe('Store', () => {
       it('should store the received response in the store', () => {
         store.dispatch(Action.receiveResponse, { body: '{"key": "value"}' });
         expect(store.state.response).to.eql({ body: '{"key": "value"}' });
+      });
+    });
+    describe('selectAuthType', () => {
+      it('should modify the selected auth type of the state', () => {
+        const commit = sinon.spy();
+        const wsseAuthType = { id: 'wsse', label: 'WSSE' };
+        Actions[Action.selectAuthType]({ commit, state: store.state }, wsseAuthType.id);
+        expect(commit.calledWith(Mutation.SELECT_AUTH_TYPE, wsseAuthType)).eql(true);
       });
     });
   });

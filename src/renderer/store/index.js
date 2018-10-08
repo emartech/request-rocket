@@ -1,9 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 import Mutation from './mutation-types';
-import Action from './action-types';
-import Auth from '../../common/auth-types';
+import AuthOptions from './auth-options';
+import Actions from './actions';
 
 Vue.use(Vuex);
 
@@ -12,16 +11,9 @@ export default function() {
     strict: process.env.NODE_ENV !== 'production',
     state: {
       auth: {
-        types: [
-          {
-            type: Auth.none,
-            label: 'None',
-          },
-          {
-            type: Auth.wsse,
-            label: 'WSSE',
-          },
-        ],
+        types: AuthOptions,
+        selected: AuthOptions[0],
+        parameters: {},
       },
       request: {
         url: '',
@@ -30,6 +22,7 @@ export default function() {
     },
     getters: {
       authTypes: state => state.auth.types,
+      selectedAuthTypeId: state => state.auth.selected.id,
     },
     mutations: {
       [Mutation.UPDATE_URL](state, url) {
@@ -38,17 +31,10 @@ export default function() {
       [Mutation.UPDATE_RESPONSE](state, response) {
         state.response = response;
       },
-    },
-    actions: {
-      [Action.setUrl]({ commit }, url) {
-        commit(Mutation.UPDATE_URL, url);
-      },
-      async [Action.sendRequest]({ state }) {
-        await ipcRenderer.send('send-request', { url: state.request.url });
-      },
-      [Action.receiveResponse]({ commit }, response) {
-        commit(Mutation.UPDATE_RESPONSE, response);
+      [Mutation.SELECT_AUTH_TYPE](state, selected) {
+        state.auth.selected = selected;
       },
     },
+    actions: Actions,
   });
 }
