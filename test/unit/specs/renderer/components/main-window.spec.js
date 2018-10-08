@@ -10,11 +10,11 @@ describe('MainWindow.vue', () => {
   it('should contain a request editor', async () => {
     const component = shallowMount(MainWindow, {});
 
-    expect(component.find({ name: 'request-editor' }).exists()).to.eql(true);
+    expect(component.find({ name: 'RequestEditor' }).exists()).to.eql(true);
   });
   it('should contain a response inspector', async () => {
     const component = shallowMount(MainWindow, {});
 
-    expect(component.find({ name: 'response-inspector' }).exists()).to.eql(true);
+    expect(component.find({ name: 'ResponseInspector' }).exists()).to.eql(true);
   });
 });
