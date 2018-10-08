@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import createStore from '@/store';
 import Action from '@/store/action-types';
 import Mutation from '@/store/mutation-types';
+import Auth from '../../../../../src/common/auth-types';
 
 describe('Store', () => {
   let store;
@@ -12,6 +13,12 @@ describe('Store', () => {
   });
 
   describe('state', () => {
+    describe('auth types', () => {
+      it('should have a list of type mapping', () => {
+        expect(Array.isArray(store.state.auth.types)).to.eql(true);
+        expect(store.state.auth.types.length).to.eql(Object.keys(Auth).length);
+      });
+    });
     describe('request', () => {
       it('should have url property as string value', () => {
         expect(store.state.request.url).to.eql('');

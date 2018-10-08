@@ -13,7 +13,8 @@ describe('AuthEditor.vue', () => {
     const component = mount(AuthEditor, { store });
 
     const selectElement = component.find('select.auth-type');
-    expect(selectElement.find('select.auth-type > option[value="none"]').element.textContent).to.equal('none');
-    expect(selectElement.find('select.auth-type > option[value="wsse"]').element.textContent).to.equal('WSSE');
+    store.state.auth.types.forEach(auth => {
+      expect(selectElement.find(`option[value="${auth.type}"]`).element.textContent).to.equal(auth.label);
+    });
   });
 });
