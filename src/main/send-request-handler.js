@@ -14,7 +14,12 @@ export default class Handler {
     const signer = createSigner(authType);
     const headers = signer(authParams);
 
-    const response = await this.httpClient.get(url, { headers });
+    let response;
+    try {
+      response = await this.httpClient.get(url, { headers });
+    } catch (error) {
+      response = error.response || { data: null };
+    }
     const message = Handler.createIpcResponse(response);
     await event.sender.send('receive-response', message);
   }

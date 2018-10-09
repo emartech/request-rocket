@@ -112,7 +112,7 @@ describe('Store', () => {
         Actions[Action.selectAuthType]({ commit, state: store.state }, wsseAuthType.id);
         expect(commit.calledWith(Mutation.SELECT_AUTH_TYPE, wsseAuthType)).eql(true);
       });
-      it('should modify the selected auth type of the state', () => {
+      it('should set auth params to their initial value', () => {
         const commit = sinon.spy();
         const wsseAuthType = { id: 'wsse', label: 'WSSE' };
         Actions[Action.selectAuthType]({ commit, state: store.state }, wsseAuthType.id);
