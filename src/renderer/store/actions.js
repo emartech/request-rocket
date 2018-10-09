@@ -20,6 +20,7 @@ export default {
   [Action.selectAuthType]({ commit, state }, selectedType) {
     const selected = state.auth.types.find(auth => auth.id === selectedType);
     commit(Mutation.SELECT_AUTH_TYPE, selected);
+    commit(Mutation.SET_AUTH_PARAMS, {});
   },
   [Action.setAuthParams]({ commit }, authParams) {
     commit(Mutation.SET_AUTH_PARAMS, authParams);
