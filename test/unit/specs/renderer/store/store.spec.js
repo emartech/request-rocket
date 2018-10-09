@@ -26,9 +26,9 @@ describe('Store', () => {
         expect(store.state.auth.selected).to.eql(noneAuthType);
       });
     });
-    describe('auth parameters', () => {
+    describe('auth params', () => {
       it('should have empty object as initial value', () => {
-        expect(store.state.auth.parameters).to.eql({});
+        expect(store.state.auth.params).to.eql({});
       });
     });
     describe('request', () => {
@@ -66,7 +66,7 @@ describe('Store', () => {
       it('should set the parameters for the selected authentication', () => {
         const wsseParams = { key: null, secret: null };
         store.commit(Mutation.SET_AUTH_PARAMS, wsseParams);
-        expect(store.state.auth.parameters).to.eql(wsseParams);
+        expect(store.getters.authParams).to.eql(wsseParams);
       });
     });
   });
@@ -96,7 +96,7 @@ describe('Store', () => {
         expect(channel).to.equal('send-request');
         expect(payload).to.include({ url });
         expect(payload).to.include({ authType: selectedAuthType.id });
-        expect(payload).to.include({ authParameters: authParams });
+        expect(payload).to.include({ authParams });
       });
     });
     describe('receiveResponse', () => {

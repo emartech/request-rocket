@@ -10,7 +10,7 @@ export default {
     const payload = {
       url: state.request.url,
       authType: getters.selectedAuthTypeId,
-      authParameters: getters.authParameters,
+      authParams: getters.authParams,
     };
     await ipcRenderer.send('send-request', payload);
   },

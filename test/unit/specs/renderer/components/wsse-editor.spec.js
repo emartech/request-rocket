@@ -20,7 +20,7 @@ describe('WsseEditor.vue', () => {
     key.element.value = 'some_key_name';
     key.trigger('input');
 
-    expect(store.state.auth.parameters).to.eql({
+    expect(store.getters.authParams).to.eql({
       key: 'some_key_name',
       secret: null,
     });
@@ -34,7 +34,7 @@ describe('WsseEditor.vue', () => {
     secret.element.value = 'v3ry53cr3t';
     secret.trigger('input');
 
-    expect(store.state.auth.parameters).to.eql({
+    expect(store.getters.authParams).to.eql({
       key: 'some_key_name',
       secret: 'v3ry53cr3t',
     });
