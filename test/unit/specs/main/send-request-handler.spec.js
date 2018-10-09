@@ -21,9 +21,34 @@ describe('SendRequestHandler', () => {
 
       const handler = new Handler(httpStub);
       const url = 'https://a.nice.url1';
-      await handler.handle({ sender: ipcSenderSpy }, { url });
+      const authType = 'none';
+      const authParams = {};
+      await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
 
-      expect(httpStub.get.calledWith(url)).to.eql(true);
+      expect(httpStub.get.called).to.equal(true);
+      const actualUrl = httpStub.get.lastCall.args[0];
+      const requestOptions = httpStub.get.lastCall.args[1];
+      expect(actualUrl).to.eql(url);
+      expect(requestOptions).to.eql({ headers: {} });
+    });
+
+    it('should send a wsse signed HTTP GET request to the url', async () => {
+      const ipcSenderSpy = { send: sinon.spy() };
+
+      const httpStub = { get: sinon.stub().resolves({ data: 'data' }) };
+
+      const handler = new Handler(httpStub);
+      const url = 'https://a.nice.url1';
+      const authType = 'wsse';
+      const authParams = { key: 'superkey', secret: 'supersecret' };
+      await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
+
+      expect(httpStub.get.called).to.equal(true);
+      const actualUrl = httpStub.get.lastCall.args[0];
+      const requestOptions = httpStub.get.lastCall.args[1];
+      expect(actualUrl).to.eql(url);
+      expect(requestOptions).to.have.property('headers');
+      expect(requestOptions.headers).to.have.property('x-wsse');
     });
 
     it('should respond with the HTTP response body', async () => {
@@ -37,6 +62,26 @@ describe('SendRequestHandler', () => {
       await handler.handle({ sender: ipcSenderSpy }, { url });
 
       expect(ipcSenderSpy.send.calledWith('receive-response', { body: httpResponse.data })).to.eql(true);
+    });
+  });
+
+  describe('createSigner', () => {
+    describe('should return a function which returns the headers containing the signature', () => {
+      it('for no auth', () => {
+        const authType = 'none';
+        const authParams = {};
+
+        const headers = Handler.createSigner(authType)(authParams);
+        expect(headers).to.eql({});
+      });
+
+      it('for wsse auth', () => {
+        const authType = 'wsse';
+        const authParams = { key: 'superkey', secret: 'supersecret' };
+
+        const headers = Handler.createSigner(authType)(authParams);
+        expect(headers).to.have.property('x-wsse');
+      });
     });
   });
 });
