@@ -34,6 +34,9 @@ export default function() {
       [Mutation.SELECT_AUTH_TYPE](state, selected) {
         state.auth.selected = selected;
       },
+      [Mutation.SET_AUTH_PARAMS](state, authParams) {
+        state.auth.parameters = authParams;
+      },
     },
     actions: Actions,
   });

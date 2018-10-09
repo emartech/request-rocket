@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import sinon from 'sinon';
-import { mount } from '@vue/test-utils';
+import { mount, shallowMount } from '@vue/test-utils';
 import RequestEditor from '@/components/request-editor';
 import createStore from '@/store';
 import Action from '@/store/action-types';
@@ -54,5 +54,10 @@ describe('RequestEditor.vue', () => {
 
       expect(requestSender.calledOnce).to.eql(true);
     });
+  });
+  it('should contain an auth editor', () => {
+    const component = shallowMount(RequestEditor, { store });
+
+    expect(component.find({ name: 'AuthEditor' }).exists()).to.eql(true);
   });
 });

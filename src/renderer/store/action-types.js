@@ -3,4 +3,5 @@ export default {
   sendRequest: 'sendRequest',
   receiveResponse: 'receiveResponse',
   selectAuthType: 'selectAuthType',
+  setAuthParams: 'setAuthParams',
 };

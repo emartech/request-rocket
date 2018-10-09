@@ -62,6 +62,13 @@ describe('Store', () => {
         expect(store.state.auth.selected).to.eql(wsseAuthType);
       });
     });
+    describe('SET_AUTH_PARAMS', () => {
+      it('should set the parameters for the selected authentication', () => {
+        const wsseParams = { key: null, secret: null };
+        store.commit(Mutation.SET_AUTH_PARAMS, wsseParams);
+        expect(store.state.auth.parameters).to.eql(wsseParams);
+      });
+    });
   });
   describe('actions', () => {
     describe('setUrl', () => {
@@ -92,6 +99,14 @@ describe('Store', () => {
         const wsseAuthType = { id: 'wsse', label: 'WSSE' };
         Actions[Action.selectAuthType]({ commit, state: store.state }, wsseAuthType.id);
         expect(commit.calledWith(Mutation.SELECT_AUTH_TYPE, wsseAuthType)).eql(true);
+      });
+    });
+    describe('setAuthParams', () => {
+      it('should modify the parameters of the auth', () => {
+        const commit = sinon.spy();
+        const wsseParams = { key: null, secret: null };
+        Actions[Action.setAuthParams]({ commit }, wsseParams);
+        expect(commit.calledWith(Mutation.SET_AUTH_PARAMS, wsseParams)).eql(true);
       });
     });
   });
