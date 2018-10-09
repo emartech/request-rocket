@@ -23,6 +23,7 @@ export default function() {
     getters: {
       authTypes: state => state.auth.types,
       selectedAuthTypeId: state => state.auth.selected.id,
+      authParameters: state => state.auth.parameters,
     },
     mutations: {
       [Mutation.UPDATE_URL](state, url) {

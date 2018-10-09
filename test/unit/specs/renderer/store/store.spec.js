@@ -1,9 +1,9 @@
 import { ipcRenderer } from 'electron';
 import sinon from 'sinon';
-import createStore from '@/store';
-import Actions from '@/store/actions';
-import Action from '@/store/action-types';
-import Mutation from '@/store/mutation-types';
+import createStore from '../../../../../src/renderer/store';
+import Actions from '../../../../../src/renderer/store/actions';
+import Action from '../../../../../src/renderer/store/action-types';
+import Mutation from '../../../../../src/renderer/store/mutation-types';
 import Auth from '../../../../../src/common/auth-types';
 
 describe('Store', () => {
@@ -78,13 +78,23 @@ describe('Store', () => {
       });
     });
     describe('sendRequest', () => {
-      it('should send event to the backend', () => {
+      it('should send event to the backend with correct payload', () => {
         const ipcSpy = sinon.spy(ipcRenderer, 'send');
-        store.commit(Mutation.UPDATE_URL, 'https://request.url');
 
+        const selectedAuthType = { id: 'wsse', label: 'WSSE' };
+        const url = 'https://request.url';
+
+        store.commit(Mutation.UPDATE_URL, url);
+        store.commit(Mutation.SELECT_AUTH_TYPE, selectedAuthType);
         store.dispatch(Action.sendRequest);
 
-        expect(ipcSpy.calledWith('send-request', { url: 'https://request.url' })).to.eql(true);
+        expect(ipcSpy.called).to.equal(true);
+        const channel = ipcSpy.lastCall.args[0];
+        const payload = ipcSpy.lastCall.args[1];
+        expect(channel).to.equal('send-request');
+        expect(payload).to.include({ url });
+        expect(payload).to.include({ authType: selectedAuthType.id });
+        expect(payload).to.have.property('authParameters');
       });
     });
     describe('receiveResponse', () => {
