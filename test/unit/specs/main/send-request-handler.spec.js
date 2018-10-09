@@ -3,12 +3,14 @@ import Handler from '../../../../src/main/send-request-handler';
 
 describe('SendRequestHandler', () => {
   describe('createIpcResponse', () => {
-    const httpResponse = { data: 'response body' };
+    it('should create an internal response representation', () => {
+      const httpResponse = { data: 'response body' };
 
-    const expectedResponse = { body: httpResponse.data };
+      const expectedResponse = { body: httpResponse.data };
 
-    const actualResponse = Handler.createIpcResponse(httpResponse);
-    expect(actualResponse).to.eql(expectedResponse);
+      const actualResponse = Handler.createIpcResponse(httpResponse);
+      expect(actualResponse).to.eql(expectedResponse);
+    });
   });
 
   describe('handle', () => {

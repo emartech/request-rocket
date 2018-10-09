@@ -8,8 +8,8 @@ export default class Handler {
     return { body: httpResponse.data };
   }
 
-  async handle(event, args) {
-    const response = await this.httpClient.get(args.url);
+  async handle(event, { url }) {
+    const response = await this.httpClient.get(url);
     const message = Handler.createIpcResponse(response);
     await event.sender.send('receive-response', message);
   }
