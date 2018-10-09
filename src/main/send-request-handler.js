@@ -1,5 +1,6 @@
 import CryptoJS from 'crypto-js';
 import WsseSigner from './signer/wsse';
+import Auth from '../common/auth-types';
 
 export default class Handler {
   httpClient;
@@ -12,7 +13,7 @@ export default class Handler {
   }
 
   static createSigner(authType) {
-    if (authType === 'wsse') {
+    if (authType === Auth.wsse) {
       return ({ key, secret }) => {
         const wsseSigner = new WsseSigner(CryptoJS);
         const nonce = wsseSigner.createNonce();

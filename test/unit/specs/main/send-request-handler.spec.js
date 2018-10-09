@@ -1,5 +1,6 @@
 import sinon from 'sinon';
 import Handler from '../../../../src/main/send-request-handler';
+import Auth from '../../../../src/common/auth-types';
 
 describe('SendRequestHandler', () => {
   describe('createIpcResponse', () => {
@@ -21,7 +22,7 @@ describe('SendRequestHandler', () => {
 
       const handler = new Handler(httpStub);
       const url = 'https://a.nice.url1';
-      const authType = 'none';
+      const authType = Auth.none;
       const authParams = {};
       await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
 
@@ -39,7 +40,7 @@ describe('SendRequestHandler', () => {
 
       const handler = new Handler(httpStub);
       const url = 'https://a.nice.url1';
-      const authType = 'wsse';
+      const authType = Auth.wsse;
       const authParams = { key: 'superkey', secret: 'supersecret' };
       await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
 
@@ -68,7 +69,7 @@ describe('SendRequestHandler', () => {
   describe('createSigner', () => {
     describe('should return a function which returns the headers containing the signature', () => {
       it('for no auth', () => {
-        const authType = 'none';
+        const authType = Auth.none;
         const authParams = {};
 
         const headers = Handler.createSigner(authType)(authParams);
@@ -76,7 +77,7 @@ describe('SendRequestHandler', () => {
       });
 
       it('for wsse auth', () => {
-        const authType = 'wsse';
+        const authType = Auth.wsse;
         const authParams = { key: 'superkey', secret: 'supersecret' };
 
         const headers = Handler.createSigner(authType)(authParams);
