@@ -82,10 +82,12 @@ describe('Store', () => {
         const ipcSpy = sinon.spy(ipcRenderer, 'send');
 
         const selectedAuthType = { id: 'wsse', label: 'WSSE' };
+        const authParams = { key: 'wssekey', secret: 'wssesecret' };
         const url = 'https://request.url';
 
         store.commit(Mutation.UPDATE_URL, url);
         store.commit(Mutation.SELECT_AUTH_TYPE, selectedAuthType);
+        store.commit(Mutation.SET_AUTH_PARAMS, authParams);
         store.dispatch(Action.sendRequest);
 
         expect(ipcSpy.called).to.equal(true);
@@ -94,7 +96,7 @@ describe('Store', () => {
         expect(channel).to.equal('send-request');
         expect(payload).to.include({ url });
         expect(payload).to.include({ authType: selectedAuthType.id });
-        expect(payload).to.have.property('authParameters');
+        expect(payload).to.include({ authParameters: authParams });
       });
     });
     describe('receiveResponse', () => {
