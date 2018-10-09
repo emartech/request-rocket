@@ -65,24 +65,4 @@ describe('SendRequestHandler', () => {
       expect(ipcSenderSpy.send.calledWith('receive-response', { body: httpResponse.data })).to.eql(true);
     });
   });
-
-  describe('createSigner', () => {
-    describe('should return a function which returns the headers containing the signature', () => {
-      it('for no auth', () => {
-        const authType = Auth.none;
-        const authParams = {};
-
-        const headers = Handler.createSigner(authType)(authParams);
-        expect(headers).to.eql({});
-      });
-
-      it('for wsse auth', () => {
-        const authType = Auth.wsse;
-        const authParams = { key: 'superkey', secret: 'supersecret' };
-
-        const headers = Handler.createSigner(authType)(authParams);
-        expect(headers).to.have.property('x-wsse');
-      });
-    });
-  });
 });
