@@ -45,7 +45,10 @@ app.on('activate', () => {
 });
 
 ipcMain.on('send-request', (event, args) => {
-  const requestHandler = new Handler(axios);
+  const axiosClient = axios.create({
+    transformResponse: response => response
+  });
+  const requestHandler = new Handler(axiosClient);
   requestHandler.handle(event, args);
 });
 

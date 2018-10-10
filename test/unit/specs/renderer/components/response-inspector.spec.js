@@ -13,20 +13,20 @@ describe('ResponseInspector.vue', () => {
 
   it('should render correct body contents', async () => {
     const ipcResponse = {
-      body: { dummy: 'content' },
+      body: "{ dummy: 'content' }",
       headers: { connection: 'close' }
     };
     store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
     await Vue.nextTick();
     const component = shallowMount(ResponseInspector, { store });
     const bodyElement = component.find('pre#response-body');
-    const expectedBody = JSON.parse(bodyElement.element.textContent);
+    const expectedBody = bodyElement.element.textContent;
     expect(expectedBody).to.eql(ipcResponse.body);
   });
 
   it('should render correct header contents', async () => {
     const ipcResponse = {
-      body: { dummy: 'content' },
+      body: "{ dummy: 'content' }",
       headers: { connection: 'close' }
     };
     store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
