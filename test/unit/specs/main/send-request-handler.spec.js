@@ -5,9 +5,17 @@ import Auth from '../../../../src/common/auth-types';
 describe('SendRequestHandler', () => {
   describe('createIpcResponse', () => {
     it('should create an internal response representation', () => {
-      const httpResponse = { data: 'response body' };
+      const httpResponse = {
+        data: 'response body',
+        headers: {
+          connection: 'close',
+        },
+      };
 
-      const expectedResponse = { body: httpResponse.data };
+      const expectedResponse = {
+        body: httpResponse.data,
+        headers: httpResponse.headers,
+      };
 
       const actualResponse = Handler.createIpcResponse(httpResponse);
       expect(actualResponse).to.eql(expectedResponse);
@@ -55,28 +63,51 @@ describe('SendRequestHandler', () => {
     it('should respond with the HTTP response body', async () => {
       const ipcSenderSpy = { send: sinon.spy() };
 
-      const httpResponse = { data: 'response body' };
+      const httpResponse = {
+        data: 'response body',
+        headers: {
+          connection: 'close',
+        },
+      };
       const httpStub = { get: sinon.stub().resolves(httpResponse) };
 
       const handler = new Handler(httpStub);
       const url = 'https://a.nice.url2';
       await handler.handle({ sender: ipcSenderSpy }, { url });
 
-      expect(ipcSenderSpy.send.calledWith('receive-response', { body: httpResponse.data })).to.eql(true);
+      const expectedResponse = {
+        body: httpResponse.data,
+        headers: httpResponse.headers,
+      };
+
+      expect(ipcSenderSpy.send.calledWith('receive-response', expectedResponse)).to.eql(true);
     });
 
     describe('when the server responded with an error', () => {
       it('should respond with an error response', async () => {
         const ipcSenderSpy = { send: sinon.spy() };
 
-        const errorResponse = { response: { data: { error: 'message' } } };
+        const httpResponse = {
+          data: {
+            error: 'message',
+          },
+          headers: {
+            connection: 'close',
+          },
+        };
+        const errorResponse = { response: httpResponse };
         const httpStub = { get: sinon.stub().rejects(errorResponse) };
 
         const handler = new Handler(httpStub);
         const url = 'https://a.nice.url2';
         await handler.handle({ sender: ipcSenderSpy }, { url });
 
-        expect(ipcSenderSpy.send.calledWith('receive-response', { body: errorResponse.response.data })).to.eql(true);
+        const expectedResponse = {
+          body: httpResponse.data,
+          headers: httpResponse.headers,
+        };
+
+        expect(ipcSenderSpy.send.calledWith('receive-response', expectedResponse)).to.eql(true);
       });
     });
     describe('when no response was received', () => {
@@ -90,7 +121,7 @@ describe('SendRequestHandler', () => {
         const url = 'https://a.nice.url2';
         await handler.handle({ sender: ipcSenderSpy }, { url });
 
-        expect(ipcSenderSpy.send.calledWith('receive-response', { body: null })).to.eql(true);
+        expect(ipcSenderSpy.send.calledWith('receive-response', { body: null, headers: null })).to.eql(true);
       });
     });
   });
