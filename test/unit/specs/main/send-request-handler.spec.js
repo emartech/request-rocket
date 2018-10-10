@@ -34,11 +34,7 @@ describe('SendRequestHandler', () => {
       const authParams = {};
       await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
 
-      expect(httpStub.get.called).to.equal(true);
-      const actualUrl = httpStub.get.lastCall.args[0];
-      const requestOptions = httpStub.get.lastCall.args[1];
-      expect(actualUrl).to.eql(url);
-      expect(requestOptions).to.eql({ headers: {} });
+      expect(httpStub.get).to.be.calledWithExactly(url, { headers: {} });
     });
 
     it('should send a wsse signed HTTP GET request to the url', async () => {
