@@ -14,7 +14,7 @@ export default {
   name: 'ResponseInspector',
   computed: {
     ...mapState(['response'])
-  },
+  }
 };
 </script>
 
