@@ -35,6 +35,9 @@ describe('Store', () => {
       it('should have url property as string value', () => {
         expect(store.state.request.url).to.eql('');
       });
+      it('should have a sentHeaders property with an empty object as initial value', () => {
+        expect(store.state.request.sentHeaders).to.eql({});
+      });
     });
     describe('response', () => {
       it('should have empty object as initial value', () => {
@@ -53,6 +56,12 @@ describe('Store', () => {
       it('should set the response object', () => {
         store.commit(Mutation.UPDATE_RESPONSE, { body: '{}' });
         expect(store.state.response).to.eql({ body: '{}' });
+      });
+    });
+    describe('UPDATE_SENT_HEADERS', () => {
+      it('should set the request.sentHeaders object', () => {
+        store.commit(Mutation.UPDATE_SENT_HEADERS, { accept: '*/*' });
+        expect(store.state.request.sentHeaders).to.eql({ accept: '*/*' });
       });
     });
     describe('SELECT_AUTH_TYPE', () => {
@@ -75,6 +84,14 @@ describe('Store', () => {
       it('should modify the URL of the state', () => {
         store.dispatch(Action.setUrl, 'https://new.url');
         expect(store.state.request.url).to.eql('https://new.url');
+      });
+    });
+    describe('requestSent', () => {
+      it('should modify the request.sentHeaders of the state', () => {
+        store.dispatch(Action.requestSent, {
+          sentRequestHeaders: { accept: '*/*' }
+        });
+        expect(store.state.request.sentHeaders).to.eql({ accept: '*/*' });
       });
     });
     describe('sendRequest', () => {

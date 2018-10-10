@@ -16,7 +16,8 @@ export default function() {
         params: {}
       },
       request: {
-        url: ''
+        url: '',
+        sentHeaders: {}
       },
       response: {}
     },
@@ -28,6 +29,9 @@ export default function() {
     mutations: {
       [Mutation.UPDATE_URL](state, url) {
         state.request.url = url;
+      },
+      [Mutation.UPDATE_SENT_HEADERS](state, sentHeaders) {
+        state.request.sentHeaders = sentHeaders;
       },
       [Mutation.UPDATE_RESPONSE](state, response) {
         state.response = response;

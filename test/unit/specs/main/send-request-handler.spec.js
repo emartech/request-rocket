@@ -88,9 +88,7 @@ describe('SendRequestHandler', () => {
         const ipcSenderSpy = { send: sinon.spy() };
 
         const httpResponse = {
-          data: {
-            error: 'message'
-          },
+          data: 'error response',
           headers: {
             connection: 'close'
           }

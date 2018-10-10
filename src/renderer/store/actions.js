@@ -24,5 +24,8 @@ export default {
   },
   [Action.setAuthParams]({ commit }, authParams) {
     commit(Mutation.SET_AUTH_PARAMS, authParams);
+  },
+  [Action.requestSent]({ commit }, payload) {
+    commit(Mutation.UPDATE_SENT_HEADERS, payload.sentRequestHeaders);
   }
 };

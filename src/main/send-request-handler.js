@@ -18,13 +18,13 @@ export default class Handler {
     const signer = createSigner(authType);
     const headers = signer(authParams);
 
-    let response;
+    let httpResponse;
     try {
-      response = await this.httpClient.get(url, { headers });
+      httpResponse = await this.httpClient.get(url, { headers });
     } catch (error) {
-      response = error.response || { data: null, headers: null };
+      httpResponse = error.response || { data: null, headers: null };
     }
-    const message = Handler.createIpcResponse(response);
-    await event.sender.send('receive-response', message);
+    const ipcResponse = Handler.createIpcResponse(httpResponse);
+    await event.sender.send('receive-response', ipcResponse);
   }
 }
