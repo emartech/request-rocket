@@ -1,4 +1,4 @@
 export default {
   none: 'none',
-  wsse: 'wsse',
+  wsse: 'wsse'
 };

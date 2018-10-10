@@ -8,13 +8,13 @@ describe('SendRequestHandler', () => {
       const httpResponse = {
         data: 'response body',
         headers: {
-          connection: 'close',
-        },
+          connection: 'close'
+        }
       };
 
       const expectedResponse = {
         body: httpResponse.data,
-        headers: httpResponse.headers,
+        headers: httpResponse.headers
       };
 
       const actualResponse = Handler.createIpcResponse(httpResponse);
@@ -66,8 +66,8 @@ describe('SendRequestHandler', () => {
       const httpResponse = {
         data: 'response body',
         headers: {
-          connection: 'close',
-        },
+          connection: 'close'
+        }
       };
       const httpStub = { get: sinon.stub().resolves(httpResponse) };
 
@@ -77,7 +77,7 @@ describe('SendRequestHandler', () => {
 
       const expectedResponse = {
         body: httpResponse.data,
-        headers: httpResponse.headers,
+        headers: httpResponse.headers
       };
 
       expect(ipcSenderSpy.send.calledWith('receive-response', expectedResponse)).to.eql(true);
@@ -89,11 +89,11 @@ describe('SendRequestHandler', () => {
 
         const httpResponse = {
           data: {
-            error: 'message',
+            error: 'message'
           },
           headers: {
-            connection: 'close',
-          },
+            connection: 'close'
+          }
         };
         const errorResponse = { response: httpResponse };
         const httpStub = { get: sinon.stub().rejects(errorResponse) };
@@ -104,7 +104,7 @@ describe('SendRequestHandler', () => {
 
         const expectedResponse = {
           body: httpResponse.data,
-          headers: httpResponse.headers,
+          headers: httpResponse.headers
         };
 
         expect(ipcSenderSpy.send.calledWith('receive-response', expectedResponse)).to.eql(true);

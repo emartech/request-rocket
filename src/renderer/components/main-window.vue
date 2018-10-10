@@ -14,7 +14,7 @@ import ResponseInspector from './response-inspector';
 
 export default {
   name: 'MainWindow',
-  components: { RequestEditor, ResponseInspector },
+  components: { RequestEditor, ResponseInspector }
 };
 </script>
 

@@ -26,11 +26,11 @@ export default {
     ...mapGetters(['authTypes', 'selectedAuthTypeId']),
     isWsseOptionSelected() {
       return this.selectedAuthTypeId === Auth.wsse;
-    },
+    }
   },
   methods: {
-    ...mapActions([Action.selectAuthType]),
-  },
+    ...mapActions([Action.selectAuthType])
+  }
 };
 </script>
 

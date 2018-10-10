@@ -13,7 +13,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'ResponseInspector',
   computed: {
-    ...mapState(['response']),
+    ...mapState(['response'])
   },
 };
 </script>

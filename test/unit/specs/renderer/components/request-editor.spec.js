@@ -39,11 +39,11 @@ describe('RequestEditor.vue', () => {
 
       const store = new Vuex.Store({
         state: {
-          request: {},
+          request: {}
         },
         actions: {
-          [Action.sendRequest]: requestSender,
-        },
+          [Action.sendRequest]: requestSender
+        }
       });
 
       const component = mount(RequestEditor, { store });

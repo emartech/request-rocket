@@ -22,11 +22,11 @@ export default {
   name: 'RequestEditor',
   components: { AuthEditor },
   computed: mapState({
-    url: state => state.request.url,
+    url: state => state.request.url
   }),
   methods: {
-    ...mapActions([Action.sendRequest, Action.setUrl]),
-  },
+    ...mapActions([Action.sendRequest, Action.setUrl])
+  }
 };
 </script>
 

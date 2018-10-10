@@ -23,18 +23,18 @@ export default {
   data() {
     return {
       key: null,
-      secret: null,
+      secret: null
     };
   },
   methods: {
     setAuthParams() {
       const authParams = {
         key: this.key,
-        secret: this.secret,
+        secret: this.secret
       };
       this.$store.dispatch(Action.setAuthParams, authParams);
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -8,11 +8,11 @@ export default new Router({
     {
       path: '/',
       name: 'main-window',
-      component: require('@/components/main-window').default,
+      component: require('@/components/main-window').default
     },
     {
       path: '*',
-      redirect: '/',
-    },
-  ],
+      redirect: '/'
+    }
+  ]
 });

@@ -13,17 +13,17 @@ export default function() {
       auth: {
         types: AuthOptions,
         selected: AuthOptions[0],
-        params: {},
+        params: {}
       },
       request: {
-        url: '',
+        url: ''
       },
-      response: {},
+      response: {}
     },
     getters: {
       authTypes: state => state.auth.types,
       selectedAuthTypeId: state => state.auth.selected.id,
-      authParams: state => state.auth.params,
+      authParams: state => state.auth.params
     },
     mutations: {
       [Mutation.UPDATE_URL](state, url) {
@@ -37,8 +37,8 @@ export default function() {
       },
       [Mutation.SET_AUTH_PARAMS](state, authParams) {
         state.auth.params = authParams;
-      },
+      }
     },
-    actions: Actions,
+    actions: Actions
   });
 }

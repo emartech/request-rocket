@@ -22,7 +22,7 @@ describe('WsseEditor.vue', () => {
 
     expect(store.getters.authParams).to.eql({
       key: 'some_key_name',
-      secret: null,
+      secret: null
     });
   });
   it('should set the credentials on the store', () => {
@@ -36,7 +36,7 @@ describe('WsseEditor.vue', () => {
 
     expect(store.getters.authParams).to.eql({
       key: 'some_key_name',
-      secret: 'v3ry53cr3t',
+      secret: 'v3ry53cr3t'
     });
   });
 });

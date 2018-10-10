@@ -10,7 +10,7 @@ export default {
     const payload = {
       url: state.request.url,
       authType: getters.selectedAuthTypeId,
-      authParams: getters.authParams,
+      authParams: getters.authParams
     };
     await ipcRenderer.send('send-request', payload);
   },
@@ -24,5 +24,5 @@ export default {
   },
   [Action.setAuthParams]({ commit }, authParams) {
     commit(Mutation.SET_AUTH_PARAMS, authParams);
-  },
+  }
 };

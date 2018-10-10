@@ -14,7 +14,7 @@ describe('ResponseInspector.vue', () => {
   it('should render correct body contents', async () => {
     const ipcResponse = {
       body: { dummy: 'content' },
-      headers: { connection: 'close' },
+      headers: { connection: 'close' }
     };
     store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
     await Vue.nextTick();
@@ -27,7 +27,7 @@ describe('ResponseInspector.vue', () => {
   it('should render correct header contents', async () => {
     const ipcResponse = {
       body: { dummy: 'content' },
-      headers: { connection: 'close' },
+      headers: { connection: 'close' }
     };
     store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
     await Vue.nextTick();
