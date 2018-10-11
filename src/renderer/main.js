@@ -2,7 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 
-import App from './App';
+import App from './app';
 import router from './router';
 import createStore from './store';
 import Action from './store/action-types';

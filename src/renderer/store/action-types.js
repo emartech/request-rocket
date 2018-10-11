@@ -4,5 +4,6 @@ export default {
   receiveResponse: 'receiveResponse',
   selectAuthType: 'selectAuthType',
   setAuthParams: 'setAuthParams',
-  requestSent: 'requestSent'
+  requestSent: 'requestSent',
+  setNetworkStatus: 'setNetworkStatus'
 };

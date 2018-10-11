@@ -7,6 +7,7 @@
       @input="setUrl($event.target.value)">
     <button
       id="request-editor-send-button"
+      :disabled="!isNetworkAvailable"
       type="button"
       @click="sendRequest">Send</button>
     <auth-editor/>
@@ -14,16 +15,19 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 import Action from '../store/action-types';
 import AuthEditor from './auth-editor';
 
 export default {
   name: 'RequestEditor',
   components: { AuthEditor },
-  computed: mapState({
-    url: state => state.request.url
-  }),
+  computed: {
+    ...mapGetters(['isNetworkAvailable']),
+    ...mapState({
+      url: state => state.request.url
+    })
+  },
   methods: {
     ...mapActions([Action.sendRequest, Action.setUrl])
   }

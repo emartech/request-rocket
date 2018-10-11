@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import createStore from '../../../../../src/renderer/store';
 import Actions from '../../../../../src/renderer/store/actions';
 import Action from '../../../../../src/renderer/store/action-types';
+import Getter from '../../../../../src/renderer/store/getters';
 import Mutation from '../../../../../src/renderer/store/mutation-types';
 import Auth from '../../../../../src/common/auth-types';
 
@@ -14,6 +15,11 @@ describe('Store', () => {
   });
 
   describe('state', () => {
+    describe('networkStatus', () => {
+      it('should be set online as initial value', () => {
+        expect(store.state.networkStatus).to.eql('online');
+      });
+    });
     describe('auth types', () => {
       it('should have a list of type mapping', () => {
         expect(Array.isArray(store.state.auth.types)).to.eql(true);
@@ -75,8 +81,22 @@ describe('Store', () => {
         expect(store.getters.authParams).to.eql(wsseParams);
       });
     });
+
+    describe('UPDATE_NETWORK_STATUS', function() {
+      it('should set network status property', () => {
+        const networkStatus = 'online';
+        store.commit(Mutation.UPDATE_NETWORK_STATUS, networkStatus);
+        expect(store.state.networkStatus).to.eq(networkStatus);
+      });
+    });
   });
   describe('actions', () => {
+    describe('setNetworkStatus', () => {
+      it('should update the state of the network status', () => {
+        store.dispatch(Action.setNetworkStatus, 'offline');
+        expect(store.state.networkStatus).to.eql('offline');
+      });
+    });
     describe('setUrl', () => {
       it('should modify the URL of the state', () => {
         store.dispatch(Action.setUrl, 'https://new.url');
@@ -136,6 +156,22 @@ describe('Store', () => {
         const wsseParams = { key: null, secret: null };
         Actions[Action.setAuthParams]({ commit }, wsseParams);
         expect(commit.calledWith(Mutation.SET_AUTH_PARAMS, wsseParams)).eql(true);
+      });
+    });
+  });
+  describe('getters', () => {
+    describe('isNetworkAvailable', () => {
+      it('should return true when networkStatus is online', function() {
+        const state = {
+          networkStatus: 'online'
+        };
+        expect(Getter.isNetworkAvailable(state)).to.be.eql(true);
+      });
+      it('should return false when networkStatus is offline', function() {
+        const state = {
+          networkStatus: 'offline'
+        };
+        expect(Getter.isNetworkAvailable(state)).to.be.eql(false);
       });
     });
   });

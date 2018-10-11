@@ -1,11 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import sinon from 'sinon';
-import { mount, shallowMount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import RequestEditor from '@/components/request-editor';
 import createStore from '@/store';
 import Action from '@/store/action-types';
 import Mutation from '@/store/mutation-types';
+import Getters from '../../../../../src/renderer/store/getters';
 
 describe('RequestEditor.vue', () => {
   let store;
@@ -17,13 +18,14 @@ describe('RequestEditor.vue', () => {
   it('should render correct contents', async () => {
     store.commit(Mutation.UPDATE_URL, 'https://some.url');
     await Vue.nextTick();
-    const component = mount(RequestEditor, { store });
+    const component = shallowMount(RequestEditor, { store });
 
     expect(component.find('#request-editor-url-field').element.value).to.equal('https://some.url');
   });
+
   context('editing the URL content', () => {
     it('should set the URL in the store', () => {
-      const component = mount(RequestEditor, { store });
+      const component = shallowMount(RequestEditor, { store });
 
       const input = component.find('#request-editor-url-field');
 
@@ -33,28 +35,56 @@ describe('RequestEditor.vue', () => {
       expect(store.state.request.url).to.equal('https://new.url');
     });
   });
+
   context('clicking the send button', () => {
-    it('should dispatch the request', () => {
-      const requestSender = sinon.spy();
+    context('when network is online', () => {
+      it('should dispatch the request', () => {
+        const requestSender = sinon.spy();
 
-      const store = new Vuex.Store({
-        state: {
-          request: {}
-        },
-        actions: {
-          [Action.sendRequest]: requestSender
-        }
+        const store = new Vuex.Store({
+          state: {
+            networkStatus: 'online',
+            request: {}
+          },
+          getters: Getters,
+          actions: {
+            [Action.sendRequest]: requestSender
+          }
+        });
+
+        const component = shallowMount(RequestEditor, { store });
+
+        const button = component.find('#request-editor-send-button');
+
+        button.trigger('click');
+
+        expect(requestSender.calledOnce).to.eql(true);
       });
+    });
 
-      const component = mount(RequestEditor, { store });
+    context('when network is offline', () => {
+      it('should not send a request', () => {
+        const requestSender = sinon.spy();
 
-      const input = component.find('#request-editor-send-button');
+        const store = new Vuex.Store({
+          state: {
+            networkStatus: 'offline',
+            request: {}
+          },
+          getters: Getters,
+          actions: { [Action.sendRequest]: requestSender }
+        });
 
-      input.trigger('click');
+        const component = shallowMount(RequestEditor, { store });
+        const button = component.find('#request-editor-send-button');
 
-      expect(requestSender.calledOnce).to.eql(true);
+        button.trigger('click');
+
+        expect(requestSender.calledOnce).to.eql(false);
+      });
     });
   });
+
   it('should contain an auth editor', () => {
     const component = shallowMount(RequestEditor, { store });
 

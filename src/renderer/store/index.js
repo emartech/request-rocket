@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import Mutation from './mutation-types';
 import AuthOptions from './auth-options';
 import Actions from './actions';
+import Getters from './getters';
 
 Vue.use(Vuex);
 
@@ -10,6 +11,7 @@ export default function() {
   return new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     state: {
+      networkStatus: 'online',
       auth: {
         types: AuthOptions,
         selected: AuthOptions[0],
@@ -21,11 +23,7 @@ export default function() {
       response: {},
       requestHeaders: null
     },
-    getters: {
-      authTypes: state => state.auth.types,
-      selectedAuthTypeId: state => state.auth.selected.id,
-      authParams: state => state.auth.params
-    },
+    getters: Getters,
     mutations: {
       [Mutation.UPDATE_URL](state, url) {
         state.request.url = url;
@@ -41,6 +39,9 @@ export default function() {
       },
       [Mutation.SET_AUTH_PARAMS](state, authParams) {
         state.auth.params = authParams;
+      },
+      [Mutation.UPDATE_NETWORK_STATUS](state, networkStatus) {
+        state.networkStatus = networkStatus;
       }
     },
     actions: Actions

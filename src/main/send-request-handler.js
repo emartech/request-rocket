@@ -37,6 +37,6 @@ export default class Handler {
     const httpResponse = await this.sendHttpRequest(request);
 
     const ipcResponse = Handler.createIpcResponse(httpResponse);
-    await event.sender.send('receive-response', ipcResponse);
+    event.sender.send('receive-response', ipcResponse);
   }
 }
