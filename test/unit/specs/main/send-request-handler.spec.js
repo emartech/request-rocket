@@ -22,6 +22,82 @@ describe('SendRequestHandler', () => {
     });
   });
 
+  describe('createHttpRequest', () => {
+    it('should return all the information needed to send the request', () => {
+      const url = 'http://anything.io';
+      const authType = Auth.wsse;
+      const authParams = { key: 'superkey', secret: 'supersecret' };
+
+      const request = Handler.createHttpRequest({ url, authType, authParams });
+      expect(request).to.include({ url });
+      expect(request).to.have.property('headers');
+      expect(request.headers).to.have.property('x-wsse');
+    });
+  });
+
+  describe('sendHttpRequest', () => {
+    it('should return the http response', async () => {
+      const httpResponse = { data: 'data' };
+      const httpStub = { get: sinon.stub().resolves(httpResponse) };
+      const handler = new Handler(httpStub);
+
+      const url = 'https://a.nice.url1';
+      const headers = {};
+
+      const response = await handler.sendHttpRequest({ url, headers });
+      expect(response).to.eql(httpResponse);
+    });
+
+    it('should send the prepared request', () => {
+      const httpResponse = { data: 'data' };
+      const httpStub = { get: sinon.stub().resolves(httpResponse) };
+
+      const handler = new Handler(httpStub);
+      const url = 'https://a.nice.url1';
+
+      const headers = { 'x-wsse': 'signature' };
+      handler.sendHttpRequest({ url, headers });
+
+      expect(httpStub.get).to.be.calledWithExactly(url, { headers });
+    });
+
+    describe('when the server responded with an error', () => {
+      it('should return error response', async () => {
+        const httpResponse = {
+          data: 'error response',
+          headers: {
+            connection: 'close'
+          }
+        };
+        const errorResponse = { response: httpResponse };
+        const httpStub = { get: sinon.stub().rejects(errorResponse) };
+
+        const handler = new Handler(httpStub);
+        const url = 'https://a.nice.url2';
+        const headers = { 'x-wsse': 'signature' };
+
+        const response = await handler.sendHttpRequest({ url, headers });
+
+        expect(response).to.eql(httpResponse);
+      });
+    });
+
+    describe('when no response was received', () => {
+      it('should return empty response ', async () => {
+        const errorResponse = { request: {} };
+        const httpStub = { get: sinon.stub().rejects(errorResponse) };
+
+        const handler = new Handler(httpStub);
+        const url = 'https://a.nice.url2';
+        const headers = { 'x-wsse': 'signature' };
+        const response = await handler.sendHttpRequest({ url, headers });
+        const emptyResponse = { data: null, headers: null };
+
+        expect(response).to.eql(emptyResponse);
+      });
+    });
+  });
+
   describe('handle', () => {
     it('should send a HTTP GET request to the url', async () => {
       const ipcSenderSpy = { send: sinon.spy() };
@@ -76,47 +152,7 @@ describe('SendRequestHandler', () => {
         headers: httpResponse.headers
       };
 
-      expect(ipcSenderSpy.send.calledWith('receive-response', expectedResponse)).to.eql(true);
-    });
-
-    describe('when the server responded with an error', () => {
-      it('should respond with an error response', async () => {
-        const ipcSenderSpy = { send: sinon.spy() };
-
-        const httpResponse = {
-          data: 'error response',
-          headers: {
-            connection: 'close'
-          }
-        };
-        const errorResponse = { response: httpResponse };
-        const httpStub = { get: sinon.stub().rejects(errorResponse) };
-
-        const handler = new Handler(httpStub);
-        const url = 'https://a.nice.url2';
-        await handler.handle({ sender: ipcSenderSpy }, { url });
-
-        const expectedResponse = {
-          body: httpResponse.data,
-          headers: httpResponse.headers
-        };
-
-        expect(ipcSenderSpy.send.calledWith('receive-response', expectedResponse)).to.eql(true);
-      });
-    });
-    describe('when no response was received', () => {
-      it('should respond with empty response ', async () => {
-        const ipcSenderSpy = { send: sinon.spy() };
-
-        const errorResponse = { request: {} };
-        const httpStub = { get: sinon.stub().rejects(errorResponse) };
-
-        const handler = new Handler(httpStub);
-        const url = 'https://a.nice.url2';
-        await handler.handle({ sender: ipcSenderSpy }, { url });
-
-        expect(ipcSenderSpy.send.calledWith('receive-response', { body: null, headers: null })).to.eql(true);
-      });
+      expect(ipcSenderSpy.send).to.be.calledWithExactly('receive-response', expectedResponse);
     });
   });
 });

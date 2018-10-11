@@ -7,6 +7,12 @@ export default class Handler {
     this.httpClient = httpClient;
   }
 
+  static createHttpRequest({ url, authType, authParams }) {
+    const signer = createSigner(authType);
+    const headers = signer(authParams);
+    return { url, headers };
+  }
+
   static createIpcResponse(httpResponse) {
     return {
       body: httpResponse.data,
@@ -14,16 +20,18 @@ export default class Handler {
     };
   }
 
-  async handle(event, { url, authType, authParams }) {
-    const signer = createSigner(authType);
-    const headers = signer(authParams);
-
-    let httpResponse;
+  async sendHttpRequest({ url, headers }) {
     try {
-      httpResponse = await this.httpClient.get(url, { headers });
+      return await this.httpClient.get(url, { headers });
     } catch (error) {
-      httpResponse = error.response || { data: null, headers: null };
+      return error.response || { data: null, headers: null };
     }
+  }
+
+  async handle(event, args) {
+    const request = Handler.createHttpRequest(args);
+    const httpResponse = await this.sendHttpRequest(request);
+
     const ipcResponse = Handler.createIpcResponse(httpResponse);
     await event.sender.send('receive-response', ipcResponse);
   }
