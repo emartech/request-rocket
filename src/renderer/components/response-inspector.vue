@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h6>Request headers</h6>
+    <pre id="request-headers">{{ requestHeaders }}</pre>
     <h6>Response Body</h6>
     <codemirror
       :options="cmOptions"
@@ -31,7 +33,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['response'])
+    ...mapState(['response', 'requestHeaders'])
   }
 };
 </script>

@@ -35,9 +35,6 @@ describe('Store', () => {
       it('should have url property as string value', () => {
         expect(store.state.request.url).to.eql('');
       });
-      it('should have a sentHeaders property with an empty object as initial value', () => {
-        expect(store.state.request.sentHeaders).to.eql({});
-      });
     });
     describe('response', () => {
       it('should have empty object as initial value', () => {
@@ -58,10 +55,10 @@ describe('Store', () => {
         expect(store.state.response).to.eql({ body: '{}' });
       });
     });
-    describe('UPDATE_SENT_HEADERS', () => {
+    describe('UPDATE_REQUEST_HEADERS', () => {
       it('should set the request.sentHeaders object', () => {
-        store.commit(Mutation.UPDATE_SENT_HEADERS, { accept: '*/*' });
-        expect(store.state.request.sentHeaders).to.eql({ accept: '*/*' });
+        store.commit(Mutation.UPDATE_REQUEST_HEADERS, { accept: '*/*' });
+        expect(store.state.requestHeaders).to.eql({ accept: '*/*' });
       });
     });
     describe('SELECT_AUTH_TYPE', () => {
@@ -84,14 +81,6 @@ describe('Store', () => {
       it('should modify the URL of the state', () => {
         store.dispatch(Action.setUrl, 'https://new.url');
         expect(store.state.request.url).to.eql('https://new.url');
-      });
-    });
-    describe('requestSent', () => {
-      it('should modify the request.sentHeaders of the state', () => {
-        store.dispatch(Action.requestSent, {
-          sentRequestHeaders: { accept: '*/*' }
-        });
-        expect(store.state.request.sentHeaders).to.eql({ accept: '*/*' });
       });
     });
     describe('sendRequest', () => {
@@ -120,6 +109,10 @@ describe('Store', () => {
       it('should store the received response in the store', () => {
         store.dispatch(Action.receiveResponse, { response: { body: '{"key": "value"}' } });
         expect(store.state.response).to.eql({ body: '{"key": "value"}' });
+      });
+      it('should store the actual request headers in the store', () => {
+        store.dispatch(Action.receiveResponse, { requestHeaders: { 'x-my-header': 'some_value' } });
+        expect(store.state.requestHeaders).to.eql({ 'x-my-header': 'some_value' });
       });
     });
     describe('selectAuthType', () => {

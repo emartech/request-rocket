@@ -16,6 +16,7 @@ export default {
   },
   [Action.receiveResponse]({ commit }, response) {
     commit(Mutation.UPDATE_RESPONSE, response.response);
+    commit(Mutation.UPDATE_REQUEST_HEADERS, response.requestHeaders);
   },
   [Action.selectAuthType]({ commit, state }, selectedType) {
     const selected = state.auth.types.find(auth => auth.id === selectedType);
@@ -24,8 +25,5 @@ export default {
   },
   [Action.setAuthParams]({ commit }, authParams) {
     commit(Mutation.SET_AUTH_PARAMS, authParams);
-  },
-  [Action.requestSent]({ commit }, payload) {
-    commit(Mutation.UPDATE_SENT_HEADERS, payload.sentRequestHeaders);
   }
 };

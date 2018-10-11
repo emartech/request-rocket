@@ -23,7 +23,7 @@ describe('ResponseInspector.vue', () => {
     expect(codemirrorComponent.element.getAttribute('value')).to.equal("{ dummy: 'content' }");
   });
 
-  it('should render correct header contents', async () => {
+  it('should render correct response header contents', async () => {
     const ipcResponse = {
       body: "{ dummy: 'content' }",
       headers: { connection: 'close' }
@@ -48,5 +48,14 @@ describe('ResponseInspector.vue', () => {
     const statusCodeElement = component.find('span#status-code');
     const renderedStatusCode = statusCodeElement.element.textContent;
     expect(renderedStatusCode).to.eql('200');
+  });
+
+  it('should render correct request header contents', async () => {
+    store.commit(Mutation.UPDATE_REQUEST_HEADERS, { 'x-some-header': 'some_value' });
+    await Vue.nextTick();
+    const component = shallowMount(ResponseInspector, { store });
+    const headersElement = component.find('pre#request-headers');
+    const expectedHeaders = JSON.parse(headersElement.element.textContent);
+    expect(expectedHeaders).to.eql({ 'x-some-header': 'some_value' });
   });
 });
