@@ -23,19 +23,6 @@ describe('ResponseInspector.vue', () => {
     expect(codemirrorComponent.element.getAttribute('value')).to.equal("{ dummy: 'content' }");
   });
 
-  it('should render correct response header contents', async () => {
-    const ipcResponse = {
-      body: "{ dummy: 'content' }",
-      headers: { connection: 'close' }
-    };
-    store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
-    await Vue.nextTick();
-    const component = shallowMount(ResponseInspector, { store });
-    const headersElement = component.find('pre#response-headers');
-    const renderedHeaders = JSON.parse(headersElement.element.textContent);
-    expect(renderedHeaders).to.eql(ipcResponse.headers);
-  });
-
   it('should render correct response status code', async () => {
     const ipcResponse = {
       body: "{ dummy: 'content' }",
@@ -54,5 +41,11 @@ describe('ResponseInspector.vue', () => {
     const component = shallowMount(ResponseInspector, { store });
 
     expect(component.find({ name: 'RequestHeaders' }).exists()).to.eql(true);
+  });
+
+  it('should contain a response headers component', () => {
+    const component = shallowMount(ResponseInspector, { store });
+
+    expect(component.find({ name: 'ResponseHeaders' }).exists()).to.eql(true);
   });
 });

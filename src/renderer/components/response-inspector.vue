@@ -5,8 +5,7 @@
     <codemirror
       :options="cmOptions"
       :value="response.body" />
-    <h6>Response Headers</h6>
-    <pre id="response-headers">{{ response.headers }}</pre>
+    <response-headers/>
     <h6>Status Code</h6>
     <span id="status-code">{{ response.status }}</span>
   </div>
@@ -16,11 +15,12 @@
 import { mapState } from 'vuex';
 import { codemirror } from 'vue-codemirror';
 import 'codemirror/lib/codemirror.css';
+import ResponseHeaders from './response-headers';
 import RequestHeaders from './request-headers';
 
 export default {
   name: 'ResponseInspector',
-  components: { codemirror, RequestHeaders },
+  components: { codemirror, ResponseHeaders, RequestHeaders },
   data() {
     return {
       cmOptions: {
