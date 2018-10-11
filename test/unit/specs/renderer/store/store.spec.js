@@ -174,5 +174,31 @@ describe('Store', () => {
         expect(Getter.isNetworkAvailable(state)).to.be.eql(false);
       });
     });
+    describe('responseType', () => {
+      it('should return application/json by default', function() {
+        const state = {
+          response: {}
+        };
+        expect(Getter.responseType(state)).to.be.eql('application/json');
+      });
+
+      it('should return response type when a response arrived', function() {
+        const state = {
+          response: {
+            headers: { 'content-type': 'text/plain' }
+          }
+        };
+        expect(Getter.responseType(state)).to.be.eql('text/plain');
+      });
+
+      it('should return only the response type when a response arrived', function() {
+        const state = {
+          response: {
+            headers: { 'content-type': 'text/plain; charset=utf-8' }
+          }
+        };
+        expect(Getter.responseType(state)).to.be.eql('text/plain');
+      });
+    });
   });
 });

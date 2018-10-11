@@ -27,8 +27,7 @@ export default {
         tabSize: 2,
         mode: 'application/json',
         readOnly: true,
-        lineNumbers: true,
-        line: true
+        lineNumbers: true
       }
     };
   },
