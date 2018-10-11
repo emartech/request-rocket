@@ -13,8 +13,10 @@ describe('SendRequestHandler', () => {
       };
 
       const expectedResponse = {
-        body: httpResponse.data,
-        headers: httpResponse.headers
+        response: {
+          body: httpResponse.data,
+          headers: httpResponse.headers
+        }
       };
 
       const actualResponse = Handler.createIpcResponse(httpResponse);
@@ -148,8 +150,10 @@ describe('SendRequestHandler', () => {
       await handler.handle({ sender: ipcSenderSpy }, { url });
 
       const expectedResponse = {
-        body: httpResponse.data,
-        headers: httpResponse.headers
+        response: {
+          body: httpResponse.data,
+          headers: httpResponse.headers
+        }
       };
 
       expect(ipcSenderSpy.send).to.be.calledWithExactly('receive-response', expectedResponse);

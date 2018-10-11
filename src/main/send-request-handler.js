@@ -15,8 +15,10 @@ export default class Handler {
 
   static createIpcResponse(httpResponse) {
     return {
-      body: httpResponse.data,
-      headers: httpResponse.headers
+      response: {
+        body: httpResponse.data,
+        headers: httpResponse.headers
+      }
     };
   }
 

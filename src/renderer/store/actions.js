@@ -15,7 +15,7 @@ export default {
     await ipcRenderer.send('send-request', payload);
   },
   [Action.receiveResponse]({ commit }, response) {
-    commit(Mutation.UPDATE_RESPONSE, response);
+    commit(Mutation.UPDATE_RESPONSE, response.response);
   },
   [Action.selectAuthType]({ commit, state }, selectedType) {
     const selected = state.auth.types.find(auth => auth.id === selectedType);

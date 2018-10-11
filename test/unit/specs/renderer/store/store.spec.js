@@ -118,7 +118,7 @@ describe('Store', () => {
     });
     describe('receiveResponse', () => {
       it('should store the received response in the store', () => {
-        store.dispatch(Action.receiveResponse, { body: '{"key": "value"}' });
+        store.dispatch(Action.receiveResponse, { response: { body: '{"key": "value"}' } });
         expect(store.state.response).to.eql({ body: '{"key": "value"}' });
       });
     });
