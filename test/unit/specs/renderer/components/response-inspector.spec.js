@@ -11,7 +11,7 @@ describe('ResponseInspector.vue', () => {
     store = createStore();
   });
 
-  it('should render correct body contents', async () => {
+  it('should render a codemirror component with the body contents', async () => {
     const ipcResponse = {
       body: "{ dummy: 'content' }",
       headers: { connection: 'close' }
@@ -19,9 +19,8 @@ describe('ResponseInspector.vue', () => {
     store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
     await Vue.nextTick();
     const component = shallowMount(ResponseInspector, { store });
-    const bodyElement = component.find('pre#response-body');
-    const expectedBody = bodyElement.element.textContent;
-    expect(expectedBody).to.eql(ipcResponse.body);
+    const codemirrorComponent = component.find({ name: 'codemirror' });
+    expect(codemirrorComponent.element.getAttribute('value')).to.equal("{ dummy: 'content' }");
   });
 
   it('should render correct header contents', async () => {
