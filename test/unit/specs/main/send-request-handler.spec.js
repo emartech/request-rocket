@@ -10,6 +10,7 @@ describe('SendRequestHandler', () => {
         headers: {
           connection: 'close'
         },
+        status: 200,
         request: {
           getHeaders() {
             return { 'x-some-header': 'some_value' };
@@ -20,7 +21,8 @@ describe('SendRequestHandler', () => {
       const expectedResponse = {
         response: {
           body: httpResponse.data,
-          headers: httpResponse.headers
+          headers: httpResponse.headers,
+          status: 200
         },
         requestHeaders: {
           'x-some-header': 'some_value'
@@ -152,6 +154,7 @@ describe('SendRequestHandler', () => {
         headers: {
           connection: 'close'
         },
+        status: 200,
         request: { getHeaders: () => ({}) }
       };
 
@@ -163,7 +166,8 @@ describe('SendRequestHandler', () => {
       const expectedResponse = {
         response: {
           body: httpResponse.data,
-          headers: httpResponse.headers
+          headers: httpResponse.headers,
+          status: httpResponse.status
         },
         requestHeaders: {}
       };

@@ -32,7 +32,21 @@ describe('ResponseInspector.vue', () => {
     await Vue.nextTick();
     const component = shallowMount(ResponseInspector, { store });
     const headersElement = component.find('pre#response-headers');
-    const expectedHeaders = JSON.parse(headersElement.element.textContent);
-    expect(expectedHeaders).to.eql(ipcResponse.headers);
+    const renderedHeaders = JSON.parse(headersElement.element.textContent);
+    expect(renderedHeaders).to.eql(ipcResponse.headers);
+  });
+
+  it('should render correct response status code', async () => {
+    const ipcResponse = {
+      body: "{ dummy: 'content' }",
+      headers: { connection: 'close' },
+      status: 200
+    };
+    store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
+    await Vue.nextTick();
+    const component = shallowMount(ResponseInspector, { store });
+    const statusCodeElement = component.find('span#status-code');
+    const renderedStatusCode = statusCodeElement.element.textContent;
+    expect(renderedStatusCode).to.eql('200');
   });
 });

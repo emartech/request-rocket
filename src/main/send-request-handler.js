@@ -17,7 +17,8 @@ export default class Handler {
     return {
       response: {
         body: httpResponse.data,
-        headers: httpResponse.headers
+        headers: httpResponse.headers,
+        status: httpResponse.status
       },
       requestHeaders: httpResponse.request.getHeaders()
     };
