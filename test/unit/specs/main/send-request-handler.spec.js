@@ -95,17 +95,18 @@ describe('SendRequestHandler', () => {
     });
 
     describe('when no response was received', () => {
-      it('should return empty response ', async () => {
-        const errorResponse = { request: {} };
+      it('should throw error', async () => {
+        const errorResponse = { message: 'unexpected error' };
         const httpStub = { get: sinon.stub().rejects(errorResponse) };
 
         const handler = new Handler(httpStub);
         const url = 'https://a.nice.url2';
         const headers = { 'x-wsse': 'signature' };
-        const response = await handler.sendHttpRequest({ url, headers });
-        const emptyResponse = { data: null, headers: null };
-
-        expect(response).to.eql(emptyResponse);
+        try {
+          await handler.sendHttpRequest({ url, headers });
+        } catch (error) {
+          expect(error.message).to.eql('Unexpected error occurred.');
+        }
       });
     });
   });

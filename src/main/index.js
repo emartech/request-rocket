@@ -45,12 +45,19 @@ app.on('activate', () => {
 });
 
 ipcMain.on('send-request', (event, args) => {
-  const axiosClient = axios.create({
-    transformResponse: response => response,
-    timeout: 60000
-  });
-  const requestHandler = new Handler(axiosClient);
-  requestHandler.handle(event, args);
+  try {
+    const axiosClient = axios.create({
+      transformResponse: response => response,
+      timeout: 60000
+    });
+    const requestHandler = new Handler(axiosClient);
+    requestHandler.handle(event, args);
+  } catch (error) {
+    event.sender.send('unexpected-exception-thrown', {
+      message: error.message,
+      stack: error.stack
+    });
+  }
 });
 
 /**

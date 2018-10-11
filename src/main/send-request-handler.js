@@ -28,14 +28,16 @@ export default class Handler {
     try {
       return await this.httpClient.get(url, { headers });
     } catch (error) {
-      return error.response || { data: null, headers: null };
+      if (error.response) {
+        return error.response;
+      }
+      throw new Error('Unexpected error occurred.');
     }
   }
 
   async handle(event, args) {
     const request = Handler.createHttpRequest(args);
     const httpResponse = await this.sendHttpRequest(request);
-
     const ipcResponse = Handler.createIpcResponse(httpResponse);
     event.sender.send('receive-response', ipcResponse);
   }

@@ -24,3 +24,11 @@ new Vue({
 ipcRenderer.on('receive-response', (event, args) => {
   store.dispatch(Action.receiveResponse, args);
 });
+
+ipcRenderer.on('request-sent', (event, args) => {
+  store.dispatch(Action.requestSent, args);
+});
+
+ipcRenderer.on('unexpected-exception-thrown', (event, error) => {
+  alert(error.message);
+});
