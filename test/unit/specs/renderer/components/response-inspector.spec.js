@@ -50,12 +50,9 @@ describe('ResponseInspector.vue', () => {
     expect(renderedStatusCode).to.eql('200');
   });
 
-  it('should render correct request header contents', async () => {
-    store.commit(Mutation.UPDATE_REQUEST_HEADERS, { 'x-some-header': 'some_value' });
-    await Vue.nextTick();
+  it('should contain a request headers component', () => {
     const component = shallowMount(ResponseInspector, { store });
-    const headersElement = component.find('pre#request-headers');
-    const expectedHeaders = JSON.parse(headersElement.element.textContent);
-    expect(expectedHeaders).to.eql({ 'x-some-header': 'some_value' });
+
+    expect(component.find({ name: 'RequestHeaders' }).exists()).to.eql(true);
   });
 });

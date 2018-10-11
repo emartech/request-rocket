@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h6>Request headers</h6>
-    <pre id="request-headers">{{ requestHeaders }}</pre>
+    <request-headers/>
     <h6>Response Body</h6>
     <codemirror
       :options="cmOptions"
@@ -17,10 +16,11 @@
 import { mapState } from 'vuex';
 import { codemirror } from 'vue-codemirror';
 import 'codemirror/lib/codemirror.css';
+import RequestHeaders from './request-headers';
 
 export default {
   name: 'ResponseInspector',
-  components: { codemirror },
+  components: { codemirror, RequestHeaders },
   data() {
     return {
       cmOptions: {
