@@ -18,7 +18,8 @@ export default class Handler {
       response: {
         body: httpResponse.data,
         headers: httpResponse.headers
-      }
+      },
+      requestHeaders: httpResponse.request.getHeaders()
     };
   }
 

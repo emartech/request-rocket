@@ -9,6 +9,11 @@ describe('SendRequestHandler', () => {
         data: 'response body',
         headers: {
           connection: 'close'
+        },
+        request: {
+          getHeaders() {
+            return { 'x-some-header': 'some_value' };
+          }
         }
       };
 
@@ -16,6 +21,9 @@ describe('SendRequestHandler', () => {
         response: {
           body: httpResponse.data,
           headers: httpResponse.headers
+        },
+        requestHeaders: {
+          'x-some-header': 'some_value'
         }
       };
 
@@ -104,7 +112,8 @@ describe('SendRequestHandler', () => {
     it('should send a HTTP GET request to the url', async () => {
       const ipcSenderSpy = { send: sinon.spy() };
 
-      const httpStub = { get: sinon.stub().resolves({ data: 'data' }) };
+      const response = { data: 'data', request: { getHeaders: () => ({}) } };
+      const httpStub = { get: sinon.stub().resolves(response) };
 
       const handler = new Handler(httpStub);
       const url = 'https://a.nice.url1';
@@ -118,7 +127,8 @@ describe('SendRequestHandler', () => {
     it('should send a wsse signed HTTP GET request to the url', async () => {
       const ipcSenderSpy = { send: sinon.spy() };
 
-      const httpStub = { get: sinon.stub().resolves({ data: 'data' }) };
+      const response = { data: 'data', request: { getHeaders: () => ({}) } };
+      const httpStub = { get: sinon.stub().resolves(response) };
 
       const handler = new Handler(httpStub);
       const url = 'https://a.nice.url1';
@@ -141,19 +151,21 @@ describe('SendRequestHandler', () => {
         data: 'response body',
         headers: {
           connection: 'close'
-        }
+        },
+        request: { getHeaders: () => ({}) }
       };
+
       const httpStub = { get: sinon.stub().resolves(httpResponse) };
 
       const handler = new Handler(httpStub);
-      const url = 'https://a.nice.url2';
-      await handler.handle({ sender: ipcSenderSpy }, { url });
+      await handler.handle({ sender: ipcSenderSpy }, { url: 'https://a.nice.url2' });
 
       const expectedResponse = {
         response: {
           body: httpResponse.data,
           headers: httpResponse.headers
-        }
+        },
+        requestHeaders: {}
       };
 
       expect(ipcSenderSpy.send).to.be.calledWithExactly('receive-response', expectedResponse);
