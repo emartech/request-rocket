@@ -1,16 +1,26 @@
 <template>
-  <div>
-    <input
-      id="request-editor-url-field"
-      :value="url"
-      type="text"
-      @input="setUrl($event.target.value)">
-    <button
-      id="request-editor-send-button"
-      :disabled="!isNetworkAvailable"
-      type="button"
-      @click="sendRequest">Send</button>
-    <auth-editor/>
+  <div class="e-box e-box-simple">
+    <div class="e-grid e-grid-medium">
+      <div class="e-cell e-cell-auto e-cell-medium">
+        <input
+          id="request-editor-url-field"
+          :value="url"
+          class="e-input"
+          type="text"
+          @input="setUrl($event.target.value)">
+      </div>
+      <div class="e-cell e-cell-medium">
+        <button
+          id="request-editor-send-button"
+          :disabled="!isNetworkAvailable"
+          class="e-btn e-btn-primary"
+          type="button"
+          @click="sendRequest">Send</button>
+      </div>
+    </div>
+    <div>
+      <auth-editor/>
+    </div>
   </div>
 </template>
 

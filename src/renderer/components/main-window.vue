@@ -1,10 +1,7 @@
 <template>
   <div>
-    <h1 class="title">Request Rocket</h1>
-    <div>
-      <request-editor/>
-      <response-inspector/>
-    </div>
+    <request-editor/>
+    <response-inspector/>
   </div>
 </template>
 

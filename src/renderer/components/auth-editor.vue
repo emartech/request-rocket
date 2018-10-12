@@ -1,14 +1,22 @@
 <template>
   <div>
-    <select
-      :value="selectedAuthTypeId"
-      class="auth-type"
-      @input="selectAuthType($event.target.value)">
-      <option
-        v-for="auth in authTypes"
-        :value="auth.id"
-        :key="auth.id">{{ auth.label }}</option>
-    </select>
+    <div class="e-field">
+      <label
+        class="e-field__label"
+        for="auth-selector"/>
+      <e-select>
+        <select
+          id="auth-selector"
+          :value="selectedAuthTypeId"
+          class="e-select e-select-inline auth-type"
+          @change="selectAuthType($event.target.value)">
+          <option
+            v-for="auth in authTypes"
+            :value="auth.id"
+            :key="auth.id">{{ auth.label }}</option>
+        </select>
+      </e-select>
+    </div>
     <wsse-editor v-if="isWsseOptionSelected" />
   </div>
 </template>
