@@ -2,7 +2,7 @@
   <div>
     <request-headers/>
     <code-editor
-      :code="response.body"
+      :code="beautifyBody(response.body)"
       :type="responseType"/>
     <response-headers/>
     <h6>Status Code</h6>
@@ -22,6 +22,20 @@ export default {
   computed: {
     ...mapState(['response', 'requestHeaders']),
     ...mapGetters(['responseType'])
+  },
+  methods: {
+    beautifyBody() {
+      if (this.responseType === 'application/json') {
+        let body;
+        try {
+          body = JSON.parse(this.response.body);
+        } catch (error) {
+          return this.response.body;
+        }
+        return JSON.stringify(body, null, 2);
+      }
+      return this.response.body;
+    }
   }
 };
 </script>
