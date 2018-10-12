@@ -6,6 +6,7 @@ import Action from '../../../../../src/renderer/store/action-types';
 import Getter from '../../../../../src/renderer/store/getters';
 import Mutation from '../../../../../src/renderer/store/mutation-types';
 import Auth from '../../../../../src/common/auth-types';
+import HttpMethod from '../../../../../src/common/method-types';
 
 describe('Store', () => {
   let store;
@@ -24,6 +25,17 @@ describe('Store', () => {
       it('should have a list of type mapping', () => {
         expect(Array.isArray(store.state.auth.types)).to.eql(true);
         expect(store.state.auth.types.length).to.eql(Object.keys(Auth).length);
+      });
+    });
+    describe('request httpMethodOptions', () => {
+      it('should have a list of http method options', () => {
+        expect(store.state.request.httpMethodOptions).to.be.instanceOf(Array);
+        expect(store.state.request.httpMethodOptions.length).to.eql(Object.keys(HttpMethod).length);
+      });
+    });
+    describe('request selectedHttpMethod', () => {
+      it('should have GET http method as initial value', () => {
+        expect(store.state.request.selectedHttpMethod).to.eql(HttpMethod.GET);
       });
     });
     describe('selected auth type', () => {
@@ -78,6 +90,12 @@ describe('Store', () => {
         const wsseAuthType = { id: 'wsse', label: 'WSSE' };
         store.commit(Mutation.SELECT_AUTH_TYPE, wsseAuthType);
         expect(store.state.auth.selected).to.eql(wsseAuthType);
+      });
+    });
+    describe('SELECT_HTTP_METHOD', () => {
+      it('should set the selected http method', () => {
+        store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
+        expect(store.state.request.selectedHttpMethod).to.eql(HttpMethod.POST);
       });
     });
     describe('SET_AUTH_PARAMS', () => {
@@ -154,6 +172,13 @@ describe('Store', () => {
         Actions[Action.selectAuthType]({ commit, state: store.state }, wsseAuthType.id);
         expect(commit.calledWith(Mutation.SELECT_AUTH_TYPE, wsseAuthType)).eql(true);
         expect(commit.calledWith(Mutation.SET_AUTH_PARAMS, {})).eql(true);
+      });
+    });
+    describe('selectHttpMethod', () => {
+      it('should modify the selected http method of the state', () => {
+        const commit = sinon.spy();
+        Actions[Action.selectHttpMethod]({ commit }, HttpMethod.GET);
+        expect(commit.calledWith(Mutation.SELECT_HTTP_METHOD, HttpMethod.GET)).eql(true);
       });
     });
     describe('setAuthParams', () => {

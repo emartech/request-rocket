@@ -1,5 +1,14 @@
 <template>
   <div>
+    <select
+      :value="selectedHttpMethod"
+      class="http-method"
+      @input="selectHttpMethod($event.target.value)">
+      <option
+        v-for="method in httpMethodOptions"
+        :value="method.id"
+        :key="method.id">{{ method.label }}</option>
+    </select>
     <input
       id="request-editor-url-field"
       :value="url"
@@ -25,11 +34,13 @@ export default {
   computed: {
     ...mapGetters(['isNetworkAvailable']),
     ...mapState({
-      url: state => state.request.url
+      url: state => state.request.url,
+      httpMethodOptions: state => state.request.httpMethodOptions,
+      selectedHttpMethod: state => state.request.selectedHttpMethod
     })
   },
   methods: {
-    ...mapActions([Action.sendRequest, Action.setUrl])
+    ...mapActions([Action.sendRequest, Action.setUrl, Action.selectHttpMethod])
   }
 };
 </script>

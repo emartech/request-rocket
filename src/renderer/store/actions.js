@@ -31,5 +31,8 @@ export default {
   },
   [Action.setNetworkStatus]({ commit }, networkStatus) {
     commit(Mutation.UPDATE_NETWORK_STATUS, networkStatus);
+  },
+  [Action.selectHttpMethod]({ commit }, httpMethod) {
+    commit(Mutation.SELECT_HTTP_METHOD, httpMethod);
   }
 };
