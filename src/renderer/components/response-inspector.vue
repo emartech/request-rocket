@@ -3,7 +3,7 @@
     <request-headers/>
     <h6>Response Body</h6>
     <codemirror
-      :options="cmOptions"
+      :options="getCodemirrorOptions()"
       :value="response.body" />
     <response-headers/>
     <h6>Status Code</h6>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { codemirror } from 'vue-codemirror';
 import 'codemirror/lib/codemirror.css';
 import ResponseHeaders from './response-headers';
@@ -21,18 +21,19 @@ import RequestHeaders from './request-headers';
 export default {
   name: 'ResponseInspector',
   components: { codemirror, ResponseHeaders, RequestHeaders },
-  data() {
-    return {
-      cmOptions: {
+  computed: {
+    ...mapState(['response', 'requestHeaders']),
+    ...mapGetters(['responseType'])
+  },
+  methods: {
+    getCodemirrorOptions() {
+      return {
         tabSize: 2,
-        mode: 'application/json',
+        mode: this.responseType,
         readOnly: true,
         lineNumbers: true
-      }
-    };
-  },
-  computed: {
-    ...mapState(['response', 'requestHeaders'])
+      };
+    }
   }
 };
 </script>

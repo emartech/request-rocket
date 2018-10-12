@@ -20,7 +20,19 @@ describe('ResponseInspector.vue', () => {
     await Vue.nextTick();
     const component = shallowMount(ResponseInspector, { store });
     const codemirrorComponent = component.find({ name: 'codemirror' });
-    expect(codemirrorComponent.element.getAttribute('value')).to.equal("{ dummy: 'content' }");
+    expect(codemirrorComponent.props('value')).to.equal("{ dummy: 'content' }");
+  });
+
+  it('should render a codemirror component with mode set to response type', async () => {
+    const ipcResponse = {
+      body: "{ dummy: 'content' }",
+      headers: { 'content-type': 'text/plain' }
+    };
+    store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
+    await Vue.nextTick();
+    const component = shallowMount(ResponseInspector, { store });
+    const codemirrorComponent = component.find({ name: 'codemirror' });
+    expect(codemirrorComponent.props('options')).to.have.property('mode', 'text/plain');
   });
 
   it('should render correct response status code', async () => {
