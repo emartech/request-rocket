@@ -18,7 +18,10 @@ export default function() {
         params: {}
       },
       request: {
-        url: ''
+        url: '',
+        headers: {
+          'content-type': 'application/json'
+        }
       },
       response: {},
       requestHeaders: null
