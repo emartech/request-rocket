@@ -10,6 +10,7 @@ export default {
     const payload = {
       url: state.request.url,
       method: state.request.method,
+      headers: state.request.headers,
       body: state.request.body,
       authType: getters.selectedAuthTypeId,
       authParams: getters.authParams

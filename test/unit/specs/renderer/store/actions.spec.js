@@ -68,6 +68,14 @@ describe('actions', () => {
 
       expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('body', '{"foo": "bar"}'));
     });
+    it('should send the desired request headers', () => {
+      store.dispatch(Action.sendRequest);
+
+      expect(ipcSpy).to.be.calledWith(
+        'send-request',
+        sinon.match.has('headers', [{ name: 'content-type', value: 'application/json' }])
+      );
+    });
   });
   describe('receiveResponse', () => {
     it('should store the received response in the store', () => {
