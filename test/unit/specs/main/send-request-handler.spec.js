@@ -1,5 +1,6 @@
 import sinon from 'sinon';
 import Handler from '../../../../src/main/send-request-handler';
+import HttpMethod from '../../../../src/common/method-types';
 import Auth from '../../../../src/common/auth-types';
 
 describe('SendRequestHandler', () => {
@@ -66,7 +67,7 @@ describe('SendRequestHandler', () => {
       await handler.sendHttpRequest({ url: 'https://a.nice.url1', headers: { 'x-wsse': 'signature' } });
 
       expect(httpStub).to.be.calledWithExactly({
-        method: 'get',
+        method: HttpMethod.GET,
         url: 'https://a.nice.url1',
         headers: { 'x-wsse': 'signature' }
       });
@@ -139,7 +140,7 @@ describe('SendRequestHandler', () => {
       const authParams = {};
       await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
 
-      expect(httpStub).to.be.calledWithExactly({ method: 'get', url, headers: {} });
+      expect(httpStub).to.be.calledWithExactly({ method: HttpMethod.GET, url, headers: {} });
     });
 
     it('should send a wsse signed HTTP GET request to the url', async () => {
@@ -157,7 +158,7 @@ describe('SendRequestHandler', () => {
       expect(httpStub.called).to.equal(true);
       const requestOptions = httpStub.lastCall.args[0];
       expect(requestOptions).to.have.property('method');
-      expect(requestOptions.method).to.eql('get');
+      expect(requestOptions.method).to.eql(HttpMethod.GET);
       expect(requestOptions).to.have.property('url');
       expect(requestOptions.url).to.eql(url);
       expect(requestOptions).to.have.property('headers');

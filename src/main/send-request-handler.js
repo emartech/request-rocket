@@ -1,4 +1,5 @@
 import createSigner from './signer/signer-factory';
+import HttpMethod from '../common/method-types';
 
 export default class Handler {
   constructor(httpClient) {
@@ -24,7 +25,7 @@ export default class Handler {
 
   async sendHttpRequest({ url, headers }) {
     try {
-      return await this.httpClient({ method: 'get', url, headers });
+      return await this.httpClient({ method: HttpMethod.GET, url, headers });
     } catch (error) {
       if (error.response) {
         return error.response;
