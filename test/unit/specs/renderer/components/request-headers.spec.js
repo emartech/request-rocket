@@ -12,7 +12,7 @@ describe('RequestHeaders.vue', () => {
   });
 
   it('should render correct request header contents', async () => {
-    store.commit(Mutation.UPDATE_REQUEST_HEADERS, { 'x-some-header': 'some_value' });
+    store.commit(Mutation.SET_SENT_REQUEST_HEADERS, { 'x-some-header': 'some_value' });
     await Vue.nextTick();
     const component = shallowMount(RequestHeaders, { store });
     const headersElement = component.find('pre#request-headers');

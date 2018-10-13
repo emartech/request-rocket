@@ -76,7 +76,7 @@ describe('actions', () => {
     });
     it('should store the actual request headers in the store', () => {
       store.dispatch(Action.receiveResponse, { requestHeaders: { 'x-my-header': 'some_value' } });
-      expect(store.state.requestHeaders).to.eql({ 'x-my-header': 'some_value' });
+      expect(store.state.sentRequestHeaders).to.eql({ 'x-my-header': 'some_value' });
     });
   });
   describe('selectAuthType', () => {

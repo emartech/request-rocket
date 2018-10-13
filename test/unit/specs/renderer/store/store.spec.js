@@ -78,10 +78,10 @@ describe('Store', () => {
         expect(store.state.response).to.eql({ body: '{}' });
       });
     });
-    describe('UPDATE_REQUEST_HEADERS', () => {
-      it('should set the request.sentHeaders object', () => {
-        store.commit(Mutation.UPDATE_REQUEST_HEADERS, { accept: '*/*' });
-        expect(store.state.requestHeaders).to.eql({ accept: '*/*' });
+    describe('SET_SENT_REQUEST_HEADERS', () => {
+      it('should set the actual headers of the dispatched request', () => {
+        store.commit(Mutation.SET_SENT_REQUEST_HEADERS, { accept: '*/*' });
+        expect(store.state.sentRequestHeaders).to.eql({ accept: '*/*' });
       });
     });
     describe('SELECT_AUTH_TYPE', () => {

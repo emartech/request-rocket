@@ -18,7 +18,7 @@ export default {
   },
   [Action.receiveResponse]({ commit }, response) {
     commit(Mutation.UPDATE_RESPONSE, response.response);
-    commit(Mutation.UPDATE_REQUEST_HEADERS, response.requestHeaders);
+    commit(Mutation.SET_SENT_REQUEST_HEADERS, response.requestHeaders);
   },
   [Action.selectAuthType]({ commit, state }, selectedType) {
     const selected = state.auth.types.find(auth => auth.id === selectedType);

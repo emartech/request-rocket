@@ -1,7 +1,7 @@
 <template>
   <div>
     <h6>Request headers</h6>
-    <pre id="request-headers">{{ requestHeaders }}</pre>
+    <pre id="request-headers">{{ sentRequestHeaders }}</pre>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'RequestHeaders',
   computed: {
-    ...mapState(['requestHeaders'])
+    ...mapState(['sentRequestHeaders'])
   }
 };
 </script>

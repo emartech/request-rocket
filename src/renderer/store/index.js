@@ -29,15 +29,15 @@ export default function() {
         body: ''
       },
       response: {},
-      requestHeaders: null
+      sentRequestHeaders: null
     },
     getters: Getters,
     mutations: {
       [Mutation.UPDATE_URL](state, url) {
         state.request.url = url;
       },
-      [Mutation.UPDATE_REQUEST_HEADERS](state, requestHeaders) {
-        state.requestHeaders = requestHeaders;
+      [Mutation.SET_SENT_REQUEST_HEADERS](state, requestHeaders) {
+        state.sentRequestHeaders = requestHeaders;
       },
       [Mutation.UPDATE_RESPONSE](state, response) {
         state.response = response;
