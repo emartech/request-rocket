@@ -45,7 +45,7 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('send-request', async (event, args) => {
+ipcMain.on(Channels.SEND_REQUEST, async (event, args) => {
   try {
     const axiosClient = axios.create({
       transformResponse: response => response,

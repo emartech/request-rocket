@@ -1,5 +1,5 @@
 export default {
-  SEND_REUEST: 'send-request',
+  SEND_REQUEST: 'send-request',
   RECEIVE_RESPONSE: 'receive-response',
   UNEXPECTED_ERROR: 'unexpected-exception'
 };
