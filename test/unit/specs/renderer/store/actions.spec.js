@@ -36,26 +36,27 @@ describe('actions', () => {
       sinon.restore();
     });
 
-    it('should send event to the backend with correct payload', () => {
-      const selectedAuthType = { id: 'wsse', label: 'WSSE' };
-      const authParams = { key: 'wssekey', secret: 'wssesecret' };
-      const url = 'https://request.url';
+    it('should send the request URL', () => {
+      store.commit(Mutation.UPDATE_URL, 'https://request.url');
 
-      store.commit(Mutation.UPDATE_URL, url);
-      store.commit(Mutation.SELECT_AUTH_TYPE, selectedAuthType);
-      store.commit(Mutation.SET_AUTH_PARAMS, authParams);
       store.dispatch(Action.sendRequest);
 
-      expect(ipcSpy.called).to.equal(true);
-      const channel = ipcSpy.lastCall.args[0];
-      const payload = ipcSpy.lastCall.args[1];
-      expect(channel).to.equal('send-request');
-      expect(payload).to.include({ url });
-      expect(payload).to.include({ authType: selectedAuthType.id });
-      expect(payload).to.include({ authParams });
+      expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'https://request.url'));
+    });
+    it('should send the selected authentication with the belonging params', () => {
+      const selectedAuthType = { id: 'wsse', label: 'WSSE' };
+      const authParams = { key: 'wssekey', secret: 'wssesecret' };
+
+      store.commit(Mutation.SELECT_AUTH_TYPE, selectedAuthType);
+      store.commit(Mutation.SET_AUTH_PARAMS, authParams);
+
+      store.dispatch(Action.sendRequest);
+
+      expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ authType: selectedAuthType.id, authParams }));
     });
     it('should send the request body', () => {
       store.commit(Mutation.SET_REQUEST_BODY, '{"foo": "bar"}');
+
       store.dispatch(Action.sendRequest);
 
       expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('body', '{"foo": "bar"}'));
