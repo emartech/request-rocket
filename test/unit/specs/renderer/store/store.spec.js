@@ -104,12 +104,18 @@ describe('Store', () => {
         expect(store.getters.authParams).to.eql(wsseParams);
       });
     });
-
     describe('UPDATE_NETWORK_STATUS', function() {
       it('should set network status property', () => {
         const networkStatus = 'online';
         store.commit(Mutation.UPDATE_NETWORK_STATUS, networkStatus);
         expect(store.state.networkStatus).to.eq(networkStatus);
+      });
+    });
+    describe('SET_REQUEST_BODY', function() {
+      it('should set the body on the request object', () => {
+        const updatedBody = 'new body content';
+        store.commit(Mutation.SET_REQUEST_BODY, updatedBody);
+        expect(store.state.request.body).to.eq(updatedBody);
       });
     });
   });

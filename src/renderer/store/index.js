@@ -53,6 +53,9 @@ export default function() {
       },
       [Mutation.SELECT_HTTP_METHOD](state, httpMethod) {
         state.request.method = httpMethod;
+      },
+      [Mutation.SET_REQUEST_BODY](state, body) {
+        state.request.body = body;
       }
     },
     actions: Actions
