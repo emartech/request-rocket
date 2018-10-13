@@ -6,6 +6,7 @@ import App from './app';
 import router from './router';
 import createStore from './store';
 import Action from './store/action-types';
+import Channels from '../common/ipc-channels';
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.http = Vue.prototype.$http = axios;
@@ -21,10 +22,10 @@ new Vue({
   template: '<App/>'
 }).$mount('#app');
 
-ipcRenderer.on('receive-response', (event, args) => {
+ipcRenderer.on(Channels.RECEIVE_RESPONSE, (event, args) => {
   store.dispatch(Action.receiveResponse, args);
 });
 
-ipcRenderer.on('unexpected-exception-thrown', (event, error) => {
+ipcRenderer.on(Channels.UNEXPECTED_ERROR, (event, error) => {
   alert(error.message);
 });
