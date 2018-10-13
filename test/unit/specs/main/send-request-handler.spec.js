@@ -41,14 +41,16 @@ describe('SendRequestHandler', () => {
       const url = 'http://anything.io';
       const authType = Auth.wsse;
       const authParams = { key: 'superkey', secret: 'supersecret' };
+      const body = '{}';
 
-      const request = Handler.createHttpRequest({ method, url, authType, authParams });
+      const request = Handler.createHttpRequest({ method, url, authType, authParams, body });
 
       expect(request).to.include({ url });
       expect(request).to.have.property('headers');
       expect(request).to.have.property('method');
       expect(request.method).to.eql(HttpMethod.POST);
       expect(request.headers).to.have.property('x-wsse');
+      expect(request).to.include({ data: body });
     });
   });
 
@@ -71,13 +73,15 @@ describe('SendRequestHandler', () => {
       await handler.sendHttpRequest({
         method: HttpMethod.GET,
         url: 'https://a.nice.url1',
-        headers: { 'x-wsse': 'signature' }
+        headers: { 'x-wsse': 'signature' },
+        data: ''
       });
 
       expect(httpStub).to.be.calledWithExactly({
         method: HttpMethod.GET,
         url: 'https://a.nice.url1',
-        headers: { 'x-wsse': 'signature' }
+        headers: { 'x-wsse': 'signature' },
+        data: ''
       });
     });
 
@@ -142,9 +146,10 @@ describe('SendRequestHandler', () => {
       const url = 'https://a.nice.url1';
       const authType = Auth.none;
       const authParams = {};
-      await handler.handle({ sender: ipcSenderSpy }, { method, url, authType, authParams });
+      const body = '{}';
+      await handler.handle({ sender: ipcSenderSpy }, { method, url, authType, authParams, body });
 
-      expect(httpStub).to.be.calledWithExactly({ method, url, headers: {} });
+      expect(httpStub).to.be.calledWithExactly({ method, url, headers: {}, data: body });
     });
 
     it('should send a wsse signed HTTP GET request to the url', async () => {
@@ -158,7 +163,8 @@ describe('SendRequestHandler', () => {
       const url = 'https://a.nice.url1';
       const authType = Auth.wsse;
       const authParams = { key: 'superkey', secret: 'supersecret' };
-      await handler.handle({ sender: ipcSenderSpy }, { method, url, authType, authParams });
+      const body = '{}';
+      await handler.handle({ sender: ipcSenderSpy }, { method, url, authType, authParams, body });
 
       expect(httpStub.called).to.equal(true);
       const requestOptions = httpStub.lastCall.args[0];
@@ -168,6 +174,8 @@ describe('SendRequestHandler', () => {
       expect(requestOptions.url).to.eql(url);
       expect(requestOptions).to.have.property('headers');
       expect(requestOptions.headers).to.have.property('x-wsse');
+      expect(requestOptions).to.have.property('data');
+      expect(requestOptions.data).to.eql(body);
     });
 
     it('should respond with the HTTP response body', async () => {

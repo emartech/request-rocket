@@ -5,10 +5,10 @@ export default class Handler {
     this.httpClient = httpClient;
   }
 
-  static createHttpRequest({ method, url, authType, authParams }) {
+  static createHttpRequest({ method, url, authType, authParams, body }) {
     const signer = createSigner(authType);
     const headers = signer(authParams);
-    return { method, url, headers };
+    return { method, url, headers, data: body };
   }
 
   static createIpcResponse(httpResponse) {
@@ -22,9 +22,9 @@ export default class Handler {
     };
   }
 
-  async sendHttpRequest({ method, url, headers }) {
+  async sendHttpRequest({ method, url, headers, data }) {
     try {
-      return await this.httpClient({ method, url, headers });
+      return await this.httpClient({ method, url, headers, data });
     } catch (error) {
       if (error.response) {
         return error.response;
