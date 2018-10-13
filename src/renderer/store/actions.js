@@ -9,6 +9,7 @@ export default {
   async [Action.sendRequest]({ state, getters }) {
     const payload = {
       url: state.request.url,
+      body: state.request.body,
       authType: getters.selectedAuthTypeId,
       authParams: getters.authParams
     };

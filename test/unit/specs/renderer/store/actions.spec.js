@@ -26,9 +26,17 @@ describe('actions', () => {
     });
   });
   describe('sendRequest', () => {
-    it('should send event to the backend with correct payload', () => {
-      const ipcSpy = sinon.spy(ipcRenderer, 'send');
+    let ipcSpy;
 
+    beforeEach(() => {
+      ipcSpy = sinon.spy(ipcRenderer, 'send');
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should send event to the backend with correct payload', () => {
       const selectedAuthType = { id: 'wsse', label: 'WSSE' };
       const authParams = { key: 'wssekey', secret: 'wssesecret' };
       const url = 'https://request.url';
@@ -45,6 +53,12 @@ describe('actions', () => {
       expect(payload).to.include({ url });
       expect(payload).to.include({ authType: selectedAuthType.id });
       expect(payload).to.include({ authParams });
+    });
+    it('should send the request body', () => {
+      store.commit(Mutation.SET_REQUEST_BODY, '{"foo": "bar"}');
+      store.dispatch(Action.sendRequest);
+
+      expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('body', '{"foo": "bar"}'));
     });
   });
   describe('receiveResponse', () => {
