@@ -23,9 +23,7 @@ export default function() {
         httpMethodOptions,
         method: HttpMethod.GET,
         url: '',
-        headers: {
-          'content-type': 'application/json'
-        },
+        headers: [{ name: 'content-type', value: 'application/json' }],
         body: ''
       },
       response: {},

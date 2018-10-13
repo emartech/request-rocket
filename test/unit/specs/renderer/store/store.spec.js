@@ -49,11 +49,8 @@ describe('Store', () => {
       it('should have url property as string value', () => {
         expect(store.state.request.url).to.eql('');
       });
-      it('should have headers property as an object', () => {
-        expect(typeof store.state.request.headers).to.eql('object');
-      });
       it('should have content-type header property as a string', () => {
-        expect(store.state.request.headers['content-type']).to.eql('application/json');
+        expect(store.state.request.headers).to.eql([{ name: 'content-type', value: 'application/json' }]);
       });
       it('should have an empty request body by default', () => {
         expect(store.state.request.body).to.eql('');
