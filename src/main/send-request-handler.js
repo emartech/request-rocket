@@ -1,19 +1,14 @@
 import createSigner from './signer/signer-factory';
-import HttpMethod from '../common/method-types';
 
 export default class Handler {
   constructor(httpClient) {
     this.httpClient = httpClient;
   }
 
-  static createHttpRequest({ url, authType, authParams }) {
+  static createHttpRequest({ method, url, authType, authParams }) {
     const signer = createSigner(authType);
     const headers = signer(authParams);
-    return {
-      method: HttpMethod.GET,
-      url,
-      headers
-    };
+    return { method, url, headers };
   }
 
   static createIpcResponse(httpResponse) {

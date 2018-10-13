@@ -37,16 +37,17 @@ describe('SendRequestHandler', () => {
 
   describe('createHttpRequest', () => {
     it('should return all the information needed to send the request', () => {
+      const method = HttpMethod.POST;
       const url = 'http://anything.io';
       const authType = Auth.wsse;
       const authParams = { key: 'superkey', secret: 'supersecret' };
 
-      const request = Handler.createHttpRequest({ url, authType, authParams });
+      const request = Handler.createHttpRequest({ method, url, authType, authParams });
 
       expect(request).to.include({ url });
       expect(request).to.have.property('headers');
       expect(request).to.have.property('method');
-      expect(request.method).to.eql(HttpMethod.GET);
+      expect(request.method).to.eql(HttpMethod.POST);
       expect(request.headers).to.have.property('x-wsse');
     });
   });
@@ -137,12 +138,13 @@ describe('SendRequestHandler', () => {
       const httpStub = sinon.stub().resolves(response);
 
       const handler = new Handler(httpStub);
+      const method = HttpMethod.GET;
       const url = 'https://a.nice.url1';
       const authType = Auth.none;
       const authParams = {};
-      await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
+      await handler.handle({ sender: ipcSenderSpy }, { method, url, authType, authParams });
 
-      expect(httpStub).to.be.calledWithExactly({ method: HttpMethod.GET, url, headers: {} });
+      expect(httpStub).to.be.calledWithExactly({ method, url, headers: {} });
     });
 
     it('should send a wsse signed HTTP GET request to the url', async () => {
@@ -152,10 +154,11 @@ describe('SendRequestHandler', () => {
       const httpStub = sinon.stub().resolves(response);
 
       const handler = new Handler(httpStub);
+      const method = HttpMethod.GET;
       const url = 'https://a.nice.url1';
       const authType = Auth.wsse;
       const authParams = { key: 'superkey', secret: 'supersecret' };
-      await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
+      await handler.handle({ sender: ipcSenderSpy }, { method, url, authType, authParams });
 
       expect(httpStub.called).to.equal(true);
       const requestOptions = httpStub.lastCall.args[0];
