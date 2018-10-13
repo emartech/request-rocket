@@ -1,8 +1,6 @@
 import createSigner from './signer/signer-factory';
 
 export default class Handler {
-  httpClient;
-
   constructor(httpClient) {
     this.httpClient = httpClient;
   }
