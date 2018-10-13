@@ -1,10 +1,9 @@
 <template>
   <div>
     <request-headers/>
-    <h6>Response Body</h6>
-    <codemirror
-      :options="cmOptions"
-      :value="response.body" />
+    <code-editor
+      :code="beautifyBody(response.body)"
+      :type="responseType"/>
     <response-headers/>
     <h6>Status Code</h6>
     <span id="status-code">{{ response.status }}</span>
@@ -12,27 +11,31 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { codemirror } from 'vue-codemirror';
-import 'codemirror/lib/codemirror.css';
+import { mapState, mapGetters } from 'vuex';
+import CodeEditor from './code-editor';
 import ResponseHeaders from './response-headers';
 import RequestHeaders from './request-headers';
 
 export default {
   name: 'ResponseInspector',
-  components: { codemirror, ResponseHeaders, RequestHeaders },
-  data() {
-    return {
-      cmOptions: {
-        tabSize: 2,
-        mode: 'application/json',
-        readOnly: true,
-        lineNumbers: true
-      }
-    };
-  },
+  components: { CodeEditor, ResponseHeaders, RequestHeaders },
   computed: {
-    ...mapState(['response', 'requestHeaders'])
+    ...mapState(['response', 'requestHeaders']),
+    ...mapGetters(['responseType'])
+  },
+  methods: {
+    beautifyBody() {
+      if (this.responseType === 'application/json') {
+        let body;
+        try {
+          body = JSON.parse(this.response.body);
+        } catch (error) {
+          return this.response.body;
+        }
+        return JSON.stringify(body, null, 2);
+      }
+      return this.response.body;
+    }
   }
 };
 </script>

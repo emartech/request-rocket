@@ -94,7 +94,7 @@ describe('SendRequestHandler', () => {
       });
     });
 
-    describe('when no response was received', () => {
+    describe('when unexpected error occurred', () => {
       it('should throw error', async () => {
         const errorResponse = { message: 'unexpected error' };
         const httpStub = { get: sinon.stub().rejects(errorResponse) };
@@ -106,6 +106,22 @@ describe('SendRequestHandler', () => {
           await handler.sendHttpRequest({ url, headers });
         } catch (error) {
           expect(error.message).to.eql('Unexpected error occurred.');
+        }
+      });
+    });
+
+    describe('when timeout exceeded', () => {
+      it('should throw error', async () => {
+        const errorResponse = { code: 'ECONNABORTED', message: 'timeout of 60000ms exceeded' };
+        const httpStub = { get: sinon.stub().rejects(errorResponse) };
+
+        const handler = new Handler(httpStub);
+        const url = 'https://a.nice.url2';
+        const headers = { 'x-wsse': 'signature' };
+        try {
+          await handler.sendHttpRequest({ url, headers });
+        } catch (error) {
+          expect(error.message).to.eql('timeout of 60000ms exceeded');
         }
       });
     });

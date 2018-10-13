@@ -9,6 +9,8 @@ export default {
   async [Action.sendRequest]({ state, getters }) {
     const payload = {
       url: state.request.url,
+      method: state.request.method,
+      body: state.request.body,
       authType: getters.selectedAuthTypeId,
       authParams: getters.authParams
     };
@@ -31,5 +33,8 @@ export default {
   },
   [Action.setNetworkStatus]({ commit }, networkStatus) {
     commit(Mutation.UPDATE_NETWORK_STATUS, networkStatus);
+  },
+  [Action.selectHttpMethod]({ commit }, httpMethod) {
+    commit(Mutation.SELECT_HTTP_METHOD, httpMethod);
   }
 };

@@ -2,8 +2,10 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Mutation from './mutation-types';
 import AuthOptions from './auth-options';
+import httpMethodOptions from './method-options';
 import Actions from './actions';
 import Getters from './getters';
+import HttpMethod from '../../common/method-types';
 
 Vue.use(Vuex);
 
@@ -18,7 +20,13 @@ export default function() {
         params: {}
       },
       request: {
-        url: ''
+        httpMethodOptions,
+        method: HttpMethod.GET,
+        url: '',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: ''
       },
       response: {},
       requestHeaders: null
@@ -42,6 +50,12 @@ export default function() {
       },
       [Mutation.UPDATE_NETWORK_STATUS](state, networkStatus) {
         state.networkStatus = networkStatus;
+      },
+      [Mutation.SELECT_HTTP_METHOD](state, httpMethod) {
+        state.request.method = httpMethod;
+      },
+      [Mutation.SET_REQUEST_BODY](state, body) {
+        state.request.body = body;
       }
     },
     actions: Actions

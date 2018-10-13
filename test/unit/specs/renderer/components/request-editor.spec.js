@@ -7,6 +7,7 @@ import createStore from '@/store';
 import Action from '@/store/action-types';
 import Mutation from '@/store/mutation-types';
 import Getters from '../../../../../src/renderer/store/getters';
+import HttpMethod from '../../../../../src/common/method-types';
 
 describe('RequestEditor.vue', () => {
   let store;
@@ -89,5 +90,23 @@ describe('RequestEditor.vue', () => {
     const component = shallowMount(RequestEditor, { store });
 
     expect(component.find({ name: 'AuthEditor' }).exists()).to.eql(true);
+  });
+
+  it('should render selector for http method options', () => {
+    const component = shallowMount(RequestEditor, { store });
+    const selectElement = component.find('select.http-method');
+
+    store.state.request.httpMethodOptions.forEach(option => {
+      expect(selectElement.find(`option[value="${option.id}"]`).text()).to.equal(option.label);
+    });
+  });
+
+  it('should set the selected http method on the store', () => {
+    const component = shallowMount(RequestEditor, { store });
+    const select = component.find('select.http-method');
+    select.element.value = HttpMethod.POST;
+    select.trigger('input');
+
+    expect(store.state.request.method).to.equal(HttpMethod.POST);
   });
 });

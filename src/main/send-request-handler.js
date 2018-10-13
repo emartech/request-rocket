@@ -30,6 +30,8 @@ export default class Handler {
     } catch (error) {
       if (error.response) {
         return error.response;
+      } else if (error.code === 'ECONNABORTED') {
+        throw new Error(error.message);
       }
       throw new Error('Unexpected error occurred.');
     }

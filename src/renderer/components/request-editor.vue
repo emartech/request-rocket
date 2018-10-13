@@ -2,6 +2,17 @@
   <div class="e-box e-box-simple">
     <div class="e-grid e-grid-medium">
       <div class="e-cell e-cell-auto e-cell-medium">
+        <select
+          :value="method"
+          class="http-method"
+          @input="selectHttpMethod($event.target.value)">
+          <option
+            v-for="method in httpMethodOptions"
+            :value="method.id"
+            :key="method.id">{{ method.label }}</option>
+        </select>
+      </div>
+      <div class="e-cell e-cell-auto e-cell-medium">
         <input
           id="request-editor-url-field"
           :value="url"
@@ -35,11 +46,13 @@ export default {
   computed: {
     ...mapGetters(['isNetworkAvailable']),
     ...mapState({
-      url: state => state.request.url
+      url: state => state.request.url,
+      httpMethodOptions: state => state.request.httpMethodOptions,
+      method: state => state.request.method
     })
   },
   methods: {
-    ...mapActions([Action.sendRequest, Action.setUrl])
+    ...mapActions([Action.sendRequest, Action.setUrl, Action.selectHttpMethod])
   }
 };
 </script>
