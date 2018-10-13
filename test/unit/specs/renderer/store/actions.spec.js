@@ -54,6 +54,13 @@ describe('actions', () => {
 
       expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ authType: selectedAuthType.id, authParams }));
     });
+    it('should send the request method', () => {
+      store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
+
+      store.dispatch(Action.sendRequest);
+
+      expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('method', HttpMethod.POST));
+    });
     it('should send the request body', () => {
       store.commit(Mutation.SET_REQUEST_BODY, '{"foo": "bar"}');
 
