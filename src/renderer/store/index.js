@@ -25,7 +25,8 @@ export default function() {
         url: '',
         headers: {
           'content-type': 'application/json'
-        }
+        },
+        body: ''
       },
       response: {},
       requestHeaders: null

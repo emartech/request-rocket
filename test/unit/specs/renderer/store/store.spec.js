@@ -59,6 +59,9 @@ describe('Store', () => {
       it('should have content-type header property as a string', () => {
         expect(store.state.request.headers['content-type']).to.eql('application/json');
       });
+      it('should have an empty request body by default', () => {
+        expect(store.state.request.body).to.eql('');
+      });
     });
     describe('response', () => {
       it('should have empty object as initial value', () => {
