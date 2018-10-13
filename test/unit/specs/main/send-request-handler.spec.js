@@ -50,27 +50,26 @@ describe('SendRequestHandler', () => {
   describe('sendHttpRequest', () => {
     it('should return the http response', async () => {
       const httpResponse = { data: 'data' };
-      const httpStub = { get: sinon.stub().resolves(httpResponse) };
+      const httpStub = sinon.stub().resolves(httpResponse);
       const handler = new Handler(httpStub);
 
-      const url = 'https://a.nice.url1';
-      const headers = {};
-
-      const response = await handler.sendHttpRequest({ url, headers });
+      const response = await handler.sendHttpRequest({ url: 'https://a.nice.url1', headers: {} });
       expect(response).to.eql(httpResponse);
     });
 
-    it('should send the prepared request', () => {
+    it('should send the prepared request', async () => {
       const httpResponse = { data: 'data' };
-      const httpStub = { get: sinon.stub().resolves(httpResponse) };
+      const httpStub = sinon.stub().resolves(httpResponse);
 
       const handler = new Handler(httpStub);
-      const url = 'https://a.nice.url1';
 
-      const headers = { 'x-wsse': 'signature' };
-      handler.sendHttpRequest({ url, headers });
+      await handler.sendHttpRequest({ url: 'https://a.nice.url1', headers: { 'x-wsse': 'signature' } });
 
-      expect(httpStub.get).to.be.calledWithExactly(url, { headers });
+      expect(httpStub).to.be.calledWithExactly({
+        method: 'get',
+        url: 'https://a.nice.url1',
+        headers: { 'x-wsse': 'signature' }
+      });
     });
 
     describe('when the server responded with an error', () => {
@@ -81,14 +80,14 @@ describe('SendRequestHandler', () => {
             connection: 'close'
           }
         };
-        const errorResponse = { response: httpResponse };
-        const httpStub = { get: sinon.stub().rejects(errorResponse) };
+
+        const httpStub = sinon.stub().rejects({ response: httpResponse });
 
         const handler = new Handler(httpStub);
-        const url = 'https://a.nice.url2';
-        const headers = { 'x-wsse': 'signature' };
-
-        const response = await handler.sendHttpRequest({ url, headers });
+        const response = await handler.sendHttpRequest({
+          url: 'https://a.nice.url2',
+          headers: { 'x-wsse': 'signature' }
+        });
 
         expect(response).to.eql(httpResponse);
       });
@@ -113,7 +112,7 @@ describe('SendRequestHandler', () => {
     describe('when timeout exceeded', () => {
       it('should throw error', async () => {
         const errorResponse = { code: 'ECONNABORTED', message: 'timeout of 60000ms exceeded' };
-        const httpStub = { get: sinon.stub().rejects(errorResponse) };
+        const httpStub = sinon.stub().rejects(errorResponse);
 
         const handler = new Handler(httpStub);
         const url = 'https://a.nice.url2';
@@ -132,7 +131,7 @@ describe('SendRequestHandler', () => {
       const ipcSenderSpy = { send: sinon.spy() };
 
       const response = { data: 'data', request: { getHeaders: () => ({}) } };
-      const httpStub = { get: sinon.stub().resolves(response) };
+      const httpStub = sinon.stub().resolves(response);
 
       const handler = new Handler(httpStub);
       const url = 'https://a.nice.url1';
@@ -140,14 +139,14 @@ describe('SendRequestHandler', () => {
       const authParams = {};
       await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
 
-      expect(httpStub.get).to.be.calledWithExactly(url, { headers: {} });
+      expect(httpStub).to.be.calledWithExactly({ method: 'get', url, headers: {} });
     });
 
     it('should send a wsse signed HTTP GET request to the url', async () => {
       const ipcSenderSpy = { send: sinon.spy() };
 
       const response = { data: 'data', request: { getHeaders: () => ({}) } };
-      const httpStub = { get: sinon.stub().resolves(response) };
+      const httpStub = sinon.stub().resolves(response);
 
       const handler = new Handler(httpStub);
       const url = 'https://a.nice.url1';
@@ -155,10 +154,12 @@ describe('SendRequestHandler', () => {
       const authParams = { key: 'superkey', secret: 'supersecret' };
       await handler.handle({ sender: ipcSenderSpy }, { url, authType, authParams });
 
-      expect(httpStub.get.called).to.equal(true);
-      const actualUrl = httpStub.get.lastCall.args[0];
-      const requestOptions = httpStub.get.lastCall.args[1];
-      expect(actualUrl).to.eql(url);
+      expect(httpStub.called).to.equal(true);
+      const requestOptions = httpStub.lastCall.args[0];
+      expect(requestOptions).to.have.property('method');
+      expect(requestOptions.method).to.eql('get');
+      expect(requestOptions).to.have.property('url');
+      expect(requestOptions.url).to.eql(url);
       expect(requestOptions).to.have.property('headers');
       expect(requestOptions.headers).to.have.property('x-wsse');
     });
@@ -175,7 +176,7 @@ describe('SendRequestHandler', () => {
         request: { getHeaders: () => ({}) }
       };
 
-      const httpStub = { get: sinon.stub().resolves(httpResponse) };
+      const httpStub = sinon.stub().resolves(httpResponse);
 
       const handler = new Handler(httpStub);
       await handler.handle({ sender: ipcSenderSpy }, { url: 'https://a.nice.url2' });

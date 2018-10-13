@@ -24,7 +24,7 @@ export default class Handler {
 
   async sendHttpRequest({ url, headers }) {
     try {
-      return await this.httpClient.get(url, { headers });
+      return await this.httpClient({ method: 'get', url, headers });
     } catch (error) {
       if (error.response) {
         return error.response;
