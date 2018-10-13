@@ -42,8 +42,11 @@ describe('SendRequestHandler', () => {
       const authParams = { key: 'superkey', secret: 'supersecret' };
 
       const request = Handler.createHttpRequest({ url, authType, authParams });
+
       expect(request).to.include({ url });
       expect(request).to.have.property('headers');
+      expect(request).to.have.property('method');
+      expect(request.method).to.eql(HttpMethod.GET);
       expect(request.headers).to.have.property('x-wsse');
     });
   });
@@ -54,7 +57,7 @@ describe('SendRequestHandler', () => {
       const httpStub = sinon.stub().resolves(httpResponse);
       const handler = new Handler(httpStub);
 
-      const response = await handler.sendHttpRequest({ url: 'https://a.nice.url1', headers: {} });
+      const response = await handler.sendHttpRequest({});
       expect(response).to.eql(httpResponse);
     });
 
@@ -64,7 +67,11 @@ describe('SendRequestHandler', () => {
 
       const handler = new Handler(httpStub);
 
-      await handler.sendHttpRequest({ url: 'https://a.nice.url1', headers: { 'x-wsse': 'signature' } });
+      await handler.sendHttpRequest({
+        method: HttpMethod.GET,
+        url: 'https://a.nice.url1',
+        headers: { 'x-wsse': 'signature' }
+      });
 
       expect(httpStub).to.be.calledWithExactly({
         method: HttpMethod.GET,
@@ -85,10 +92,7 @@ describe('SendRequestHandler', () => {
         const httpStub = sinon.stub().rejects({ response: httpResponse });
 
         const handler = new Handler(httpStub);
-        const response = await handler.sendHttpRequest({
-          url: 'https://a.nice.url2',
-          headers: { 'x-wsse': 'signature' }
-        });
+        const response = await handler.sendHttpRequest({});
 
         expect(response).to.eql(httpResponse);
       });
@@ -100,10 +104,9 @@ describe('SendRequestHandler', () => {
         const httpStub = { get: sinon.stub().rejects(errorResponse) };
 
         const handler = new Handler(httpStub);
-        const url = 'https://a.nice.url2';
-        const headers = { 'x-wsse': 'signature' };
+
         try {
-          await handler.sendHttpRequest({ url, headers });
+          await handler.sendHttpRequest({});
         } catch (error) {
           expect(error.message).to.eql('Unexpected error occurred.');
         }
@@ -116,10 +119,9 @@ describe('SendRequestHandler', () => {
         const httpStub = sinon.stub().rejects(errorResponse);
 
         const handler = new Handler(httpStub);
-        const url = 'https://a.nice.url2';
-        const headers = { 'x-wsse': 'signature' };
+
         try {
-          await handler.sendHttpRequest({ url, headers });
+          await handler.sendHttpRequest({});
         } catch (error) {
           expect(error.message).to.eql('timeout of 60000ms exceeded');
         }

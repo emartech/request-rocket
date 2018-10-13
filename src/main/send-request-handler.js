@@ -9,7 +9,11 @@ export default class Handler {
   static createHttpRequest({ url, authType, authParams }) {
     const signer = createSigner(authType);
     const headers = signer(authParams);
-    return { url, headers };
+    return {
+      method: HttpMethod.GET,
+      url,
+      headers
+    };
   }
 
   static createIpcResponse(httpResponse) {
@@ -23,9 +27,9 @@ export default class Handler {
     };
   }
 
-  async sendHttpRequest({ url, headers }) {
+  async sendHttpRequest({ method, url, headers }) {
     try {
-      return await this.httpClient({ method: HttpMethod.GET, url, headers });
+      return await this.httpClient({ method, url, headers });
     } catch (error) {
       if (error.response) {
         return error.response;
