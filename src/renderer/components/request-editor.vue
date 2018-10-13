@@ -1,7 +1,7 @@
 <template>
   <div>
     <select
-      :value="selectedHttpMethod"
+      :value="method"
       class="http-method"
       @input="selectHttpMethod($event.target.value)">
       <option
@@ -36,7 +36,7 @@ export default {
     ...mapState({
       url: state => state.request.url,
       httpMethodOptions: state => state.request.httpMethodOptions,
-      selectedHttpMethod: state => state.request.selectedHttpMethod
+      method: state => state.request.method
     })
   },
   methods: {

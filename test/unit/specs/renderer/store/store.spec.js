@@ -33,9 +33,9 @@ describe('Store', () => {
         expect(store.state.request.httpMethodOptions.length).to.eql(Object.keys(HttpMethod).length);
       });
     });
-    describe('request selectedHttpMethod', () => {
+    describe('request method', () => {
       it('should have GET http method as initial value', () => {
-        expect(store.state.request.selectedHttpMethod).to.eql(HttpMethod.GET);
+        expect(store.state.request.method).to.eql(HttpMethod.GET);
       });
     });
     describe('selected auth type', () => {
@@ -95,7 +95,7 @@ describe('Store', () => {
     describe('SELECT_HTTP_METHOD', () => {
       it('should set the selected http method', () => {
         store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
-        expect(store.state.request.selectedHttpMethod).to.eql(HttpMethod.POST);
+        expect(store.state.request.method).to.eql(HttpMethod.POST);
       });
     });
     describe('SET_AUTH_PARAMS', () => {

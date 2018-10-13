@@ -107,6 +107,6 @@ describe('RequestEditor.vue', () => {
     select.element.value = HttpMethod.POST;
     select.trigger('input');
 
-    expect(store.state.request.selectedHttpMethod).to.equal(HttpMethod.POST);
+    expect(store.state.request.method).to.equal(HttpMethod.POST);
   });
 });

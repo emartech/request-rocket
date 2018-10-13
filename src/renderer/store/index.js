@@ -21,7 +21,7 @@ export default function() {
       },
       request: {
         httpMethodOptions,
-        selectedHttpMethod: HttpMethod.GET,
+        method: HttpMethod.GET,
         url: '',
         headers: {
           'content-type': 'application/json'
@@ -51,7 +51,7 @@ export default function() {
         state.networkStatus = networkStatus;
       },
       [Mutation.SELECT_HTTP_METHOD](state, httpMethod) {
-        state.request.selectedHttpMethod = httpMethod;
+        state.request.method = httpMethod;
       }
     },
     actions: Actions
