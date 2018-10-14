@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { app, BrowserWindow, ipcMain } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
-import Handler from './send-request-handler';
 import Channels from '../common/ipc-channels';
+import RequestDispatcher from './request-dispatcher';
 
 /**
  * Set `__static` path to static files in production
@@ -47,17 +46,10 @@ app.on('activate', () => {
 
 ipcMain.on(Channels.SEND_REQUEST, async (event, args) => {
   try {
-    const axiosClient = axios.create({
-      transformResponse: response => response,
-      timeout: 60000
-    });
-    const requestHandler = new Handler(axiosClient);
-    await requestHandler.handle(event, args);
+    const response = await RequestDispatcher.handle(args);
+    event.sender.send(Channels.RECEIVE_RESPONSE, response);
   } catch (error) {
-    event.sender.send(Channels.UNEXPECTED_ERROR, {
-      message: error.message,
-      stack: error.stack
-    });
+    event.sender.send(Channels.UNEXPECTED_ERROR, error);
   }
 });
 
