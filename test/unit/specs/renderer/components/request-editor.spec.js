@@ -109,4 +109,18 @@ describe('RequestEditor.vue', () => {
 
     expect(store.state.request.method).to.equal(HttpMethod.POST);
   });
+
+  it('should contain a request body editor', () => {
+    const component = shallowMount(RequestEditor, { store });
+
+    expect(component.find({ name: 'CodeEditor' }).exists()).to.eql(true);
+  });
+
+  it('should set request body on the store', () => {
+    const component = shallowMount(RequestEditor, { store });
+    const codeEditor = component.find({ name: 'CodeEditor' });
+    codeEditor.vm.$emit('input', '{"foo":"bar}');
+
+    expect(store.state.request.body).to.equal('{"foo":"bar}');
+  });
 });

@@ -20,6 +20,9 @@
       type="button"
       @click="sendRequest">Send</button>
     <auth-editor/>
+    <h6>Request body</h6>
+    <code-editor
+      @input="setRequestBody"/>
   </div>
 </template>
 
@@ -27,10 +30,11 @@
 import { mapActions, mapState, mapGetters } from 'vuex';
 import Action from '../store/action-types';
 import AuthEditor from './auth-editor';
+import CodeEditor from './code-editor';
 
 export default {
   name: 'RequestEditor',
-  components: { AuthEditor },
+  components: { CodeEditor, AuthEditor },
   computed: {
     ...mapGetters(['isNetworkAvailable']),
     ...mapState({
@@ -40,7 +44,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions([Action.sendRequest, Action.setUrl, Action.selectHttpMethod])
+    ...mapActions([Action.sendRequest, Action.setUrl, Action.selectHttpMethod, Action.setRequestBody])
   }
 };
 </script>
