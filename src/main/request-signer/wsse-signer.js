@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js';
+import { clone } from 'ramda';
 
 function randomNonce() {
   const hex = CryptoJS.lib.WordArray.random(16).toString(CryptoJS.enc.Hex);
@@ -31,7 +32,7 @@ export default class WsseSigner {
 
     const headerContent = composeHeader(this.key, digest, nonce, created);
 
-    const copyOfOriginalRequest = Object.assign({}, request);
+    const copyOfOriginalRequest = clone(request);
 
     copyOfOriginalRequest.headers['x-wsse'] = headerContent;
 

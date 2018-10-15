@@ -10,6 +10,14 @@ describe('WsseSigner', () => {
       });
       expect(signedRequest.headers).to.have.property('x-wsse');
     });
+    it('should not alter the original request', () => {
+      const signer = new WsseSigner({ key: 'some_key001', secret: '53cr3tp455w0rd' });
+      const request = {
+        headers: { 'x-some-header': 'some value' }
+      };
+      signer.signRequest(request);
+      expect(request.headers).to.not.have.property('x-wsse');
+    });
     it('should produce a header with the proper format', () => {
       const signer = new WsseSigner({ key: 'some_key001', secret: '53cr3tp455w0rd' });
       const signedRequest = signer.signRequest({
