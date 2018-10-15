@@ -37,5 +37,8 @@ export default {
   },
   [Action.selectHttpMethod]({ commit }, httpMethod) {
     commit(Mutation.SELECT_HTTP_METHOD, httpMethod);
+  },
+  [Action.setRequestBody]({ commit }, requestBody) {
+    commit(Mutation.SET_REQUEST_BODY, requestBody);
   }
 };

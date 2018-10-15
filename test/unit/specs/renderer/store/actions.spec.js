@@ -13,6 +13,10 @@ describe('actions', () => {
     store = createStore();
   });
 
+  afterEach(() => {
+    sinon.restore();
+  });
+
   describe('setNetworkStatus', () => {
     it('should update the state of the network status', () => {
       store.dispatch(Action.setNetworkStatus, 'offline');
@@ -30,10 +34,6 @@ describe('actions', () => {
 
     beforeEach(() => {
       ipcSpy = sinon.spy(ipcRenderer, 'send');
-    });
-
-    afterEach(() => {
-      sinon.restore();
     });
 
     it('should send the request URL', () => {
@@ -115,6 +115,14 @@ describe('actions', () => {
       const wsseParams = { key: null, secret: null };
       Actions[Action.setAuthParams]({ commit }, wsseParams);
       expect(commit.calledWith(Mutation.SET_AUTH_PARAMS, wsseParams)).eql(true);
+    });
+  });
+  describe('setRequestBody', () => {
+    it('should modify the request body', () => {
+      const commit = sinon.spy();
+      const requestBody = '{"foo":"bar"}';
+      Actions[Action.setRequestBody]({ commit }, requestBody);
+      expect(commit).to.be.calledWithExactly(Mutation.SET_REQUEST_BODY, requestBody);
     });
   });
 });

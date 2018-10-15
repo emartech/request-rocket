@@ -6,5 +6,6 @@ export default {
   setAuthParams: 'setAuthParams',
   requestSent: 'requestSent',
   setNetworkStatus: 'setNetworkStatus',
-  selectHttpMethod: 'selectHttpMethod'
+  selectHttpMethod: 'selectHttpMethod',
+  setRequestBody: 'setRequestBody'
 };
