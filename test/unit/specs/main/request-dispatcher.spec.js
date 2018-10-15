@@ -18,9 +18,8 @@ describe('RequestDispatcher', () => {
         authParams: { key: 'somekey001', secret: '53cr3t' }
       };
 
-      const axiosStub = sinon.stub();
-      sinon.stub(axios, 'create').returns(axiosStub);
-      axiosStub.resolves({
+      const axiosRequest = sinon.stub(axios.Axios.prototype, 'request');
+      axiosRequest.resolves({
         headers: { 'content-type': 'application/json' },
         data: '{}',
         status: 200,
