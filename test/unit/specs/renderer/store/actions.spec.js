@@ -92,21 +92,21 @@ describe('actions', () => {
       const commit = sinon.spy();
       const wsseAuthType = { id: 'wsse', label: 'WSSE' };
       Actions[Action.selectAuthType]({ commit, state: store.state }, wsseAuthType.id);
-      expect(commit.calledWith(Mutation.SELECT_AUTH_TYPE, wsseAuthType)).eql(true);
+      expect(commit).to.be.calledWithExactly(Mutation.SELECT_AUTH_TYPE, wsseAuthType);
     });
     it('should set auth params to their initial value', () => {
       const commit = sinon.spy();
       const wsseAuthType = { id: 'wsse', label: 'WSSE' };
       Actions[Action.selectAuthType]({ commit, state: store.state }, wsseAuthType.id);
-      expect(commit.calledWith(Mutation.SELECT_AUTH_TYPE, wsseAuthType)).eql(true);
-      expect(commit.calledWith(Mutation.SET_AUTH_PARAMS, {})).eql(true);
+      expect(commit).to.be.calledWithExactly(Mutation.SELECT_AUTH_TYPE, wsseAuthType);
+      expect(commit).to.be.calledWithExactly(Mutation.SET_AUTH_PARAMS, {});
     });
   });
   describe('selectHttpMethod', () => {
     it('should modify the selected http method of the state', () => {
       const commit = sinon.spy();
       Actions[Action.selectHttpMethod]({ commit }, HttpMethod.GET);
-      expect(commit.calledWith(Mutation.SELECT_HTTP_METHOD, HttpMethod.GET)).eql(true);
+      expect(commit).to.be.calledWithExactly(Mutation.SELECT_HTTP_METHOD, HttpMethod.GET);
     });
   });
   describe('setAuthParams', () => {
@@ -114,7 +114,7 @@ describe('actions', () => {
       const commit = sinon.spy();
       const wsseParams = { key: null, secret: null };
       Actions[Action.setAuthParams]({ commit }, wsseParams);
-      expect(commit.calledWith(Mutation.SET_AUTH_PARAMS, wsseParams)).eql(true);
+      expect(commit).to.be.calledWithExactly(Mutation.SET_AUTH_PARAMS, wsseParams);
     });
   });
   describe('setRequestBody', () => {
