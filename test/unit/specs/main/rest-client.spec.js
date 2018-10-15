@@ -57,5 +57,9 @@ describe('RestClient', () => {
         }
       });
     });
+    it('should have a user agent header by default', async () => {
+      const commonHeaders = subject.client.defaults.headers.common;
+      expect(commonHeaders).to.have.property('User-Agent', `RequestRocket/${process.env.npm_package_version}`);
+    });
   });
 });

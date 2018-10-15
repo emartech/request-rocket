@@ -4,7 +4,12 @@ export default class RestClient {
   constructor(timeoutInMilliseconds = 60000) {
     this.client = axios.create({
       transformResponse: response => response,
-      timeout: timeoutInMilliseconds
+      timeout: timeoutInMilliseconds,
+      headers: {
+        common: {
+          'User-Agent': 'RequestRocket/0.0.1'
+        }
+      }
     });
   }
 
