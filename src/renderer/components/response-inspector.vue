@@ -2,6 +2,7 @@
   <div>
     <request-headers/>
     <code-editor
+      :read-only="true"
       :code="beautifyBody(response.body)"
       :type="responseType"/>
     <response-headers/>

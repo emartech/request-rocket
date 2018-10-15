@@ -21,6 +21,10 @@ export default {
     type: {
       type: String,
       default: ''
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -28,7 +32,7 @@ export default {
       cmOptions: {
         tabSize: 2,
         mode: this.type,
-        readOnly: true,
+        readOnly: this.readOnly,
         lineNumbers: true
       }
     };

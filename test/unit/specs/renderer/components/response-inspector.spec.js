@@ -35,6 +35,12 @@ describe('ResponseInspector.vue', () => {
     expect(codemirrorComponent.props('type')).to.equal('text/plain');
   });
 
+  it('should render a codemirror component with read-only set to true', () => {
+    const component = shallowMount(ResponseInspector, { store });
+    const codemirrorComponent = component.find({ name: 'CodeEditor' });
+    expect(codemirrorComponent.props('readOnly')).to.equal(true);
+  });
+
   it('should render correct response status code', async () => {
     const ipcResponse = {
       body: '{"dummy":"content"}',
