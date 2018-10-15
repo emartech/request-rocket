@@ -1,3 +1,5 @@
+import HttpMethods from '../../common/method-types';
+
 export default {
   authTypes: state => state.auth.types,
   selectedAuthTypeId: state => state.auth.selected.id,
@@ -12,5 +14,6 @@ export default {
     }
 
     return 'application/json';
-  }
+  },
+  isRequestBodyEditAvailable: state => ![HttpMethods.GET, HttpMethods.HEAD].includes(state.request.method)
 };

@@ -20,9 +20,11 @@
       type="button"
       @click="sendRequest">Send</button>
     <auth-editor/>
-    <h6>Request body</h6>
-    <code-editor
-      @input="setRequestBody"/>
+    <div v-if="isRequestBodyEditAvailable">
+      <h6>Request body</h6>
+      <code-editor
+        @input="setRequestBody"/>
+    </div>
   </div>
 </template>
 
@@ -36,7 +38,7 @@ export default {
   name: 'RequestEditor',
   components: { CodeEditor, AuthEditor },
   computed: {
-    ...mapGetters(['isNetworkAvailable']),
+    ...mapGetters(['isNetworkAvailable', 'isRequestBodyEditAvailable']),
     ...mapState({
       url: state => state.request.url,
       httpMethodOptions: state => state.request.httpMethodOptions,

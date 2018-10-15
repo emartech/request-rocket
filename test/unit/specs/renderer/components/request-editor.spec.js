@@ -110,13 +110,25 @@ describe('RequestEditor.vue', () => {
     expect(store.state.request.method).to.equal(HttpMethod.POST);
   });
 
-  it('should contain a request body editor', () => {
+  it('should hide request body editor by default', () => {
     const component = shallowMount(RequestEditor, { store });
 
-    expect(component.find({ name: 'CodeEditor' }).exists()).to.eql(true);
+    expect(component.find({ name: 'CodeEditor' }).element).to.eql(undefined);
   });
 
-  it('should set request body on the store', () => {
+  it('should show request body editor when request method is POST', async () => {
+    store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
+    await Vue.nextTick();
+
+    const component = shallowMount(RequestEditor, { store });
+
+    expect(component.find({ name: 'CodeEditor' }).element).not.to.eql(undefined);
+  });
+
+  it('should set request body on the store', async () => {
+    store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
+    await Vue.nextTick();
+
     const component = shallowMount(RequestEditor, { store });
     const codeEditor = component.find({ name: 'CodeEditor' });
     codeEditor.vm.$emit('input', '{"foo":"bar}');
