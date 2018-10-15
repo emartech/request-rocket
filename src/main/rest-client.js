@@ -11,6 +11,9 @@ export default class RestClient {
         }
       }
     });
+    this.client.defaults.headers.post = {};
+    this.client.defaults.headers.put = {};
+    this.client.defaults.headers.patch = {};
   }
 
   async send(requestOptions) {

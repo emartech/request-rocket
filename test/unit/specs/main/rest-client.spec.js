@@ -61,5 +61,12 @@ describe('RestClient', () => {
       const commonHeaders = subject.client.defaults.headers.common;
       expect(commonHeaders).to.have.property('User-Agent', `RequestRocket/${process.env.npm_package_version}`);
     });
+    it('should not have any headers by default besides common', async () => {
+      Object.keys(subject.client.defaults.headers).forEach(method => {
+        if (method !== 'common') {
+          expect(subject.client.defaults.headers[method]).to.be.empty; // eslint-disable-line
+        }
+      });
+    });
   });
 });
