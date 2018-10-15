@@ -2,7 +2,8 @@
   <div>
     <codemirror
       :options="cmOptions"
-      :value="code" />
+      :value="code"
+      @input="onInput"/>
   </div>
 </template>
 
@@ -36,6 +37,11 @@ export default {
         lineNumbers: true
       }
     };
+  },
+  methods: {
+    onInput(value) {
+      this.$emit('input', value);
+    }
   }
 };
 </script>
