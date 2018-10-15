@@ -1,12 +1,8 @@
 export default {
-  transform(response) {
+  transform({ data, headers, status, request }) {
     return {
-      response: {
-        headers: response.headers,
-        body: response.data,
-        status: response.status
-      },
-      requestHeaders: response.request.getHeaders()
+      response: { body: data, headers, status },
+      requestHeaders: request.getHeaders()
     };
   }
 };
