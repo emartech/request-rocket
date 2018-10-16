@@ -46,7 +46,9 @@ describe('RequestEditor.vue', () => {
         const store = new Vuex.Store({
           state: {
             networkStatus: 'online',
-            request: {}
+            request: {
+              method: HttpMethod.GET
+            }
           },
           getters: Getters,
           actions: {
@@ -71,7 +73,9 @@ describe('RequestEditor.vue', () => {
         const store = new Vuex.Store({
           state: {
             networkStatus: 'offline',
-            request: {}
+            request: {
+              method: HttpMethod.GET
+            }
           },
           getters: Getters,
           actions: { [Action.sendRequest]: requestSender }

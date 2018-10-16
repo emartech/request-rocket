@@ -1,4 +1,4 @@
-import HttpMethods from '../../common/method-types';
+import HttpMethodOptions from './method-options';
 import Auth from '../../common/auth-types';
 
 export default {
@@ -14,5 +14,6 @@ export default {
 
     return 'application/json';
   },
-  isRequestBodyEditAvailable: state => ![HttpMethods.GET, HttpMethods.HEAD].includes(state.request.method)
+  isRequestBodyEditAvailable: state =>
+    HttpMethodOptions.find(option => option.id === state.request.method).isBodyAllowed
 };

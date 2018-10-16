@@ -3,30 +3,37 @@ import HttpMethod from '../../common/method-types';
 export default [
   {
     id: HttpMethod.GET,
-    label: 'GET'
+    label: 'GET',
+    isBodyAllowed: false
   },
   {
     id: HttpMethod.POST,
-    label: 'POST'
+    label: 'POST',
+    isBodyAllowed: true
   },
   {
     id: HttpMethod.PUT,
-    label: 'PUT'
+    label: 'PUT',
+    isBodyAllowed: true
   },
   {
     id: HttpMethod.PATCH,
-    label: 'PATCH'
+    label: 'PATCH',
+    isBodyAllowed: true
   },
   {
     id: HttpMethod.DELETE,
-    label: 'DELETE'
+    label: 'DELETE',
+    isBodyAllowed: true
   },
   {
     id: HttpMethod.OPTIONS,
-    label: 'OPTIONS'
+    label: 'OPTIONS',
+    isBodyAllowed: true
   },
   {
     id: HttpMethod.HEAD,
-    label: 'HEAD'
+    label: 'HEAD',
+    isBodyAllowed: false
   }
 ];
