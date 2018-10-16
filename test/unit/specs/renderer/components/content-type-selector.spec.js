@@ -28,7 +28,7 @@ describe('ContentTypeSelector.vue', () => {
     const component = shallowMount(ContentTypeSelector, { store });
     const selectElement = component.find('select#content-type');
     selectElement.element.value = ContentType.json;
-    selectElement.trigger('input');
+    selectElement.trigger('change');
 
     expect(store.state.request.contentType).to.equal(ContentType.json);
   });

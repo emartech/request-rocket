@@ -1,14 +1,17 @@
 <template>
   <div>
-    <select
-      id="content-type"
-      :value="contentType"
-      @input="selectContentType($event.target.value)">
-      <option
-        v-for="option in contentTypeOptions"
-        :value="option.id"
-        :key="option.id">{{ option.label }}</option>
-    </select>
+    <e-select>
+      <select
+        id="content-type"
+        :value="contentType"
+        class="e-select e-select-inline"
+        @change="selectContentType($event.target.value)">
+        <option
+          v-for="option in contentTypeOptions"
+          :value="option.id"
+          :key="option.id">{{ option.label }}</option>
+      </select>
+    </e-select>
   </div>
 </template>
 

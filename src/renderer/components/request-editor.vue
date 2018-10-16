@@ -35,9 +35,7 @@
       <auth-editor/>
     </div>
     <div v-if="isRequestBodyEditAvailable">
-      <h6>Content type</h6>
       <content-type-selector/>
-      <h6>Request body</h6>
       <code-editor
         :code="body"
         :type="contentType"
