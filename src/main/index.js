@@ -49,7 +49,7 @@ ipcMain.on(Channels.SEND_REQUEST, async (event, args) => {
     const response = await RequestDispatcher.handle(args);
     event.sender.send(Channels.RECEIVE_RESPONSE, response);
   } catch (error) {
-    event.sender.send(Channels.UNEXPECTED_ERROR, error);
+    event.sender.send(Channels.UNEXPECTED_ERROR, error.message);
   }
 });
 

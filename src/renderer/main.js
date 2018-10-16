@@ -26,6 +26,6 @@ ipcRenderer.on(Channels.RECEIVE_RESPONSE, (event, args) => {
   store.dispatch(Action.receiveResponse, args);
 });
 
-ipcRenderer.on(Channels.UNEXPECTED_ERROR, (event, error) => {
-  alert(error.message);
+ipcRenderer.on(Channels.UNEXPECTED_ERROR, (event, errorMessage) => {
+  alert(errorMessage);
 });

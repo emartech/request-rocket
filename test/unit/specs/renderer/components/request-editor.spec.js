@@ -106,7 +106,7 @@ describe('RequestEditor.vue', () => {
     const component = shallowMount(RequestEditor, { store });
     const select = component.find('select.http-method');
     select.element.value = HttpMethod.POST;
-    select.trigger('input');
+    select.trigger('change');
 
     expect(store.state.request.method).to.equal(HttpMethod.POST);
   });

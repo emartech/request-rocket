@@ -17,7 +17,7 @@
         </select>
       </e-select>
     </div>
-    <wsse-editor v-if="isWsseOptionSelected" />
+    <wsse-editor v-if="isWsseAuthSelected" />
   </div>
 </template>
 
