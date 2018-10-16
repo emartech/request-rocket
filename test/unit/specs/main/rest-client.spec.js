@@ -69,5 +69,21 @@ describe('RestClient', () => {
         }
       });
     });
+    it('should keep response body as string', async () => {
+      const { transformResponse } = subject.client.defaults;
+
+      let response;
+
+      if (typeof transformResponse === 'function') {
+        response = transformResponse('{"foo":"bar"}');
+      } else {
+        response = Array.from(transformResponse).reduce(
+          (response, transformer) => transformer(response),
+          '{"foo":"bar"}'
+        );
+      }
+
+      expect(response).to.eql('{"foo":"bar"}');
+    });
   });
 });

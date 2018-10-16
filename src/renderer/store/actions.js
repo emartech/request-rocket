@@ -6,14 +6,14 @@ export default {
   [Action.setUrl]({ commit }, url) {
     commit(Mutation.UPDATE_URL, url);
   },
-  async [Action.sendRequest]({ state, getters }) {
+  async [Action.sendRequest]({ state }) {
     const payload = {
       url: state.request.url,
       method: state.request.method,
       headers: state.request.headers,
       body: state.request.body,
-      authType: getters.selectedAuthTypeId,
-      authParams: getters.authParams
+      authType: state.auth.selected.id,
+      authParams: state.auth.params
     };
     await ipcRenderer.send('send-request', payload);
   },
@@ -29,9 +29,6 @@ export default {
   [Action.setAuthParams]({ commit }, authParams) {
     commit(Mutation.SET_AUTH_PARAMS, authParams);
   },
-  [Action.requestSent]({ commit }, payload) {
-    commit(Mutation.UPDATE_SENT_HEADERS, payload.sentRequestHeaders);
-  },
   [Action.setNetworkStatus]({ commit }, networkStatus) {
     commit(Mutation.UPDATE_NETWORK_STATUS, networkStatus);
   },
@@ -40,5 +37,8 @@ export default {
   },
   [Action.setRequestBody]({ commit }, requestBody) {
     commit(Mutation.SET_REQUEST_BODY, requestBody);
+  },
+  [Action.selectContentType]({ commit }, contentType) {
+    commit(Mutation.SELECT_CONTENT_TYPE, contentType);
   }
 };

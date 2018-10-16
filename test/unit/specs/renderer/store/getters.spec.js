@@ -1,7 +1,8 @@
 import Getter from '../../../../../src/renderer/store/getters';
 import HttpMethods from '../../../../../src/common/method-types';
+import Auth from '../../../../../src/common/auth-types';
 
-describe('getters', () => {
+describe('Getters', () => {
   describe('.isNetworkAvailable', () => {
     it('should return true when networkStatus is online', function() {
       const state = { networkStatus: 'online' };
@@ -49,6 +50,17 @@ describe('getters', () => {
         const state = { request: { method } };
         expect(Getter.isRequestBodyEditAvailable(state)).to.be.eql(expectedReturnValue);
       });
+    });
+  });
+  describe('.isWsseAuthSelected', () => {
+    it('should return false if the selected auth type is not wsse', function() {
+      const state = { auth: { selected: { id: 'not-wsse' } } };
+      expect(Getter.isWsseAuthSelected(state)).to.be.eql(false);
+    });
+
+    it('should return true if the selected auth type is wsse', function() {
+      const state = { auth: { selected: { id: Auth.wsse } } };
+      expect(Getter.isWsseAuthSelected(state)).to.be.eql(true);
     });
   });
 });

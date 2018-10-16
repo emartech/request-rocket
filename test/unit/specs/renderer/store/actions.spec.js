@@ -5,6 +5,7 @@ import Mutation from '../../../../../src/renderer/store/mutation-types';
 import Actions from '../../../../../src/renderer/store/actions';
 import HttpMethod from '../../../../../src/common/method-types';
 import createStore from '../../../../../src/renderer/store';
+import ContentType from '../../../../../src/common/content-types';
 
 describe('actions', () => {
   let store;
@@ -123,6 +124,13 @@ describe('actions', () => {
       const requestBody = '{"foo":"bar"}';
       Actions[Action.setRequestBody]({ commit }, requestBody);
       expect(commit).to.be.calledWithExactly(Mutation.SET_REQUEST_BODY, requestBody);
+    });
+  });
+  describe('selectContentType', () => {
+    it('should modify the selected content type of the state', () => {
+      const commit = sinon.spy();
+      Actions[Action.selectContentType]({ commit }, ContentType.json);
+      expect(commit).to.be.calledWithExactly(Mutation.SELECT_CONTENT_TYPE, ContentType.json);
     });
   });
 });

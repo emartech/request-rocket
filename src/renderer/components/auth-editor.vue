@@ -11,7 +11,7 @@
           class="e-select e-select-inline auth-type"
           @change="selectAuthType($event.target.value)">
           <option
-            v-for="auth in authTypes"
+            v-for="auth in authOptions"
             :value="auth.id"
             :key="auth.id">{{ auth.label }}</option>
         </select>
@@ -22,19 +22,20 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapState } from 'vuex';
 import Action from '../store/action-types';
 import WsseEditor from './wsse-editor';
-import Auth from '../../common/auth-types';
+import authOptions from '../store/auth-options';
 
 export default {
   name: 'AuthEditor',
   components: { WsseEditor },
   computed: {
-    ...mapGetters(['authTypes', 'selectedAuthTypeId']),
-    isWsseOptionSelected() {
-      return this.selectedAuthTypeId === Auth.wsse;
-    }
+    ...mapGetters(['isWsseAuthSelected']),
+    ...mapState({
+      selectedAuthTypeId: state => state.auth.selected.id
+    }),
+    authOptions: () => authOptions
   },
   methods: {
     ...mapActions([Action.selectAuthType])
