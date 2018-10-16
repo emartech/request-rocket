@@ -16,12 +16,6 @@ describe('Store', () => {
         expect(store.state.networkStatus).to.eql('online');
       });
     });
-    describe('auth types', () => {
-      it('should have a list of type mapping', () => {
-        expect(Array.isArray(store.state.auth.types)).to.eql(true);
-        expect(store.state.auth.types.length).to.eql(Object.keys(Auth).length);
-      });
-    });
     describe('request httpMethodOptions', () => {
       it('should have a list of http method options', () => {
         expect(store.state.request.httpMethodOptions).to.be.instanceOf(Array);

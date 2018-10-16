@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import AuthOptions from './auth-options';
 import httpMethodOptions from './method-options';
 import Actions from './actions';
 import Getters from './getters';
@@ -17,7 +16,6 @@ export default function() {
     state: {
       networkStatus: 'online',
       auth: {
-        types: AuthOptions,
         selected: Auth.NONE,
         params: {}
       },
