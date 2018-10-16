@@ -97,7 +97,7 @@ describe('Store', () => {
       it('should set the parameters for the selected authentication', () => {
         const wsseParams = { key: null, secret: null };
         store.commit(Mutation.SET_AUTH_PARAMS, wsseParams);
-        expect(store.getters.authParams).to.eql(wsseParams);
+        expect(store.state.auth.params).to.eql(wsseParams);
       });
     });
     describe('UPDATE_NETWORK_STATUS', function() {

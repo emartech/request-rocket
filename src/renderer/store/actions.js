@@ -6,14 +6,14 @@ export default {
   [Action.setUrl]({ commit }, url) {
     commit(Mutation.UPDATE_URL, url);
   },
-  async [Action.sendRequest]({ state, getters }) {
+  async [Action.sendRequest]({ state }) {
     const payload = {
       url: state.request.url,
       method: state.request.method,
       headers: state.request.headers,
       body: state.request.body,
-      authType: getters.selectedAuthTypeId,
-      authParams: getters.authParams
+      authType: state.auth.selected.id,
+      authParams: state.auth.params
     };
     await ipcRenderer.send('send-request', payload);
   },
