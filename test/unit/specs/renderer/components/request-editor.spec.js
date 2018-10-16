@@ -135,4 +135,15 @@ describe('RequestEditor.vue', () => {
 
     expect(store.state.request.body).to.equal('{"foo":"bar}');
   });
+
+  it('should send code content to code editor in props', async () => {
+    store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
+    store.commit(Mutation.SET_REQUEST_BODY, '{"hello":"bello"}');
+    await Vue.nextTick();
+
+    const component = shallowMount(RequestEditor, { store });
+    const codemirrorComponent = component.find({ name: 'CodeEditor' });
+
+    expect(codemirrorComponent.props('code')).to.equal('{"hello":"bello"}');
+  });
 });
