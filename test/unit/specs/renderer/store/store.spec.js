@@ -35,8 +35,7 @@ describe('Store', () => {
     });
     describe('selected auth type', () => {
       it('should have none auth type as initial value', () => {
-        const noneAuthType = store.state.auth.types.find(auth => auth.id === 'none');
-        expect(store.state.auth.selected).to.eql(noneAuthType);
+        expect(store.state.auth.selected).to.eql(Auth.NONE);
       });
     });
     describe('auth params', () => {

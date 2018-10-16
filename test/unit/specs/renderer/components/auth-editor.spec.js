@@ -21,37 +21,27 @@ describe('AuthEditor.vue', () => {
   });
 
   it('should set the selected auth type on the store', () => {
-    const wsseOption = AuthOptions.find(auth => auth.id === Auth.wsse);
-
     const select = component.find('select.auth-type');
-    select.element.value = wsseOption.id;
+    select.element.value = Auth.WSSE;
     select.trigger('change');
 
-    expect(store.state.auth.selected).to.equal(wsseOption);
+    expect(store.state.auth.selected).to.equal(Auth.WSSE);
   });
   context('when WSSE auth is selected', () => {
-    beforeEach(() => {
-      const wsseOption = AuthOptions.find(auth => auth.id === Auth.wsse);
-
-      const select = component.find('select.auth-type');
-      select.element.value = wsseOption.id;
-      select.trigger('change');
-    });
-
     it('should contain a WSSE editor', () => {
+      const select = component.find('select.auth-type');
+      select.element.value = Auth.WSSE;
+      select.trigger('change');
+
       expect(component.find({ name: 'WsseEditor' }).exists()).to.eql(true);
     });
   });
   context('when no auth was selected', () => {
-    beforeEach(() => {
-      const noneOption = AuthOptions.find(auth => auth.id === Auth.none);
-
-      const select = component.find('select.auth-type');
-      select.element.value = noneOption.id;
-      select.trigger('change');
-    });
-
     it('should not contain a WSSE editor', () => {
+      const select = component.find('select.auth-type');
+      select.element.value = Auth.NONE;
+      select.trigger('change');
+
       expect(component.find({ name: 'WsseEditor' }).exists()).to.eql(false);
     });
   });

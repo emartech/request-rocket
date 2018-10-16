@@ -1,6 +1,7 @@
 import sinon from 'sinon';
 import axios from 'axios';
 import RequestDispatcher from '../../../../src/main/request-dispatcher';
+import Auth from '../../../../src/common/auth-types';
 
 describe('RequestDispatcher', () => {
   describe('.handle', () => {
@@ -14,7 +15,7 @@ describe('RequestDispatcher', () => {
         headers: [{ name: 'content-type', value: 'application/json' }],
         url: 'https://example.com',
         body: '',
-        authType: 'wsse',
+        authType: Auth.WSSE,
         authParams: { key: 'somekey001', secret: '53cr3t' }
       };
 

@@ -6,6 +6,7 @@ import Actions from './actions';
 import Getters from './getters';
 import Mutations from './mutations';
 import HttpMethod from '../../common/method-types';
+import Auth from '../../common/auth-types';
 import ContentType from '../../common/content-types';
 
 Vue.use(Vuex);
@@ -17,7 +18,7 @@ export default function() {
       networkStatus: 'online',
       auth: {
         types: AuthOptions,
-        selected: AuthOptions[0],
+        selected: Auth.NONE,
         params: {}
       },
       request: {

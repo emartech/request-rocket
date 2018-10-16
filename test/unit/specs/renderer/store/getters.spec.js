@@ -54,12 +54,12 @@ describe('Getters', () => {
   });
   describe('.isWsseAuthSelected', () => {
     it('should return false if the selected auth type is not wsse', function() {
-      const state = { auth: { selected: { id: 'not-wsse' } } };
+      const state = { auth: { selected: 'not-wsse' } };
       expect(Getter.isWsseAuthSelected(state)).to.be.eql(false);
     });
 
     it('should return true if the selected auth type is wsse', function() {
-      const state = { auth: { selected: { id: Auth.wsse } } };
+      const state = { auth: { selected: Auth.WSSE } };
       expect(Getter.isWsseAuthSelected(state)).to.be.eql(true);
     });
   });

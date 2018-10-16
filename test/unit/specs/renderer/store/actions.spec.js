@@ -3,8 +3,9 @@ import { ipcRenderer } from 'electron';
 import Action from '../../../../../src/renderer/store/action-types';
 import Mutation from '../../../../../src/renderer/store/mutation-types';
 import Actions from '../../../../../src/renderer/store/actions';
-import HttpMethod from '../../../../../src/common/method-types';
 import createStore from '../../../../../src/renderer/store';
+import HttpMethod from '../../../../../src/common/method-types';
+import Auth from '../../../../../src/common/auth-types';
 import ContentType from '../../../../../src/common/content-types';
 
 describe('actions', () => {
@@ -45,15 +46,14 @@ describe('actions', () => {
       expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'https://request.url'));
     });
     it('should send the selected authentication with the belonging params', () => {
-      const selectedAuthType = { id: 'wsse', label: 'WSSE' };
       const authParams = { key: 'wssekey', secret: 'wssesecret' };
 
-      store.commit(Mutation.SELECT_AUTH_TYPE, selectedAuthType);
+      store.commit(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
       store.commit(Mutation.SET_AUTH_PARAMS, authParams);
 
       store.dispatch(Action.sendRequest);
 
-      expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ authType: selectedAuthType.id, authParams }));
+      expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ authType: Auth.WSSE, authParams }));
     });
     it('should send the request method', () => {
       store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
@@ -101,15 +101,12 @@ describe('actions', () => {
   describe('selectAuthType', () => {
     it('should modify the selected auth type of the state', () => {
       const commit = sinon.spy();
-      const wsseAuthType = { id: 'wsse', label: 'WSSE' };
-      Actions[Action.selectAuthType]({ commit, state: store.state }, wsseAuthType.id);
-      expect(commit).to.be.calledWithExactly(Mutation.SELECT_AUTH_TYPE, wsseAuthType);
+      Actions[Action.selectAuthType]({ commit }, Auth.WSSE);
+      expect(commit).to.be.calledWithExactly(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
     });
     it('should set auth params to their initial value', () => {
       const commit = sinon.spy();
-      const wsseAuthType = { id: 'wsse', label: 'WSSE' };
-      Actions[Action.selectAuthType]({ commit, state: store.state }, wsseAuthType.id);
-      expect(commit).to.be.calledWithExactly(Mutation.SELECT_AUTH_TYPE, wsseAuthType);
+      Actions[Action.selectAuthType]({ commit }, Auth.WSSE);
       expect(commit).to.be.calledWithExactly(Mutation.SET_AUTH_PARAMS, {});
     });
   });

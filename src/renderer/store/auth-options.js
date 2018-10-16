@@ -2,11 +2,11 @@ import Auth from '../../common/auth-types';
 
 export default [
   {
-    id: Auth.none,
+    id: Auth.NONE,
     label: 'None'
   },
   {
-    id: Auth.wsse,
+    id: Auth.WSSE,
     label: 'WSSE'
   }
 ];

@@ -2,7 +2,7 @@ import HttpMethodOptions from './method-options';
 import Auth from '../../common/auth-types';
 
 export default {
-  isWsseAuthSelected: state => state.auth.selected.id === Auth.wsse,
+  isWsseAuthSelected: state => state.auth.selected === Auth.WSSE,
   isNetworkAvailable: state => state.networkStatus === 'online',
   responseType: state => {
     const { headers } = state.response;

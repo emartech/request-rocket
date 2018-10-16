@@ -12,7 +12,7 @@ export default {
       method: state.request.method,
       headers: state.request.headers,
       body: getters.isRequestBodyEditAvailable ? state.request.body : null,
-      authType: state.auth.selected.id,
+      authType: state.auth.selected,
       authParams: state.auth.params
     };
     await ipcRenderer.send('send-request', payload);
@@ -21,9 +21,8 @@ export default {
     commit(Mutation.UPDATE_RESPONSE, response.response);
     commit(Mutation.SET_SENT_REQUEST_HEADERS, response.requestHeaders);
   },
-  [Action.selectAuthType]({ commit, state }, selectedType) {
-    const selected = state.auth.types.find(auth => auth.id === selectedType);
-    commit(Mutation.SELECT_AUTH_TYPE, selected);
+  [Action.selectAuthType]({ commit }, selectedType) {
+    commit(Mutation.SELECT_AUTH_TYPE, selectedType);
     commit(Mutation.SET_AUTH_PARAMS, {});
   },
   [Action.setAuthParams]({ commit }, authParams) {

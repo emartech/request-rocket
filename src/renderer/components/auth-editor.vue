@@ -7,7 +7,7 @@
       <e-select>
         <select
           id="auth-selector"
-          :value="selectedAuthTypeId"
+          :value="selectedAuthType"
           class="e-select e-select-inline auth-type"
           @change="selectAuthType($event.target.value)">
           <option
@@ -33,7 +33,7 @@ export default {
   computed: {
     ...mapGetters(['isWsseAuthSelected']),
     ...mapState({
-      selectedAuthTypeId: state => state.auth.selected.id
+      selectedAuthType: state => state.auth.selected
     }),
     authOptions: () => authOptions
   },

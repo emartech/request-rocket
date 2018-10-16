@@ -2,6 +2,7 @@ import Mutation from '../../../../../src/renderer/store/mutation-types';
 import HttpMethod from '../../../../../src/common/method-types';
 import createStore from '../../../../../src/renderer/store';
 import ContentType from '../../../../../src/common/content-types';
+import Auth from '../../../../../src/common/auth-types';
 
 describe('mutations', () => {
   let store;
@@ -30,9 +31,8 @@ describe('mutations', () => {
   });
   describe('SELECT_AUTH_TYPE', () => {
     it('should set the selected authentication type', () => {
-      const wsseAuthType = { id: 'wsse', label: 'WSSE' };
-      store.commit(Mutation.SELECT_AUTH_TYPE, wsseAuthType);
-      expect(store.state.auth.selected).to.eql(wsseAuthType);
+      store.commit(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
+      expect(store.state.auth.selected).to.eql(Auth.WSSE);
     });
   });
   describe('SELECT_HTTP_METHOD', () => {

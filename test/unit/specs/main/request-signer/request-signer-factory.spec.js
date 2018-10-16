@@ -7,14 +7,14 @@ describe('RequestSignerFactory', () => {
   describe('.create', () => {
     context('when WSSE auth is used', () => {
       it('should instantiate a WSSE signer', () => {
-        const signer = RequestSignerFactory.create(Auth.wsse, { key: '', secret: '' });
+        const signer = RequestSignerFactory.create(Auth.WSSE, { key: '', secret: '' });
 
         expect(signer).to.be.an.instanceof(WsseSigner);
       });
     });
     context('when no auth is used', () => {
       it('should instantiate a none signer', () => {
-        const signer = RequestSignerFactory.create(Auth.none);
+        const signer = RequestSignerFactory.create(Auth.NONE);
 
         expect(signer).to.be.an.instanceof(NoneSigner);
       });
