@@ -27,3 +27,9 @@ script:
 branches:
   only:
   - master
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+    recipients:
+      - crew-integration@emarsys.com
