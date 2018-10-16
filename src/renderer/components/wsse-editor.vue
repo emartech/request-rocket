@@ -1,17 +1,31 @@
 <template>
-  <div>
-    <label for="wsse-key">Key</label>
-    <input
-      id="wsse-key"
-      v-model="key"
-      type="text"
-      @input="setAuthParams()">
-    <label for="wsse-secret">Secret</label>
-    <input
-      id="wsse-secret"
-      v-model="secret"
-      type="text"
-      @input="setAuthParams()">
+  <div class="e-grid e-grid-medium">
+    <div class="e-cell e-cell-medium">
+      <div class="e-field">
+        <label
+          for="wsse-key"
+          class="e-field__label e-field__label-inline">Key</label>
+        <input
+          id="wsse-key"
+          v-model="key"
+          class="e-input e-input-large"
+          type="text"
+          @input="setAuthParams()">
+      </div>
+    </div>
+    <div class="e-cell e-cell-medium">
+      <div class="e-field">
+        <label
+          class="e-field__label e-field__label-inline"
+          for="wsse-secret">Secret</label>
+        <input
+          id="wsse-secret"
+          v-model="secret"
+          class="e-input e-input-large"
+          type="text"
+          @input="setAuthParams()">
+      </div>
+    </div>
   </div>
 </template>
 

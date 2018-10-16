@@ -24,7 +24,7 @@ describe('AuthEditor.vue', () => {
 
     const select = component.find('select.auth-type');
     select.element.value = wsseOption.id;
-    select.trigger('input');
+    select.trigger('change');
 
     expect(store.state.auth.selected).to.equal(wsseOption);
   });
@@ -34,7 +34,7 @@ describe('AuthEditor.vue', () => {
 
       const select = component.find('select.auth-type');
       select.element.value = wsseOption.id;
-      select.trigger('input');
+      select.trigger('change');
     });
 
     it('should contain a WSSE editor', () => {
@@ -47,7 +47,7 @@ describe('AuthEditor.vue', () => {
 
       const select = component.find('select.auth-type');
       select.element.value = noneOption.id;
-      select.trigger('input');
+      select.trigger('change');
     });
 
     it('should not contain a WSSE editor', () => {

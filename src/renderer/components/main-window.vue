@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="title">Request Rocket</h1>
     <div>
       <request-editor/>
       <h3>Response</h3>
