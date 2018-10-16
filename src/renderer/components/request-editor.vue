@@ -50,6 +50,7 @@ import Action from '../store/action-types';
 import AuthEditor from './auth-editor';
 import CodeEditor from './code-editor';
 import ContentTypeSelector from './content-type-selector';
+import httpMethodOptions from '../store/method-options';
 
 export default {
   name: 'RequestEditor',
@@ -58,7 +59,7 @@ export default {
     ...mapGetters(['isNetworkAvailable', 'isRequestBodyEditAvailable']),
     ...mapState({
       url: state => state.request.url,
-      httpMethodOptions: state => state.request.httpMethodOptions,
+      httpMethodOptions: () => httpMethodOptions,
       method: state => state.request.method,
       body: state => state.request.body,
       contentType: state => state.request.contentType

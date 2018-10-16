@@ -16,12 +16,6 @@ describe('Store', () => {
         expect(store.state.networkStatus).to.eql('online');
       });
     });
-    describe('request httpMethodOptions', () => {
-      it('should have a list of http method options', () => {
-        expect(store.state.request.httpMethodOptions).to.be.instanceOf(Array);
-        expect(store.state.request.httpMethodOptions.length).to.eql(Object.keys(HttpMethod).length);
-      });
-    });
     describe('request method', () => {
       it('should have GET http method as initial value', () => {
         expect(store.state.request.method).to.eql(HttpMethod.GET);

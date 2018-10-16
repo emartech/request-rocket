@@ -7,6 +7,7 @@ import createStore from '@/store';
 import Action from '@/store/action-types';
 import Mutation from '@/store/mutation-types';
 import Getters from '../../../../../src/renderer/store/getters';
+import httpMethodOptions from '../../../../../src/renderer/store/method-options';
 import HttpMethod from '../../../../../src/common/method-types';
 import ContentType from '../../../../../src/common/content-types';
 
@@ -101,7 +102,7 @@ describe('RequestEditor.vue', () => {
     const component = shallowMount(RequestEditor, { store });
     const selectElement = component.find('select.http-method');
 
-    store.state.request.httpMethodOptions.forEach(option => {
+    httpMethodOptions.forEach(option => {
       expect(selectElement.find(`option[value="${option.id}"]`).text()).to.equal(option.label);
     });
   });

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import httpMethodOptions from './method-options';
 import Actions from './actions';
 import Getters from './getters';
 import Mutations from './mutations';
@@ -20,7 +19,6 @@ export default function() {
         params: {}
       },
       request: {
-        httpMethodOptions,
         method: HttpMethod.GET,
         url: '',
         headers: [{ name: 'content-type', value: 'application/json' }],
