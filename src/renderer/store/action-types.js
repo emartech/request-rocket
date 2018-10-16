@@ -8,5 +8,6 @@ export default {
   setNetworkStatus: 'setNetworkStatus',
   selectHttpMethod: 'selectHttpMethod',
   setRequestBody: 'setRequestBody',
-  selectContentType: 'selectContentType'
+  selectContentType: 'selectContentType',
+  setRequestHeaders: 'setRequestHeaders'
 };

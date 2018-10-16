@@ -39,5 +39,8 @@ export default {
   },
   [Action.selectContentType]({ commit }, contentType) {
     commit(Mutation.SELECT_CONTENT_TYPE, contentType);
+  },
+  [Action.setRequestHeaders]({ commit }, requestHeaders) {
+    commit(Mutation.SET_REQUEST_HEADERS, requestHeaders);
   }
 };

@@ -68,4 +68,11 @@ describe('mutations', () => {
       expect(store.state.request.contentType).to.eql(ContentType.json);
     });
   });
+  describe('SET_REQUEST_HEADERS', function() {
+    it('should set the headers on the request object', () => {
+      const updatedHeaders = [{ name: 'content-type', value: 'application/json' }, { name: 'accept', value: '*/*' }];
+      store.commit(Mutation.SET_REQUEST_HEADERS, updatedHeaders);
+      expect(store.state.request.headers).to.eq(updatedHeaders);
+    });
+  });
 });

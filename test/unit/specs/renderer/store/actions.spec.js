@@ -140,4 +140,12 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.SELECT_CONTENT_TYPE, ContentType.json);
     });
   });
+  describe('setRequestHeaders', () => {
+    it('should set the request headers', () => {
+      const commit = sinon.spy();
+      const headers = [{ name: 'content-type', value: 'application/json' }, { name: 'accept', value: '*/*' }];
+      Actions[Action.setRequestHeaders]({ commit }, headers);
+      expect(commit).to.be.calledWithExactly(Mutation.SET_REQUEST_HEADERS, headers);
+    });
+  });
 });

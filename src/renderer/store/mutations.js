@@ -27,5 +27,8 @@ export default {
   },
   [Mutation.SELECT_CONTENT_TYPE](state, contentType) {
     state.request.contentType = contentType;
-  }
+  },
+  [Mutation.SET_REQUEST_HEADERS](state, requestHeaders) {
+    state.request.headers = requestHeaders;
+  },
 };
