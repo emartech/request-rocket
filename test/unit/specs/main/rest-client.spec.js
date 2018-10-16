@@ -58,8 +58,9 @@ describe('RestClient', () => {
       });
     });
     it('should have a user agent header by default', async () => {
+      const packageInfo = require('../../../../package');
       const commonHeaders = subject.client.defaults.headers.common;
-      expect(commonHeaders).to.have.property('User-Agent', `RequestRocket/${process.env.npm_package_version}`);
+      expect(commonHeaders).to.have.property('User-Agent', `RequestRocket/${packageInfo.version}`);
     });
     it('should not have any headers by default besides common', async () => {
       Object.keys(subject.client.defaults.headers).forEach(method => {
