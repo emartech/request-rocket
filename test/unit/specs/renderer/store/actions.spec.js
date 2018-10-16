@@ -62,13 +62,23 @@ describe('actions', () => {
 
       expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('method', HttpMethod.POST));
     });
-    it('should send the request body', () => {
-      store.commit(Mutation.SET_REQUEST_BODY, '{"foo": "bar"}');
+    [
+      { method: HttpMethod.GET, expectedBody: null },
+      { method: HttpMethod.HEAD, expectedBody: null },
+      { method: HttpMethod.POST, expectedBody: '{"foo": "bar"}' },
+      { method: HttpMethod.PUT, expectedBody: '{"foo": "bar"}' },
+      { method: HttpMethod.PATCH, expectedBody: '{"foo": "bar"}' },
+      { method: HttpMethod.OPTIONS, expectedBody: '{"foo": "bar"}' }
+    ].forEach(({ method, expectedBody }) => {
+      it(`should send the ${method} request with body ${expectedBody}`, () => {
+        store.commit(Mutation.SET_REQUEST_BODY, '{"foo": "bar"}');
+        store.commit(Mutation.SELECT_HTTP_METHOD, method);
+        store.dispatch(Action.sendRequest);
 
-      store.dispatch(Action.sendRequest);
-
-      expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('body', '{"foo": "bar"}'));
+        expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('body', expectedBody));
+      });
     });
+
     it('should send the desired request headers', () => {
       store.dispatch(Action.sendRequest);
 

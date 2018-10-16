@@ -6,12 +6,12 @@ export default {
   [Action.setUrl]({ commit }, url) {
     commit(Mutation.UPDATE_URL, url);
   },
-  async [Action.sendRequest]({ state }) {
+  async [Action.sendRequest]({ state, getters }) {
     const payload = {
       url: state.request.url,
       method: state.request.method,
       headers: state.request.headers,
-      body: state.request.body,
+      body: getters.isRequestBodyEditAvailable ? state.request.body : null,
       authType: state.auth.selected.id,
       authParams: state.auth.params
     };
