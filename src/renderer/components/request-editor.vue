@@ -23,6 +23,7 @@
     <div v-if="isRequestBodyEditAvailable">
       <h6>Request body</h6>
       <code-editor
+        :code="body"
         @input="setRequestBody"/>
     </div>
   </div>
@@ -42,7 +43,8 @@ export default {
     ...mapState({
       url: state => state.request.url,
       httpMethodOptions: state => state.request.httpMethodOptions,
-      method: state => state.request.method
+      method: state => state.request.method,
+      body: state => state.request.body
     })
   },
   methods: {
