@@ -21,9 +21,12 @@
       @click="sendRequest">Send</button>
     <auth-editor/>
     <div v-if="isRequestBodyEditAvailable">
+      <h6>Content type</h6>
+      <content-type-selector/>
       <h6>Request body</h6>
       <code-editor
         :code="body"
+        :type="contentType"
         @input="setRequestBody"/>
     </div>
   </div>
@@ -34,17 +37,19 @@ import { mapActions, mapState, mapGetters } from 'vuex';
 import Action from '../store/action-types';
 import AuthEditor from './auth-editor';
 import CodeEditor from './code-editor';
+import ContentTypeSelector from './content-type-selector';
 
 export default {
   name: 'RequestEditor',
-  components: { CodeEditor, AuthEditor },
+  components: { ContentTypeSelector, CodeEditor, AuthEditor },
   computed: {
     ...mapGetters(['isNetworkAvailable', 'isRequestBodyEditAvailable']),
     ...mapState({
       url: state => state.request.url,
       httpMethodOptions: state => state.request.httpMethodOptions,
       method: state => state.request.method,
-      body: state => state.request.body
+      body: state => state.request.body,
+      contentType: state => state.request.contentType
     })
   },
   methods: {

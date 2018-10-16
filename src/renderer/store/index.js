@@ -1,11 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Mutation from './mutation-types';
 import AuthOptions from './auth-options';
 import httpMethodOptions from './method-options';
 import Actions from './actions';
 import Getters from './getters';
+import Mutations from './mutations';
 import HttpMethod from '../../common/method-types';
+import ContentType from '../../common/content-types';
 
 Vue.use(Vuex);
 
@@ -24,38 +25,14 @@ export default function() {
         method: HttpMethod.GET,
         url: '',
         headers: [{ name: 'content-type', value: 'application/json' }],
-        body: ''
+        body: '',
+        contentType: ContentType.custom
       },
       response: {},
       sentRequestHeaders: null
     },
     getters: Getters,
-    mutations: {
-      [Mutation.UPDATE_URL](state, url) {
-        state.request.url = url;
-      },
-      [Mutation.SET_SENT_REQUEST_HEADERS](state, requestHeaders) {
-        state.sentRequestHeaders = requestHeaders;
-      },
-      [Mutation.UPDATE_RESPONSE](state, response) {
-        state.response = response;
-      },
-      [Mutation.SELECT_AUTH_TYPE](state, selected) {
-        state.auth.selected = selected;
-      },
-      [Mutation.SET_AUTH_PARAMS](state, authParams) {
-        state.auth.params = authParams;
-      },
-      [Mutation.UPDATE_NETWORK_STATUS](state, networkStatus) {
-        state.networkStatus = networkStatus;
-      },
-      [Mutation.SELECT_HTTP_METHOD](state, httpMethod) {
-        state.request.method = httpMethod;
-      },
-      [Mutation.SET_REQUEST_BODY](state, body) {
-        state.request.body = body;
-      }
-    },
+    mutations: Mutations,
     actions: Actions
   });
 }

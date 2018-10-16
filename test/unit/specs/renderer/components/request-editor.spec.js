@@ -8,6 +8,7 @@ import Action from '@/store/action-types';
 import Mutation from '@/store/mutation-types';
 import Getters from '../../../../../src/renderer/store/getters';
 import HttpMethod from '../../../../../src/common/method-types';
+import ContentType from '../../../../../src/common/content-types';
 
 describe('RequestEditor.vue', () => {
   let store;
@@ -145,5 +146,33 @@ describe('RequestEditor.vue', () => {
     const codemirrorComponent = component.find({ name: 'CodeEditor' });
 
     expect(codemirrorComponent.props('code')).to.equal('{"hello":"bello"}');
+  });
+
+  it('should hide content type selector by default', () => {
+    const component = shallowMount(RequestEditor, { store });
+    const contentTypeSelector = component.find({ name: 'ContentTypeSelector' });
+
+    expect(contentTypeSelector.exists()).to.eql(false);
+  });
+  it('should show content type selector when request method is POST', async () => {
+    store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
+    await Vue.nextTick();
+
+    const component = shallowMount(RequestEditor, { store });
+    const contentTypeSelector = component.find({ name: 'ContentTypeSelector' });
+
+    expect(contentTypeSelector.exists()).to.eql(true);
+  });
+  context('when content type is selected', () => {
+    it('should set the code editors type property', async () => {
+      store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
+      store.commit(Mutation.SELECT_CONTENT_TYPE, ContentType.json);
+      await Vue.nextTick();
+
+      const component = shallowMount(RequestEditor, { store });
+      const codeEditor = component.find({ name: 'CodeEditor' });
+
+      expect(codeEditor.props('type')).to.equal(ContentType.json);
+    });
   });
 });

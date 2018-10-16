@@ -37,5 +37,8 @@ export default {
   },
   [Action.setRequestBody]({ commit }, requestBody) {
     commit(Mutation.SET_REQUEST_BODY, requestBody);
+  },
+  [Action.selectContentType]({ commit }, contentType) {
+    commit(Mutation.SELECT_CONTENT_TYPE, contentType);
   }
 };
