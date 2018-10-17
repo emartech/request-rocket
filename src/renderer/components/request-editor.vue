@@ -34,7 +34,6 @@ export default {
   computed: {
     ...mapGetters(['isNetworkAvailable', 'isRequestBodyEditAvailable']),
     ...mapState({
-      url: state => state.request.url,
       body: state => state.request.body,
       contentType: state => state.request.contentType
     })
