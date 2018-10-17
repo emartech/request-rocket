@@ -13,14 +13,14 @@
           :value="header.name"
           class="header-name e-input"
           placeholder="Name"
-          @input="updateHeaderName($event.target.value, index)">
+          @input="updateHeader($event.target.value, index, 'name')">
       </div>
       <div class="e-cell e-cell-auto">
         <input
           :value="header.value"
           class="header-value e-input"
           placeholder="Value"
-          @input="updateHeaderValue($event.target.value, index)">
+          @input="updateHeader($event.target.value, index, 'value')">
       </div>
     </div>
   </div>
@@ -39,17 +39,9 @@ export default {
     })
   },
   methods: {
-    updateHeaderName(newHeaderName, index) {
+    updateHeader(newHeaderValue, index, field) {
       const newHeaders = clone(this.headers);
-
-      newHeaders[index].name = newHeaderName;
-
-      this.$store.dispatch(Action.setRequestHeaders, newHeaders);
-    },
-    updateHeaderValue(newHeaderValue, index) {
-      const newHeaders = clone(this.headers);
-
-      newHeaders[index].value = newHeaderValue;
+      newHeaders[index][field] = newHeaderValue;
 
       this.$store.dispatch(Action.setRequestHeaders, newHeaders);
     }
