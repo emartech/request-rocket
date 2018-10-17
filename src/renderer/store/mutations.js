@@ -30,5 +30,5 @@ export default {
   },
   [Mutation.SET_REQUEST_HEADERS](state, requestHeaders) {
     state.request.headers = requestHeaders;
-  },
+  }
 };
