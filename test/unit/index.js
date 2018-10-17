@@ -1,6 +1,7 @@
 import Vue from 'vue'
 Vue.config.devtools = false
 Vue.config.productionTip = false
+Vue.config.ignoredElements = [/^e-/];
 
 // require all test files (files that ends with .spec.js)
 const testsContext = require.context('./specs', true, /\.spec$/)
