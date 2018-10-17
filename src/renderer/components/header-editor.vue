@@ -10,15 +10,17 @@
       class="e-grid">
       <div class="e-cell e-cell-auto">
         <input
-          v-model="header.name"
+          :value="header.name"
           class="header-name e-input"
-          placeholder="Name">
+          placeholder="Name"
+          @input="updateHeaderName($event.target.value, index)">
       </div>
       <div class="e-cell e-cell-auto">
         <input
-          v-model="header.value"
+          :value="header.value"
           class="header-value e-input"
-          placeholder="Value">
+          placeholder="Value"
+          @input="updateHeaderValue($event.target.value, index)">
       </div>
     </div>
   </div>
@@ -26,6 +28,8 @@
 
 <script>
 import { mapState } from 'vuex';
+import { clone } from 'ramda';
+import Action from '../store/action-types';
 
 export default {
   name: 'HeaderEditor',
@@ -34,7 +38,22 @@ export default {
       headers: state => state.request.headers
     })
   },
-  methods: {}
+  methods: {
+    updateHeaderName(newHeaderName, index) {
+      const newHeaders = clone(this.headers);
+
+      newHeaders[index].name = newHeaderName;
+
+      this.$store.dispatch(Action.setRequestHeaders, newHeaders);
+    },
+    updateHeaderValue(newHeaderValue, index) {
+      const newHeaders = clone(this.headers);
+
+      newHeaders[index].value = newHeaderValue;
+
+      this.$store.dispatch(Action.setRequestHeaders, newHeaders);
+    }
+  }
 };
 </script>
 

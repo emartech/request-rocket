@@ -79,7 +79,7 @@ describe('RequestEditor.vue', () => {
     expect(contentTypeSelector.exists()).to.eql(true);
   });
 
-  it('should render request editor', () => {
+  it('should render request header editor', () => {
     const component = shallowMount(RequestEditor, { store });
     const headerEditor = component.find({ name: 'HeaderEditor' });
 
