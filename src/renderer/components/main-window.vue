@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div>
-      <request-editor/>
-      <h3>Response</h3>
-      <response-inspector/>
+    <div class="e-grid">
+      <div class="e-cell e-cell-7">
+        <request-editor/>
+      </div>
+      <div class="e-cell e-cell-5">
+        <response-inspector/>
+      </div>
     </div>
   </div>
 </template>
