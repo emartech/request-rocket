@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 import Action from './action-types';
 import Mutation from './mutation-types';
+import ContentType from '../../common/content-types';
 
 export default {
   [Action.setUrl]({ commit }, url) {
@@ -37,8 +38,17 @@ export default {
   [Action.setRequestBody]({ commit }, requestBody) {
     commit(Mutation.SET_REQUEST_BODY, requestBody);
   },
-  [Action.selectContentType]({ commit }, contentType) {
+  [Action.selectContentType]({ commit, state }, contentType) {
     commit(Mutation.SELECT_CONTENT_TYPE, contentType);
+    if (contentType !== ContentType.custom) {
+      const newHeader = { name: 'content-type', value: contentType };
+      const oldHeader = state.request.headers.find(header => header.name === 'content-type');
+      if (oldHeader) {
+        commit(Mutation.UPDATE_REQUEST_HEADER, newHeader);
+      } else {
+        commit(Mutation.ADD_REQUEST_HEADER, newHeader);
+      }
+    }
   },
   [Action.setRequestHeaders]({ commit }, requestHeaders) {
     commit(Mutation.SET_REQUEST_HEADERS, requestHeaders);

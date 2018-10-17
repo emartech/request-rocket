@@ -1,5 +1,6 @@
 import sinon from 'sinon';
 import { ipcRenderer } from 'electron';
+import { clone } from 'ramda';
 import Action from '../../../../../src/renderer/store/action-types';
 import Mutation from '../../../../../src/renderer/store/mutation-types';
 import Actions from '../../../../../src/renderer/store/actions';
@@ -136,8 +137,34 @@ describe('actions', () => {
   describe('selectContentType', () => {
     it('should modify the selected content type of the state', () => {
       const commit = sinon.spy();
-      Actions[Action.selectContentType]({ commit }, ContentType.json);
+      Actions[Action.selectContentType]({ commit, state: store.state }, ContentType.json);
       expect(commit).to.be.calledWithExactly(Mutation.SELECT_CONTENT_TYPE, ContentType.json);
+    });
+    it('should update the existing content type header', () => {
+      const commit = sinon.spy();
+      const expectedHeader = { name: 'content-type', value: ContentType.text };
+      Actions[Action.selectContentType]({ commit, state: store.state }, ContentType.text);
+      expect(commit).to.be.calledWithExactly(Mutation.UPDATE_REQUEST_HEADER, expectedHeader);
+    });
+    it('should add a content type header if not exists', () => {
+      store.commit(Mutation.SET_REQUEST_HEADERS, []);
+      const commit = sinon.spy();
+      const expectedHeader = { name: 'content-type', value: ContentType.text };
+      Actions[Action.selectContentType]({ commit, state: store.state }, ContentType.text);
+      expect(commit).to.be.calledWithExactly(Mutation.ADD_REQUEST_HEADER, expectedHeader);
+    });
+    context('when selected content type is custom', () => {
+      it('should not update the content type header', () => {
+        const oldHeaders = clone(store.state.request.headers);
+        store.dispatch(Action.selectContentType, ContentType.custom);
+        expect(store.state.request.headers).to.eql(oldHeaders);
+      });
+      it('should not add the content type header', () => {
+        store.commit(Mutation.SET_REQUEST_HEADERS, []);
+        const oldHeaders = clone(store.state.request.headers);
+        store.dispatch(Action.selectContentType, ContentType.custom);
+        expect(store.state.request.headers).to.eql(oldHeaders);
+      });
     });
   });
   describe('setRequestHeaders', () => {

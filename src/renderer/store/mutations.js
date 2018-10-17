@@ -30,5 +30,12 @@ export default {
   },
   [Mutation.SET_REQUEST_HEADERS](state, requestHeaders) {
     state.request.headers = requestHeaders;
+  },
+  [Mutation.ADD_REQUEST_HEADER](state, newHeader) {
+    state.request.headers.push(newHeader);
+  },
+  [Mutation.UPDATE_REQUEST_HEADER](state, updatedHeader) {
+    const oldHeader = state.request.headers.find(header => header.name === updatedHeader.name);
+    Object.assign(oldHeader, updatedHeader);
   }
 };

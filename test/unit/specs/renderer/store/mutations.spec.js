@@ -75,4 +75,19 @@ describe('mutations', () => {
       expect(store.state.request.headers).to.eq(updatedHeaders);
     });
   });
+  describe('ADD_REQUEST_HEADER', function() {
+    it('should add a header to the requests headers', () => {
+      store.commit(Mutation.ADD_REQUEST_HEADER, { name: 'accept', value: 'application/json' });
+      expect(store.state.request.headers).to.eql([
+        { name: 'content-type', value: 'application/json' },
+        { name: 'accept', value: 'application/json' }
+      ]);
+    });
+  });
+  describe('UPDATE_REQUEST_HEADER', function() {
+    it('should update existing header on the requests headers', () => {
+      store.commit(Mutation.UPDATE_REQUEST_HEADER, { name: 'content-type', value: 'text/plain' });
+      expect(store.state.request.headers).to.eql([{ name: 'content-type', value: 'text/plain' }]);
+    });
+  });
 });
