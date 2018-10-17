@@ -50,7 +50,7 @@ describe('HeaderEditor.vue', () => {
     it('should render inputs for all header elements', () => {
       const headers = [
         { name: 'my-header', value: 'my-header-value' },
-        { name: 'other-header', value: 'other-header-value' },
+        { name: 'other-header', value: 'other-header-value' }
       ];
       store.commit(Mutation.SET_REQUEST_HEADERS, headers);
 

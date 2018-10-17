@@ -79,6 +79,13 @@ describe('RequestEditor.vue', () => {
     expect(contentTypeSelector.exists()).to.eql(true);
   });
 
+  it('should render request editor', () => {
+    const component = shallowMount(RequestEditor, { store });
+    const headerEditor = component.find({ name: 'HeaderEditor' });
+
+    expect(headerEditor.exists()).to.eql(true);
+  });
+
   context('when content type is selected', () => {
     it('should set the code editors type property', async () => {
       store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
