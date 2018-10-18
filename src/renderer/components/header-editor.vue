@@ -1,32 +1,37 @@
 <template>
-  <div>
-    <div class="e-grid">
-      <div class="e-cell e-cell-6">Header name</div>
-      <div class="e-cell e-cell-6">Header value</div>
-    </div>
+  <div class="e-accordion__content">
     <div
       v-for="(header, index) in requestHeadersWithEmptyRow"
       :key="index"
-      class="e-grid">
-      <div class="e-cell e-cell-auto">
+      class="e-grid e-grid-medium e-grid-vertical_center">
+      <div class="e-cell e-cell-medium">
+        <input
+          class="e-checkbox e-checkbox-onlycheckbox"
+          type="checkbox">
+        <label>&nbsp;</label>
+      </div>
+      <div class="e-cell e-cell-4 e-cell-medium">
         <input
           :value="header.name"
           class="header-name e-input"
           placeholder="Name"
           @input="updateHeaders($event.target.value, index, 'name')">
       </div>
-      <div class="e-cell e-cell-auto">
+      <div class="e-cell e-cell-auto e-cell-medium">
         <input
           :value="header.value"
           class="header-value e-input"
           placeholder="Value"
           @input="updateHeaders($event.target.value, index, 'value')">
       </div>
-      <div
-        v-if="showDeleteButton(header)"
-        class="e-btn e-btn-onlyicon remove-header"
-        @click="removeHeader(index)">
-        <e-icon icon="trash-o"/>
+      <div class="e-cell e-cell-medium">
+        <button
+          :disabled="!showDeleteButton(header)"
+          class="e-btn e-btn-onlyicon remove-header"
+          tabindex="-1"
+          @click="removeHeader(index)">
+          <e-icon icon="trash-o"/>
+        </button>
       </div>
     </div>
   </div>

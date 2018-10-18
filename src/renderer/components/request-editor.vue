@@ -1,20 +1,35 @@
 <template>
   <div class="e-fullheight__content e-fullheight__content-box">
-    <div class="e-fullheight__body">
-      <div>
+    <div class="e-fullheight__body e-fullheight__body-no_header">
+      <div class="e-field">
         <request-editor-title/>
-      </div>
-      <div>
         <url-group/>
       </div>
-      <div>
+      <div class="e-accordion e-accordion-stretch">
+        <input
+          id="header-editor"
+          type="checkbox"
+          checked>
+        <label
+          for="header-editor"
+          class="e-accordion__title">Header</label>
         <header-editor/>
-      </div>
-      <div>
-        <auth-editor/>
-      </div>
-      <div>
+        <input
+          id="body-editor"
+          type="checkbox"
+          checked>
+        <label
+          for="body-editor"
+          class="e-accordion__title">Body</label>
         <request-body-editor/>
+        <input
+          id="auth-editor"
+          type="checkbox"
+          checked>
+        <label
+          for="auth-editor"
+          class="e-accordion__title">Authentication</label>
+        <auth-editor/>
       </div>
     </div>
   </div>

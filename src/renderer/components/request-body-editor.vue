@@ -1,19 +1,9 @@
 <template>
-  <div class="e-accordion">
-    <input
-      id="request-body-editor-accordion"
-      :disabled="!isRequestBodyEditAvailable"
-      :checked="isRequestBodyEditAvailable"
-      type="checkbox"
-      name="accordion-checkbox">
-    <label
-      class="e-accordion__title"
-      for="request-body-editor-accordion">
-      Body
-    </label>
-    <div
-      class="e-accordion__content">
+  <div class="e-accordion__content">
+    <div class="e-field">
       <content-type-selector/>
+    </div>
+    <div class="e-box e-box-no_margin e-box-charts">
       <code-editor
         :code="body"
         :type="contentType"

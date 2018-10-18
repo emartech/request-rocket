@@ -1,7 +1,7 @@
 <template>
-  <div 
-    id="app" 
-    class="e-fullheight">
+  <div
+    id="app"
+    class="e-fullheight e-boxpadding">
     <router-view/>
   </div>
 </template>

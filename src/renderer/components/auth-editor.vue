@@ -1,21 +1,27 @@
 <template>
-  <div>
+  <div class="e-accordion__content">
     <div class="e-field">
-      <label
-        class="e-field__label"
-        for="auth-selector"/>
-      <e-select>
-        <select
-          id="auth-selector"
-          :value="selectedAuthType"
-          class="e-select e-select-inline auth-type"
-          @change="selectAuthType($event.target.value)">
-          <option
-            v-for="auth in authOptions"
-            :value="auth.id"
-            :key="auth.id">{{ auth.label }}</option>
-        </select>
-      </e-select>
+      <div class="e-grid e-grid-medium e-grid-vertical_center">
+        <div class="e-cell e-cell-medium e-cell-2">
+          <label
+            class="e-field__label e-field__label-inline"
+            for="auth-selector">Type</label>
+        </div>
+        <div class="e-cell e-cell-medium">
+          <e-select>
+            <select
+              id="auth-selector"
+              :value="selectedAuthType"
+              class="e-select e-select-large auth-type"
+              @change="selectAuthType($event.target.value)">
+              <option
+                v-for="auth in authOptions"
+                :value="auth.id"
+                :key="auth.id">{{ auth.label }}</option>
+            </select>
+          </e-select>
+        </div>
+      </div>
     </div>
     <wsse-editor v-if="isWsseAuthSelected" />
   </div>
