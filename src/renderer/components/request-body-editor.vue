@@ -9,7 +9,7 @@
     <label
       class="e-accordion__title"
       for="request-body-editor-accordion">
-      Accordion 1
+      Body
     </label>
     <div
       class="e-accordion__content">
