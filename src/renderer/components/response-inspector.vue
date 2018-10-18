@@ -1,13 +1,15 @@
 <template>
-  <div>
-    <request-headers/>
-    <code-editor
-      :read-only="true"
-      :code="beautifyBody(response.body)"
-      :type="responseType"/>
-    <response-headers/>
-    <h6>Status Code</h6>
-    <span id="status-code">{{ response.status }}</span>
+  <div class="e-fullheight__content e-fullheight__content-box">
+    <div class="e-fullheight__body">
+      <request-headers/>
+      <code-editor
+        :read-only="true"
+        :code="beautifyBody(response.body)"
+        :type="responseType"/>
+      <response-headers/>
+      <h6>Status Code</h6>
+      <span id="status-code">{{ response.status }}</span>
+    </div>
   </div>
 </template>
 

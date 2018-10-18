@@ -1,12 +1,8 @@
 <template>
-  <div>
-    <div class="e-grid">
-      <div class="e-cell e-cell-7">
-        <request-editor/>
-      </div>
-      <div class="e-cell e-cell-5">
-        <response-inspector/>
-      </div>
+  <div class="e-fullheight__wrapper">
+    <div class="e-fullheight__container">
+      <request-editor/>
+      <response-inspector/>
     </div>
   </div>
 </template>
