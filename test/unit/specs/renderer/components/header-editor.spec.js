@@ -46,7 +46,7 @@ describe('HeaderEditor.vue', () => {
     expect(store.state.request.headers[0].value).to.eql('text/plain');
   });
 
-  context('when more header item is present', () => {
+  context('when more header items are present', () => {
     it('should render inputs for all header elements', () => {
       const headers = [
         { name: 'my-header', value: 'my-header-value' },
@@ -96,5 +96,20 @@ describe('HeaderEditor.vue', () => {
 
     expect(component.findAll('input.header-name').length).to.eql(3);
     expect(component.findAll('input.header-value').length).to.eql(3);
+  });
+
+  it('should remove header item on click', () => {
+    const headers = [
+      { name: 'my-header', value: 'my-header-value' },
+      { name: 'other-header', value: 'other-header-value' }
+    ];
+    store.commit(Mutation.SET_REQUEST_HEADERS, headers);
+
+    const component = shallowMount(HeaderEditor, { store });
+
+    const deleteButtons = component.findAll('.remove-header');
+    deleteButtons.at(0).trigger('click');
+
+    expect(store.state.request.headers).to.eql([{ name: 'other-header', value: 'other-header-value' }]);
   });
 });

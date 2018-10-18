@@ -22,6 +22,11 @@
           placeholder="Value"
           @input="updateHeaders($event.target.value, index, 'value')">
       </div>
+      <div
+        class="e-btn e-btn-onlyicon remove-header"
+        @click="removeHeader(index)">
+        <e-icon icon="trash-o"/>
+      </div>
     </div>
   </div>
 </template>
@@ -36,16 +41,22 @@ export default {
     ...mapGetters(['requestHeadersWithEmptyRow'])
   },
   methods: {
-    updateHeaders(newHeaderValue, index, field) {
-      const newHeaders = this.requestHeadersWithEmptyRow;
-      newHeaders[index][field] = newHeaderValue;
-
-      const headersWithoutEmptyRow = newHeaders.filter(this.isHeaderEmpty);
-
+    updateHeaders(value, index, field) {
+      const headers = this.requestHeadersWithEmptyRow;
+      headers[index][field] = value;
+      this.storeHeaders(headers);
+    },
+    storeHeaders(headers) {
+      const headersWithoutEmptyRow = headers.filter(this.isHeaderEmpty);
       this.$store.dispatch(Action.setRequestHeaders, headersWithoutEmptyRow);
     },
     isHeaderEmpty(header) {
       return !(header.name === '' && header.value === '');
+    },
+    removeHeader(index) {
+      const headers = this.requestHeadersWithEmptyRow;
+      headers.splice(index, 1);
+      this.storeHeaders(headers);
     }
   }
 };
