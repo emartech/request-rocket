@@ -22,7 +22,7 @@ export default {
   name: 'RequestBodyEditor',
   components: { ContentTypeSelector, CodeEditor },
   computed: {
-    ...mapGetters(['isNetworkAvailable', 'isRequestBodyEditAvailable']),
+    ...mapGetters(['isNetworkAvailable']),
     ...mapState({
       body: state => state.request.body,
       contentType: state => state.request.contentType

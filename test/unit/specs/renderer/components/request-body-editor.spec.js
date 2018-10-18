@@ -13,23 +13,6 @@ describe('RequestEditor.vue', () => {
     store = createStore();
   });
 
-  it('should disable editing by default', () => {
-    const component = shallowMount(RequestBodyEditor, { store });
-
-    expect(component.find('input#request-body-editor-accordion').element.disabled).to.equal(true);
-    expect(component.find('input#request-body-editor-accordion').element.checked).to.equal(false);
-  });
-
-  it('should enable request body editing when request method is POST', async () => {
-    store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
-    await Vue.nextTick();
-
-    const component = shallowMount(RequestBodyEditor, { store });
-
-    expect(component.find('input#request-body-editor-accordion').element.disabled).to.equal(false);
-    expect(component.find('input#request-body-editor-accordion').element.checked).to.equal(true);
-  });
-
   it('should set request body on the store', async () => {
     store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
     await Vue.nextTick();

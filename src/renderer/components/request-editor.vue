@@ -16,8 +16,9 @@
         <header-editor/>
         <input
           id="body-editor"
-          type="checkbox"
-          checked>
+          :disabled="!isRequestBodyEditAvailable"
+          :checked="isRequestBodyEditAvailable"
+          type="checkbox">
         <label
           for="body-editor"
           class="e-accordion__title">Body</label>
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import AuthEditor from './auth-editor';
 import CodeEditor from './code-editor';
 import ContentTypeSelector from './content-type-selector';
@@ -54,6 +56,9 @@ export default {
     HeaderEditor,
     RequestBodyEditor,
     RequestEditorTitle
+  },
+  computed: {
+    ...mapGetters(['isRequestBodyEditAvailable'])
   }
 };
 </script>

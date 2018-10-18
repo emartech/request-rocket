@@ -112,17 +112,14 @@ describe('HeaderEditor.vue', () => {
 
     expect(store.state.request.headers).to.eql([{ name: 'other-header', value: 'other-header-value' }]);
   });
-  it('should not render remove header button for the dynamically added last empty row', () => {
-    const headers = [
-      { name: 'my-header', value: 'my-header-value' },
-      { name: 'other-header', value: 'other-header-value' }
-    ];
+  it('should disable remove header button for the dynamically added last row', () => {
+    const headers = [{ name: 'my-header', value: 'my-header-value' }];
     store.commit(Mutation.SET_REQUEST_HEADERS, headers);
 
     const component = shallowMount(HeaderEditor, { store });
 
     const deleteButtons = component.findAll('.remove-header');
 
-    expect(deleteButtons.length).to.eql(headers.length);
+    expect(deleteButtons.at(1).attributes('disabled')).to.equal('disabled');
   });
 });
