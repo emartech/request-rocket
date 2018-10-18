@@ -5,7 +5,7 @@
       <div class="e-cell e-cell-6">Header value</div>
     </div>
     <div
-      v-for="(header, index) in headers"
+      v-for="(header, index) in requestHeadersWithEmptyRow"
       :key="index"
       class="e-grid">
       <div class="e-cell e-cell-auto">
@@ -13,37 +13,41 @@
           :value="header.name"
           class="header-name e-input"
           placeholder="Name"
-          @input="updateHeader($event.target.value, index, 'name')">
+          @input="updateHeaders($event.target.value, index, 'name')">
       </div>
       <div class="e-cell e-cell-auto">
         <input
           :value="header.value"
           class="header-value e-input"
           placeholder="Value"
-          @input="updateHeader($event.target.value, index, 'value')">
+          @input="updateHeaders($event.target.value, index, 'value')">
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { clone } from 'ramda';
+import { mapGetters } from 'vuex';
 import Action from '../store/action-types';
 
 export default {
   name: 'HeaderEditor',
   computed: {
-    ...mapState({
-      headers: state => state.request.headers
-    })
+    ...mapGetters(['requestHeadersWithEmptyRow'])
   },
   methods: {
-    updateHeader(newHeaderValue, index, field) {
-      const newHeaders = clone(this.headers);
+    updateHeaders(newHeaderValue, index, field) {
+      const newHeaders = this.requestHeadersWithEmptyRow;
       newHeaders[index][field] = newHeaderValue;
 
-      this.$store.dispatch(Action.setRequestHeaders, newHeaders);
+      const headersWithoutEmptyRow = newHeaders.filter(header => {
+        if (!(header.name === '' && header.value === '')) {
+          return true;
+        }
+        return false;
+      });
+
+      this.$store.dispatch(Action.setRequestHeaders, headersWithoutEmptyRow);
     }
   }
 };

@@ -64,5 +64,37 @@ describe('HeaderEditor.vue', () => {
         expect(headerValueInputs.at(index).element.value).to.eql(header.value);
       });
     });
+    it('should not store empty headers', () => {
+      const headers = [
+        { name: 'my-header', value: 'my-header-value' },
+        { name: 'other-header', value: 'other-header-value' }
+      ];
+      store.commit(Mutation.SET_REQUEST_HEADERS, headers);
+
+      const component = shallowMount(HeaderEditor, { store });
+
+      const headerNameInputs = component.findAll('input.header-name');
+      const headerValueInputs = component.findAll('input.header-value');
+
+      headerNameInputs.at(0).element.value = '';
+      headerNameInputs.at(0).trigger('input');
+      headerValueInputs.at(0).element.value = '';
+      headerValueInputs.at(0).trigger('input');
+
+      expect(store.state.request.headers).to.eql([{ name: 'other-header', value: 'other-header-value' }]);
+    });
+  });
+
+  it('should add new empty input fields at the end of the headers list', () => {
+    const headers = [
+      { name: 'my-header', value: 'my-header-value' },
+      { name: 'other-header', value: 'other-header-value' }
+    ];
+    store.commit(Mutation.SET_REQUEST_HEADERS, headers);
+
+    const component = shallowMount(HeaderEditor, { store });
+
+    expect(component.findAll('input.header-name').length).to.eql(3);
+    expect(component.findAll('input.header-value').length).to.eql(3);
   });
 });
