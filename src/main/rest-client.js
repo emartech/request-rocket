@@ -22,7 +22,8 @@ export default class RestClient {
     } catch (error) {
       if (error.response) {
         return error.response;
-      } else if (error.code === 'ECONNABORTED') {
+      }
+      if (error.code === 'ECONNABORTED') {
         throw new Error('Request timed out');
       } else {
         throw new Error('Unexpected error occurred');
