@@ -13,9 +13,6 @@ cache:
   - node_modules
   - "$HOME/.electron"
   - "$HOME/.cache"
-before_install:
-- mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v1.2.1/git-lfs-darwin-amd64-1.2.1.tar.gz
-    | tar -xz -C /tmp/git-lfs --strip-components 1 && /tmp/git-lfs/git-lfs pull
 install:
 - nvm install 8
 - npm install -g xvfb-maybe
