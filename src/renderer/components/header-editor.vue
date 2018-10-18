@@ -40,14 +40,12 @@ export default {
       const newHeaders = this.requestHeadersWithEmptyRow;
       newHeaders[index][field] = newHeaderValue;
 
-      const headersWithoutEmptyRow = newHeaders.filter(header => {
-        if (!(header.name === '' && header.value === '')) {
-          return true;
-        }
-        return false;
-      });
+      const headersWithoutEmptyRow = newHeaders.filter(this.isHeaderEmpty);
 
       this.$store.dispatch(Action.setRequestHeaders, headersWithoutEmptyRow);
+    },
+    isHeaderEmpty(header) {
+      return !(header.name === '' && header.value === '');
     }
   }
 };

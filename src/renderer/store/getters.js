@@ -2,6 +2,11 @@ import { clone } from 'ramda';
 import HttpMethodOptions from './method-options';
 import Auth from '../../common/auth-types';
 
+function isEmptyHeaderPresent(headers) {
+  const lastItemIndex = headers.length - 1;
+  return headers[lastItemIndex].name === '' && headers[lastItemIndex].value === '';
+}
+
 export default {
   isWsseAuthSelected: state => state.auth.selected === Auth.WSSE,
   isNetworkAvailable: state => state.networkStatus === 'online',
@@ -19,10 +24,11 @@ export default {
     HttpMethodOptions.find(option => option.id === state.request.method).isBodyAllowed,
   requestHeadersWithEmptyRow: state => {
     const headers = clone(state.request.headers);
-    const lastItemIndex = headers.length - 1;
-    if (!(headers[lastItemIndex].name === '' && headers[lastItemIndex].value === '')) {
+
+    if (!isEmptyHeaderPresent(headers)) {
       headers.push({ name: '', value: '' });
     }
+
     return headers;
   }
 };
