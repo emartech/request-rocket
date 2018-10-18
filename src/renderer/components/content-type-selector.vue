@@ -23,15 +23,15 @@ import Action from '../store/action-types';
 export const contentTypeOptions = [
   {
     id: ContentType.custom,
-    label: 'Custom'
+    label: 'custom'
   },
   {
     id: ContentType.json,
-    label: 'JSON'
+    label: 'application/json'
   },
   {
     id: ContentType.text,
-    label: 'Text'
+    label: 'text/plain'
   }
 ];
 
