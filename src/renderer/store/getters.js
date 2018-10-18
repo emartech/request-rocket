@@ -1,3 +1,4 @@
+import { clone } from 'ramda';
 import HttpMethodOptions from './method-options';
 import Auth from '../../common/auth-types';
 
@@ -15,5 +16,13 @@ export default {
     return 'application/json';
   },
   isRequestBodyEditAvailable: state =>
-    HttpMethodOptions.find(option => option.id === state.request.method).isBodyAllowed
+    HttpMethodOptions.find(option => option.id === state.request.method).isBodyAllowed,
+  requestHeadersWithEmptyRow: state => {
+    const headers = clone(state.request.headers);
+    const lastItemIndex = headers.length - 1;
+    if (!(headers[lastItemIndex].name === '' && headers[lastItemIndex].value === '')) {
+      headers.push({ name: '', value: '' });
+    }
+    return headers;
+  }
 };

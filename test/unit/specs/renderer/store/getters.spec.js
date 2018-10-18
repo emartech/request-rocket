@@ -63,4 +63,39 @@ describe('Getters', () => {
       expect(Getter.isWsseAuthSelected(state)).to.be.eql(true);
     });
   });
+  describe('.requestHeadersWithEmptyRow', () => {
+    it('should return headers extended with empty header object', () => {
+      const state = {
+        request: {
+          headers: [
+            { name: 'my-header', value: 'my-header-value' },
+            { name: 'other-header', value: 'other-header-value' }
+          ]
+        }
+      };
+      const expectedHeaders = [
+        { name: 'my-header', value: 'my-header-value' },
+        { name: 'other-header', value: 'other-header-value' },
+        { name: '', value: '' }
+      ];
+      expect(Getter.requestHeadersWithEmptyRow(state)).to.be.eql(expectedHeaders);
+    });
+    it('should not extend headers obejct with empty header', () => {
+      const state = {
+        request: {
+          headers: [
+            { name: 'my-header', value: 'my-header-value' },
+            { name: 'other-header', value: 'other-header-value' },
+            { name: '', value: '' }
+          ]
+        }
+      };
+      const expectedHeaders = [
+        { name: 'my-header', value: 'my-header-value' },
+        { name: 'other-header', value: 'other-header-value' },
+        { name: '', value: '' }
+      ];
+      expect(Getter.requestHeadersWithEmptyRow(state)).to.be.eql(expectedHeaders);
+    });
+  });
 });
