@@ -4,14 +4,23 @@
       <h2>Response</h2>
     </div>
     <div class="e-fullheight__body">
-      <request-headers/>
-      <code-editor
-        :read-only="true"
-        :code="beautifyBody(response.body)"
-        :type="responseType"/>
-      <response-headers/>
-      <h6>Status Code</h6>
-      <span id="status-code">{{ response.status }}</span>
+      <div class="e-accordion e-accordion-stretch">
+        <input
+          id="sent-headers"
+          type="checkbox"
+          checked>
+        <label
+          for="sent-headers"
+          class="e-accordion__title">Request headers</label>
+        <request-headers/>
+        <code-editor
+          :read-only="true"
+          :code="beautifyBody(response.body)"
+          :type="responseType"/>
+        <response-headers/>
+        <h6>Status Code</h6>
+        <span id="status-code">{{ response.status }}</span>
+      </div>
     </div>
   </div>
 </template>

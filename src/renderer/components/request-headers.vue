@@ -1,7 +1,12 @@
 <template>
-  <div>
-    <h6>Request headers</h6>
-    <pre id="request-headers">{{ sentRequestHeaders }}</pre>
+  <div class="e-accordion__content">
+    <div id="request-headers">
+      <div
+        v-for="(value, header) in sentRequestHeaders"
+        :key="header">
+        <strong>{{ header }}:</strong>&nbsp;{{ value }}
+      </div>
+    </div>
   </div>
 </template>
 

@@ -12,11 +12,24 @@ describe('RequestHeaders.vue', () => {
   });
 
   it('should render correct request header contents', async () => {
-    store.commit(Mutation.SET_SENT_REQUEST_HEADERS, { 'x-some-header': 'some_value' });
+    store.commit(Mutation.SET_SENT_REQUEST_HEADERS, {
+      'x-some-header1': 'some_value1',
+      'x-some-header2': 'some_value2'
+    });
+
     await Vue.nextTick();
+
     const component = shallowMount(RequestHeaders, { store });
-    const headersElement = component.find('pre#request-headers');
-    const expectedHeaders = JSON.parse(headersElement.element.textContent);
-    expect(expectedHeaders).to.eql({ 'x-some-header': 'some_value' });
+
+    const expectedHeaders = ['x-some-header1: some_value1', 'x-some-header2: some_value2'];
+
+    const actualHeaders = component
+      .find('#request-headers')
+      .text()
+      .split('\n');
+
+    actualHeaders.forEach((headerAsText, index) => {
+      expect(expectedHeaders[index]).to.eql(headerAsText.trim());
+    });
   });
 });
