@@ -12,24 +12,16 @@ describe('RequestHeaders.vue', () => {
   });
 
   it('should render correct request header contents', async () => {
+    const component = shallowMount(RequestHeaders, { store });
+
     store.commit(Mutation.SET_SENT_REQUEST_HEADERS, {
       'x-some-header1': 'some_value1',
       'x-some-header2': 'some_value2'
     });
-
     await Vue.nextTick();
 
-    const component = shallowMount(RequestHeaders, { store });
+    const displayedHeaders = component.find('#request-headers').text();
 
-    const expectedHeaders = ['x-some-header1: some_value1', 'x-some-header2: some_value2'];
-
-    const actualHeaders = component
-      .find('#request-headers')
-      .text()
-      .split('\n');
-
-    actualHeaders.forEach((headerAsText, index) => {
-      expect(expectedHeaders[index]).to.eql(headerAsText.trim());
-    });
+    expect(displayedHeaders).to.match(/^\s*x-some-header1:\s+some_value1\n\s*x-some-header2:\s+some_value2\s*$/);
   });
 });
