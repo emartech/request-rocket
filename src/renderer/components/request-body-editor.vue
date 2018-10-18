@@ -1,6 +1,18 @@
 <template>
-  <div>
-    <div v-if="isRequestBodyEditAvailable">
+  <div class="e-accordion">
+    <input
+      id="request-body-editor-accordion"
+      :disabled="!isRequestBodyEditAvailable"
+      :checked="isRequestBodyEditAvailable"
+      type="checkbox"
+      name="accordion-checkbox">
+    <label
+      class="e-accordion__title"
+      for="request-body-editor-accordion">
+      Accordion 1
+    </label>
+    <div
+      class="e-accordion__content">
       <content-type-selector/>
       <code-editor
         :code="body"

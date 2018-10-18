@@ -13,19 +13,21 @@ describe('RequestEditor.vue', () => {
     store = createStore();
   });
 
-  it('should hide request body editor by default', () => {
+  it('should disable editing by default', () => {
     const component = shallowMount(RequestBodyEditor, { store });
 
-    expect(component.find({ name: 'CodeEditor' }).element).to.eql(undefined);
+    expect(component.find('input#request-body-editor-accordion').element.disabled).to.equal(true);
+    expect(component.find('input#request-body-editor-accordion').element.checked).to.equal(false);
   });
 
-  it('should show request body editor when request method is POST', async () => {
+  it('should enable request body editing when request method is POST', async () => {
     store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
     await Vue.nextTick();
 
     const component = shallowMount(RequestBodyEditor, { store });
 
-    expect(component.find({ name: 'CodeEditor' }).element).not.to.eql(undefined);
+    expect(component.find('input#request-body-editor-accordion').element.disabled).to.equal(false);
+    expect(component.find('input#request-body-editor-accordion').element.checked).to.equal(true);
   });
 
   it('should set request body on the store', async () => {
@@ -48,23 +50,6 @@ describe('RequestEditor.vue', () => {
     const codemirrorComponent = component.find({ name: 'CodeEditor' });
 
     expect(codemirrorComponent.props('code')).to.equal('{"hello":"bello"}');
-  });
-
-  it('should hide content type selector by default', () => {
-    const component = shallowMount(RequestBodyEditor, { store });
-    const contentTypeSelector = component.find({ name: 'ContentTypeSelector' });
-
-    expect(contentTypeSelector.exists()).to.eql(false);
-  });
-
-  it('should show content type selector when request method is POST', async () => {
-    store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
-    await Vue.nextTick();
-
-    const component = shallowMount(RequestBodyEditor, { store });
-    const contentTypeSelector = component.find({ name: 'ContentTypeSelector' });
-
-    expect(contentTypeSelector.exists()).to.eql(true);
   });
 
   context('when content type is selected', () => {
