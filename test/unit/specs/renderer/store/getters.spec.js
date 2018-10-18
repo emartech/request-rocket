@@ -64,21 +64,31 @@ describe('Getters', () => {
     });
   });
   describe('.requestHeadersWithEmptyRow', () => {
-    it('should return headers extended with empty header object', () => {
+    it('should append an empty header to the end of the headers', () => {
       const state = {
         request: {
-          headers: [
-            { name: 'my-header', value: 'my-header-value' },
-            { name: 'other-header', value: 'other-header-value' }
-          ]
+          headers: []
         }
       };
-      const expectedHeaders = [
-        { name: 'my-header', value: 'my-header-value' },
-        { name: 'other-header', value: 'other-header-value' },
-        { name: '', value: '' }
-      ];
-      expect(Getter.requestHeadersWithEmptyRow(state)).to.be.eql(expectedHeaders);
+      expect(Getter.requestHeadersWithEmptyRow(state)).to.be.eql([{ name: '', value: '' }]);
+    });
+    context('when the headers are not empty', () => {
+      it('should append an empty header to the end of the headers', () => {
+        const state = {
+          request: {
+            headers: [
+              { name: 'my-header', value: 'my-header-value' },
+              { name: 'other-header', value: 'other-header-value' }
+            ]
+          }
+        };
+        const expectedHeaders = [
+          { name: 'my-header', value: 'my-header-value' },
+          { name: 'other-header', value: 'other-header-value' },
+          { name: '', value: '' }
+        ];
+        expect(Getter.requestHeadersWithEmptyRow(state)).to.be.eql(expectedHeaders);
+      });
     });
     it('should not extend headers obejct with empty header', () => {
       const state = {

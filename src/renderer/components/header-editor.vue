@@ -23,6 +23,7 @@
           @input="updateHeaders($event.target.value, index, 'value')">
       </div>
       <div
+        v-if="showDeleteButton(header)"
         class="e-btn e-btn-onlyicon remove-header"
         @click="removeHeader(index)">
         <e-icon icon="trash-o"/>
@@ -47,10 +48,13 @@ export default {
       this.storeHeaders(headers);
     },
     storeHeaders(headers) {
-      const headersWithoutEmptyRow = headers.filter(this.isHeaderEmpty);
+      const headersWithoutEmptyRow = headers.filter(this.isHeaderNotEmpty);
       this.$store.dispatch(Action.setRequestHeaders, headersWithoutEmptyRow);
     },
-    isHeaderEmpty(header) {
+    showDeleteButton(header) {
+      return this.isHeaderNotEmpty(header);
+    },
+    isHeaderNotEmpty(header) {
       return !(header.name === '' && header.value === '');
     },
     removeHeader(index) {

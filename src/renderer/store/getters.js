@@ -25,7 +25,7 @@ export default {
   requestHeadersWithEmptyRow: state => {
     const headers = clone(state.request.headers);
 
-    if (!isEmptyHeaderPresent(headers)) {
+    if (headers.length === 0 || !isEmptyHeaderPresent(headers)) {
       headers.push({ name: '', value: '' });
     }
 
