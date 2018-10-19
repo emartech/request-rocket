@@ -1,8 +1,8 @@
 <template>
   <div class="e-fullheight__content e-fullheight__content-box">
-    <div class="e-fullheight__body e-fullheight__body-no_header">
+    <request-editor-title/>
+    <div class="e-fullheight__body">
       <div class="e-field">
-        <request-editor-title/>
         <url-group/>
       </div>
       <div class="e-accordion e-accordion-stretch">

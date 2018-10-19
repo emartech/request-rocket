@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <label class="e-field__label">
-      Request URL
-    </label>
+  <div class="e-fullheight__header">
+    <h2>Request</h2>
   </div>
 </template>
 
