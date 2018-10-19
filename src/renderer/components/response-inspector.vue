@@ -15,10 +15,6 @@
         <header-inspector
           id="request-header-inspector"
           :headers="sentRequestHeaders"/>
-        <code-editor
-          :read-only="true"
-          :code="beautifyBody(response.body)"
-          :type="responseType"/>
         <input
           id="response-headers"
           type="checkbox"
@@ -29,6 +25,19 @@
         <header-inspector
           id="response-header-inspector"
           :headers="response.headers"/>
+        <input
+          id="body-inspector"
+          type="checkbox"
+          checked>
+        <label
+          for="body-inspector"
+          class="e-accordion__title">Body</label>
+        <div class="e-accordion__content">
+          <code-editor
+            :read-only="true"
+            :code="beautifyBody(response.body)"
+            :type="responseType"/>
+        </div>
         <h6>Status Code</h6>
         <span id="status-code">{{ response.status }}</span>
       </div>
