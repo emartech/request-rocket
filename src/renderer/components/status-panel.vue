@@ -1,6 +1,6 @@
 <template>
   <div class="e-grid">
-    <div class="e-cell e-cell-4">
+    <div class="e-cell e-cell-4 e-cell-border_right">
       <div class="e-legend">
         <div class="e-legend__title">
           Status
@@ -12,8 +12,8 @@
         </div>
       </div>
     </div>
-    <div class="e-cell e-cell-4">
-      <div class="e-legend">
+    <div class="e-cell e-cell-4 e-cell-border_right">
+      <div class="e-legend e-gridcol">
         <div class="e-legend__title">
           Time
         </div>
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="e-cell e-cell-4">
-      <div class="e-legend">
+      <div class="e-legend e-gridcol">
         <div class="e-legend__title">
           Size
         </div>
