@@ -15,7 +15,7 @@
         <div class="e-legend__title">
           Time
         </div>
-        <div class="e-legend__value text-color-info">
+        <div class="e-legend__value text-color-shade">
           214 ms
         </div>
       </div>
@@ -25,7 +25,7 @@
         <div class="e-legend__title">
           Size
         </div>
-        <div class="e-legend__value text-color-info">
+        <div class="e-legend__value text-color-shade">
           814 B
         </div>
       </div>
