@@ -6,7 +6,7 @@ import Mutation from '@/store/mutation-types';
 import HttpMethod from '../../../../../src/common/method-types';
 import ContentType from '../../../../../src/common/content-types';
 
-describe('RequestEditor.vue', () => {
+describe('RequestBodyEditor.vue', () => {
   let store;
 
   beforeEach(() => {
