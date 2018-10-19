@@ -3,7 +3,7 @@ import StatusPanel from '@/components/status-panel';
 import createStore from '@/store';
 import Mutation from '../../../../../src/renderer/store/mutation-types';
 
-describe('RequestEditorTitle.vue', () => {
+describe('StatusPanel.vue', () => {
   let store;
 
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('RequestEditorTitle.vue', () => {
   });
 
   it('should render the status code', () => {
-    const response = { status: 200 };
+    const response = { status: 200, body: '' };
     store.commit(Mutation.UPDATE_RESPONSE, response);
 
     const component = shallowMount(StatusPanel, { store });
@@ -22,7 +22,7 @@ describe('RequestEditorTitle.vue', () => {
   });
 
   it('should render the request round trip time', () => {
-    const response = { elapsedTime: 100 };
+    const response = { elapsedTime: 100, body: '' };
     store.commit(Mutation.UPDATE_RESPONSE, response);
 
     const component = shallowMount(StatusPanel, { store });
@@ -30,5 +30,16 @@ describe('RequestEditorTitle.vue', () => {
 
     expect(elapsedTimeElement.exists()).to.eql(true);
     expect(elapsedTimeElement.text()).to.eql('100 ms');
+  });
+
+  it('should render the response size', () => {
+    const response = { body: 'abcd' };
+    store.commit(Mutation.UPDATE_RESPONSE, response);
+
+    const component = shallowMount(StatusPanel, { store });
+    const elapsedTimeElement = component.find('#response-size');
+
+    expect(elapsedTimeElement.exists()).to.eql(true);
+    expect(elapsedTimeElement.text()).to.eql('4 B');
   });
 });

@@ -29,8 +29,10 @@
         <div class="e-legend__title">
           Size
         </div>
-        <div class="e-legend__value text-color-shade">
-          814 B
+        <div
+          id="response-size"
+          class="e-legend__value text-color-shade">
+          {{ responseSize }} B
         </div>
       </div>
     </div>
@@ -44,7 +46,8 @@ export default {
   computed: {
     ...mapState({
       statusCode: state => state.response.status,
-      requestTime: state => state.response.elapsedTime
+      requestTime: state => state.response.elapsedTime,
+      responseSize: state => state.response.body.length
     })
   }
 };
