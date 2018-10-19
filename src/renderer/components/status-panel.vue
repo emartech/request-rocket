@@ -17,8 +17,10 @@
         <div class="e-legend__title">
           Time
         </div>
-        <div class="e-legend__value text-color-shade">
-          214 ms
+        <div
+          id="request-time"
+          class="e-legend__value text-color-shade">
+          {{ requestTime }} ms
         </div>
       </div>
     </div>
@@ -41,7 +43,8 @@ export default {
   name: 'StatusPanel',
   computed: {
     ...mapState({
-      statusCode: state => state.response.status
+      statusCode: state => state.response.status,
+      requestTime: state => state.response.elapsedTime
     })
   }
 };
