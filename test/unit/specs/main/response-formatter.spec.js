@@ -11,14 +11,16 @@ describe('ResponseFormatter', () => {
           getHeaders() {
             return { 'user-agent': 'some-user-agent' };
           }
-        }
+        },
+        elapsedTime: 101
       };
 
       expect(ResponseFormatter.transform(axiosResponse)).to.eql({
         response: {
           headers: { 'content-type': 'application/json' },
           body: '{}',
-          status: 200
+          status: 200,
+          elapsedTime: 101
         },
         requestHeaders: { 'user-agent': 'some-user-agent' }
       });

@@ -5,8 +5,15 @@ import Auth from '../../../../src/common/auth-types';
 
 describe('RequestDispatcher', () => {
   describe('.handle', () => {
+    let clock;
+
+    beforeEach(() => {
+      clock = sinon.useFakeTimers();
+    });
+
     afterEach(() => {
       sinon.restore();
+      clock.restore();
     });
 
     it('should route the request through its lifecycle', async () => {
@@ -35,7 +42,8 @@ describe('RequestDispatcher', () => {
         response: {
           headers: { 'content-type': 'application/json' },
           body: '{}',
-          status: 200
+          status: 200,
+          elapsedTime: 0
         },
         requestHeaders: { 'user-agent': 'some-user-agent' }
       });
