@@ -1,5 +1,7 @@
 <template>
-  <div class="e-fullheight__content e-fullheight__content-box">
+  <div
+    class="e-fullheight__content e-fullheight__content-box"
+    style="flex-basis: 60%">
     <request-editor-title/>
     <div class="e-fullheight__body">
       <div class="e-field">
