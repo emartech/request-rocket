@@ -31,8 +31,12 @@ describe('RequestEditor.vue', () => {
     expect(headerEditor.exists()).to.eql(true);
   });
 
-  it('should render request body editor', () => {
+  it('should render request body editor', async () => {
     const component = shallowMount(RequestEditor, { store });
+
+    store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
+    await Vue.nextTick();
+
     const bodyEditor = component.find({ name: 'RequestBodyEditor' });
 
     expect(bodyEditor.exists()).to.eql(true);
@@ -46,10 +50,10 @@ describe('RequestEditor.vue', () => {
   });
 
   it('should enable request body editing when request method is POST', async () => {
+    const component = shallowMount(RequestEditor, { store });
+
     store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
     await Vue.nextTick();
-
-    const component = shallowMount(RequestEditor, { store });
 
     expect(component.find('#body-editor').element.disabled).to.equal(false);
     expect(component.find('#body-editor').element.checked).to.equal(true);

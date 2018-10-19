@@ -17,12 +17,13 @@
         <input
           id="body-editor"
           :disabled="!isRequestBodyEditAvailable"
-          :checked="isRequestBodyEditAvailable"
-          type="checkbox">
+          :checked="bodyEditorIsVisible"
+          type="checkbox"
+          @change="setBodyEditorVisibility($event.target.checked)">
         <label
           for="body-editor"
           class="e-accordion__title">Body</label>
-        <request-body-editor/>
+        <request-body-editor v-if="bodyEditorIsVisible"/>
         <input
           id="auth-editor"
           type="checkbox"
@@ -57,8 +58,19 @@ export default {
     RequestBodyEditor,
     RequestEditorTitle
   },
+  data() {
+    return { editorShown: true };
+  },
   computed: {
-    ...mapGetters(['isRequestBodyEditAvailable'])
+    ...mapGetters(['isRequestBodyEditAvailable']),
+    bodyEditorIsVisible() {
+      return this.isRequestBodyEditAvailable && this.editorShown;
+    }
+  },
+  methods: {
+    setBodyEditorVisibility(desiredState) {
+      this.editorShown = desiredState;
+    }
   }
 };
 </script>
