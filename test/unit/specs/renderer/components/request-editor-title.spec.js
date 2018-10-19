@@ -13,9 +13,10 @@ describe('RequestEditorTitle.vue', () => {
 
   it('should render a header', () => {
     const component = shallowMount(RequestEditorTitle, { store });
+    const headerElement = component.find('h2');
 
-    expect(component.find('h2').exists()).to.eql(true);
-    expect(component.find('h2').text()).to.eql('Request');
+    expect(headerElement.exists()).to.eql(true);
+    expect(headerElement.text()).to.eql('Request');
   });
   it('should render a reset button', () => {
     const component = shallowMount(RequestEditorTitle, { store });
