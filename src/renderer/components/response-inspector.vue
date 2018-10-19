@@ -5,7 +5,12 @@
     <div class="e-fullheight__header">
       <h2>Response</h2>
     </div>
-    <div class="e-fullheight__body">
+    <div v-if="!firstRequestSent">
+      <empty-state/>
+    </div>
+    <div
+      v-if="firstRequestSent"
+      class="e-fullheight__body">
       <div class="e-field">
         <status-panel/>
       </div>
@@ -55,10 +60,14 @@ import { mapState, mapGetters } from 'vuex';
 import CodeEditor from './code-editor';
 import HeaderInspector from './header-inspector';
 import StatusPanel from './status-panel';
+import EmptyState from './empty-state';
 
 export default {
   name: 'ResponseInspector',
-  components: { CodeEditor, HeaderInspector, StatusPanel },
+  components: { CodeEditor, HeaderInspector, StatusPanel, EmptyState },
+  data() {
+    return { firstRequestSent: true };
+  },
   computed: {
     ...mapState(['response', 'sentRequestHeaders']),
     ...mapGetters(['responseType'])
