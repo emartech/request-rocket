@@ -5,7 +5,9 @@
         <div class="e-legend__title">
           Status
         </div>
-        <div class="e-legend__value text-color-info">
+        <div
+          id="status-code"
+          class="e-legend__value text-color-info">
           {{ statusCode }}
         </div>
       </div>

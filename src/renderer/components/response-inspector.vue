@@ -49,8 +49,6 @@
             :code="beautifyBody(response.body)"
             :type="responseType"/>
         </div>
-        <h6>Status Code</h6>
-        <span id="status-code">{{ response.status }}</span>
       </div>
     </div>
   </div>

@@ -50,17 +50,15 @@ describe('ResponseInspector.vue', () => {
     expect(codemirrorComponent.props('readOnly')).to.equal(true);
   });
 
-  it('should render correct response status code', async () => {
-    const ipcResponse = { status: 200 };
+  it('should render correct response status code', () => {
+    const response = { status: 200 };
 
-    store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
-    await Vue.nextTick();
+    store.commit(Mutation.UPDATE_RESPONSE, response);
 
     const component = shallowMount(ResponseInspector, { store });
-    const statusCodeElement = component.find('span#status-code');
-    const renderedStatusCode = statusCodeElement.element.textContent;
+    const statusPanelComponent = component.find({ name: 'StatusPanel' });
 
-    expect(renderedStatusCode).to.eql('200');
+    expect(statusPanelComponent.exists()).to.equal(true);
   });
 
   it('should render a header inspector with the request headers', () => {
