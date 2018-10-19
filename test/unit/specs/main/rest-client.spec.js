@@ -18,6 +18,8 @@ describe('RestClient', () => {
     });
 
     it('should dispatch a http request using Axios', async () => {
+      axiosRequest.resolves({});
+
       await subject.send({ url: 'https://httpbin.org/anything' });
 
       expect(axiosRequest).to.be.calledWith({ url: 'https://httpbin.org/anything' });
@@ -84,6 +86,25 @@ describe('RestClient', () => {
       }
 
       expect(response).to.eql('{"foo":"bar"}');
+    });
+    it('should track response round trip time', async () => {
+      const clock = sinon.useFakeTimers();
+
+      axiosRequest.returns(
+        new Promise(resolve => {
+          setTimeout(() => resolve({}), 100);
+        })
+      );
+
+      const request = subject.send();
+
+      clock.runAll();
+
+      const response = await request;
+
+      expect(response.elapsedTime).to.equal(100);
+
+      clock.restore();
     });
   });
 });

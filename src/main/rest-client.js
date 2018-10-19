@@ -1,4 +1,5 @@
 import axios from 'axios';
+import TimeTracker from './time-tracker';
 
 export default class RestClient {
   constructor(timeoutInMilliseconds = 60000) {
@@ -18,7 +19,11 @@ export default class RestClient {
 
   async send(requestOptions) {
     try {
-      return await this.client.request(requestOptions);
+      const timeTracker = new TimeTracker(async () => this.client.request(requestOptions));
+      const response = await timeTracker.execute();
+      response.elapsedTime = timeTracker.elapsedTime;
+
+      return response;
     } catch (error) {
       if (error.response) {
         return error.response;
