@@ -55,16 +55,28 @@ describe('ResponseInspector.vue', () => {
     expect(renderedStatusCode).to.eql('200');
   });
 
-  it('should contain a request headers component', () => {
-    const component = shallowMount(ResponseInspector, { store });
+  it('should render a header inspector with the request headers', async () => {
+    const requestHeaders = { accept: 'text/plain' };
 
-    expect(component.find({ name: 'RequestHeaders' }).exists()).to.eql(true);
+    store.commit(Mutation.SET_SENT_REQUEST_HEADERS, requestHeaders);
+    await Vue.nextTick();
+
+    const component = shallowMount(ResponseInspector, { store });
+    const headerInspector = component.find('#request-header-inspector');
+
+    expect(headerInspector.props('headers')).to.eql({ accept: 'text/plain' });
   });
 
-  it('should contain a response headers component', () => {
-    const component = shallowMount(ResponseInspector, { store });
+  it('should render a header inspector with the response headers', async () => {
+    const ipcResponse = { headers: { 'content-type': 'text/plain' } };
 
-    expect(component.find({ name: 'ResponseHeaders' }).exists()).to.eql(true);
+    store.commit(Mutation.UPDATE_RESPONSE, ipcResponse);
+    await Vue.nextTick();
+
+    const component = shallowMount(ResponseInspector, { store });
+    const headerInspector = component.find('#response-header-inspector');
+
+    expect(headerInspector.props('headers')).to.eql({ 'content-type': 'text/plain' });
   });
 
   describe('#beutifyBody', () => {

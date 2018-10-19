@@ -12,12 +12,23 @@
         <label
           for="sent-headers"
           class="e-accordion__title">Request headers</label>
-        <request-headers/>
+        <header-inspector
+          id="request-header-inspector"
+          :headers="sentRequestHeaders"/>
         <code-editor
           :read-only="true"
           :code="beautifyBody(response.body)"
           :type="responseType"/>
-        <response-headers/>
+        <input
+          id="response-headers"
+          type="checkbox"
+          checked>
+        <label
+          for="response-headers"
+          class="e-accordion__title">Response headers</label>
+        <header-inspector
+          id="response-header-inspector"
+          :headers="response.headers"/>
         <h6>Status Code</h6>
         <span id="status-code">{{ response.status }}</span>
       </div>
@@ -28,14 +39,13 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import CodeEditor from './code-editor';
-import ResponseHeaders from './response-headers';
-import RequestHeaders from './request-headers';
+import HeaderInspector from './header-inspector';
 
 export default {
   name: 'ResponseInspector',
-  components: { CodeEditor, ResponseHeaders, RequestHeaders },
+  components: { CodeEditor, HeaderInspector },
   computed: {
-    ...mapState(['response', 'requestHeaders']),
+    ...mapState(['response', 'sentRequestHeaders']),
     ...mapGetters(['responseType'])
   },
   methods: {
