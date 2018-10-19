@@ -5,11 +5,12 @@
     <div class="e-fullheight__header">
       <h2>Response</h2>
     </div>
-    <div v-if="!firstRequestSent">
+    <div v-if="!requestAlreadySent">
       <empty-state/>
     </div>
     <div
-      v-if="firstRequestSent"
+      v-if="requestAlreadySent"
+      id="response-details"
       class="e-fullheight__body">
       <div class="e-field">
         <status-panel/>
@@ -57,6 +58,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import { isEmpty } from 'ramda';
 import CodeEditor from './code-editor';
 import HeaderInspector from './header-inspector';
 import StatusPanel from './status-panel';
@@ -65,11 +67,11 @@ import EmptyState from './empty-state';
 export default {
   name: 'ResponseInspector',
   components: { CodeEditor, HeaderInspector, StatusPanel, EmptyState },
-  data() {
-    return { firstRequestSent: true };
-  },
   computed: {
     ...mapState(['response', 'sentRequestHeaders']),
+    ...mapState({
+      requestAlreadySent: state => !isEmpty(state.response)
+    }),
     ...mapGetters(['responseType'])
   },
   methods: {

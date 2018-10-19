@@ -42,6 +42,8 @@ describe('ResponseInspector.vue', () => {
   });
 
   it('should render a codemirror component with read-only set to true', () => {
+    store.commit(Mutation.UPDATE_RESPONSE, { status: 200 });
+
     const component = shallowMount(ResponseInspector, { store });
     const codemirrorComponent = component.find({ name: 'CodeEditor' });
 
@@ -61,11 +63,12 @@ describe('ResponseInspector.vue', () => {
     expect(renderedStatusCode).to.eql('200');
   });
 
-  it('should render a header inspector with the request headers', async () => {
+  it('should render a header inspector with the request headers', () => {
+    const response = { status: 200 };
     const requestHeaders = { accept: 'text/plain' };
 
+    store.commit(Mutation.UPDATE_RESPONSE, response);
     store.commit(Mutation.SET_SENT_REQUEST_HEADERS, requestHeaders);
-    await Vue.nextTick();
 
     const component = shallowMount(ResponseInspector, { store });
     const headerInspector = component.find('#request-header-inspector');
@@ -129,6 +132,17 @@ describe('ResponseInspector.vue', () => {
       const codemirrorComponent = component.find({ name: 'CodeEditor' });
 
       expect(codemirrorComponent.props('code')).to.equal('{"dummy"}');
+    });
+  });
+
+  context('when no request was sent', () => {
+    it('should display an empty state', () => {
+      const component = shallowMount(ResponseInspector, { store });
+      const emptyStateComponent = component.find({ name: 'EmptyState' });
+      const responseDetailsElement = component.find('#response-details');
+
+      expect(emptyStateComponent.exists()).to.equal(true);
+      expect(responseDetailsElement.exists()).to.equal(false);
     });
   });
 });
