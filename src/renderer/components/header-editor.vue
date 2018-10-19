@@ -6,9 +6,13 @@
       class="e-grid e-grid-medium e-grid-vertical_center">
       <div class="e-cell e-cell-medium">
         <input
-          class="e-checkbox e-checkbox-onlycheckbox"
-          type="checkbox">
-        <label>&nbsp;</label>
+          :id="`checkbox${index}`"
+          :checked="isSendingStatusChecked(index)"
+          :disabled="isControlDisabled(header)"
+          class="e-checkbox e-checkbox-onlycheckbox sending-status"
+          type="checkbox"
+          @change="updateHeaders($event.target.checked, index, 'sendingStatus')">
+        <label :for="`checkbox${index}`">&nbsp;</label>
       </div>
       <div class="e-cell e-cell-4 e-cell-medium">
         <input
@@ -26,7 +30,7 @@
       </div>
       <div class="e-cell e-cell-medium">
         <button
-          :disabled="!showDeleteButton(header)"
+          :disabled="isControlDisabled(header)"
           class="e-btn e-btn-onlyicon remove-header"
           tabindex="-1"
           @click="removeHeader(index)">
@@ -56,8 +60,8 @@ export default {
       const headersWithoutEmptyRow = headers.filter(this.isHeaderNotEmpty);
       this.$store.dispatch(Action.setRequestHeaders, headersWithoutEmptyRow);
     },
-    showDeleteButton(header) {
-      return this.isHeaderNotEmpty(header);
+    isControlDisabled(header) {
+      return !this.isHeaderNotEmpty(header);
     },
     isHeaderNotEmpty(header) {
       return !(header.name === '' && header.value === '');
@@ -66,6 +70,10 @@ export default {
       const headers = this.requestHeadersWithEmptyRow;
       headers.splice(index, 1);
       this.storeHeaders(headers);
+    },
+    isSendingStatusChecked(index) {
+      const headers = this.requestHeadersWithEmptyRow;
+      return index === headers.length - 1 ? false : headers[index].sendingStatus;
     }
   }
 };

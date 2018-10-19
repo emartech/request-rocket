@@ -26,9 +26,10 @@ export default {
     const headers = clone(state.request.headers);
 
     if (headers.length === 0 || !isEmptyHeaderPresent(headers)) {
-      headers.push({ name: '', value: '' });
+      headers.push({ name: '', value: '', sendingStatus: true });
     }
 
     return headers;
-  }
+  },
+  requestHeadersToSend: state => state.request.headers.filter(header => header.sendingStatus === true)
 };

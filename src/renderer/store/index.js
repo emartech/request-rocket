@@ -21,7 +21,7 @@ export default function() {
       request: {
         method: HttpMethod.GET,
         url: '',
-        headers: [{ name: 'content-type', value: 'application/json' }],
+        headers: [{ name: 'content-type', value: 'application/json', sendingStatus: true }],
         body: '',
         contentType: ContentType.custom
       },

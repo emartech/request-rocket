@@ -70,7 +70,7 @@ describe('Getters', () => {
           headers: []
         }
       };
-      expect(Getter.requestHeadersWithEmptyRow(state)).to.be.eql([{ name: '', value: '' }]);
+      expect(Getter.requestHeadersWithEmptyRow(state)).to.be.eql([{ name: '', value: '', sendingStatus: true }]);
     });
     context('when the headers are not empty', () => {
       it('should append an empty header to the end of the headers', () => {
@@ -85,7 +85,7 @@ describe('Getters', () => {
         const expectedHeaders = [
           { name: 'my-header', value: 'my-header-value' },
           { name: 'other-header', value: 'other-header-value' },
-          { name: '', value: '' }
+          { name: '', value: '', sendingStatus: true }
         ];
         expect(Getter.requestHeadersWithEmptyRow(state)).to.be.eql(expectedHeaders);
       });
@@ -106,6 +106,22 @@ describe('Getters', () => {
         { name: '', value: '' }
       ];
       expect(Getter.requestHeadersWithEmptyRow(state)).to.be.eql(expectedHeaders);
+    });
+  });
+  describe('.requestHeadersToSend', () => {
+    it('should return headers with sending status true', () => {
+      const state = {
+        request: {
+          headers: [
+            { name: 'my-header', value: 'my-header-value', sendingStatus: true },
+            { name: 'other-header', value: 'other-header-value', sendingStatus: false }
+          ]
+        }
+      };
+      const expectedHeaders = [
+        { name: 'my-header', value: 'my-header-value', sendingStatus: true },
+      ];
+      expect(Getter.requestHeadersToSend(state)).to.be.eql(expectedHeaders);
     });
   });
 });

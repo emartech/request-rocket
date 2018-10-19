@@ -11,7 +11,7 @@ export default {
     const payload = {
       url: state.request.url,
       method: state.request.method,
-      headers: state.request.headers,
+      headers: getters.requestHeadersToSend,
       body: getters.isRequestBodyEditAvailable ? state.request.body : null,
       authType: state.auth.selected,
       authParams: state.auth.params
@@ -41,7 +41,7 @@ export default {
   [Action.selectContentType]({ commit, state }, contentType) {
     commit(Mutation.SELECT_CONTENT_TYPE, contentType);
     if (contentType !== ContentType.custom) {
-      const newHeader = { name: 'content-type', value: contentType };
+      const newHeader = { name: 'content-type', value: contentType, sendingStatus: true };
       const oldHeader = state.request.headers.find(header => header.name === 'content-type');
       if (oldHeader) {
         commit(Mutation.UPDATE_REQUEST_HEADER, newHeader);

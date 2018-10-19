@@ -81,11 +81,15 @@ describe('actions', () => {
     });
 
     it('should send the desired request headers', () => {
+      store.commit(Mutation.SET_REQUEST_HEADERS, [
+        { name: 'content-type', value: 'application/json', sendingStatus: true },
+        { name: 'accept', value: '*/*', sendingStatus: false }
+      ]);
       store.dispatch(Action.sendRequest);
 
       expect(ipcSpy).to.be.calledWith(
         'send-request',
-        sinon.match.has('headers', [{ name: 'content-type', value: 'application/json' }])
+        sinon.match.has('headers', [{ name: 'content-type', value: 'application/json', sendingStatus: true }])
       );
     });
   });
@@ -142,14 +146,14 @@ describe('actions', () => {
     });
     it('should update the existing content type header', () => {
       const commit = sinon.spy();
-      const expectedHeader = { name: 'content-type', value: ContentType.text };
+      const expectedHeader = { name: 'content-type', value: ContentType.text, sendingStatus: true };
       Actions[Action.selectContentType]({ commit, state: store.state }, ContentType.text);
       expect(commit).to.be.calledWithExactly(Mutation.UPDATE_REQUEST_HEADER, expectedHeader);
     });
     it('should add a content type header if not exists', () => {
       store.commit(Mutation.SET_REQUEST_HEADERS, []);
       const commit = sinon.spy();
-      const expectedHeader = { name: 'content-type', value: ContentType.text };
+      const expectedHeader = { name: 'content-type', value: ContentType.text, sendingStatus: true };
       Actions[Action.selectContentType]({ commit, state: store.state }, ContentType.text);
       expect(commit).to.be.calledWithExactly(Mutation.ADD_REQUEST_HEADER, expectedHeader);
     });
@@ -170,7 +174,7 @@ describe('actions', () => {
   describe('setRequestHeaders', () => {
     it('should set the request headers', () => {
       const commit = sinon.spy();
-      const headers = [{ name: 'content-type', value: 'application/json' }, { name: 'accept', value: '*/*' }];
+      const headers = [{ name: 'content-type', value: ContentType.json }, { name: 'accept', value: '*/*' }];
       Actions[Action.setRequestHeaders]({ commit }, headers);
       expect(commit).to.be.calledWithExactly(Mutation.SET_REQUEST_HEADERS, headers);
     });

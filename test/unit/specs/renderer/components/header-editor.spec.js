@@ -94,8 +94,8 @@ describe('HeaderEditor.vue', () => {
 
     const component = shallowMount(HeaderEditor, { store });
 
-    expect(component.findAll('input.header-name').length).to.eql(3);
-    expect(component.findAll('input.header-value').length).to.eql(3);
+    expect(component.findAll('input.header-name').length).to.equal(3);
+    expect(component.findAll('input.header-value').length).to.equal(3);
   });
 
   it('should remove header item on click', () => {
@@ -112,6 +112,7 @@ describe('HeaderEditor.vue', () => {
 
     expect(store.state.request.headers).to.eql([{ name: 'other-header', value: 'other-header-value' }]);
   });
+
   it('should disable remove header button for the dynamically added last row', () => {
     const headers = [{ name: 'my-header', value: 'my-header-value' }];
     store.commit(Mutation.SET_REQUEST_HEADERS, headers);
@@ -121,5 +122,34 @@ describe('HeaderEditor.vue', () => {
     const deleteButtons = component.findAll('.remove-header');
 
     expect(deleteButtons.at(1).attributes('disabled')).to.equal('disabled');
+  });
+
+  context('header item checkbox', () => {
+    it('should be checked by default', () => {
+      const component = shallowMount(HeaderEditor, { store });
+
+      const checkBoxes = component.findAll('.sending-status');
+
+      expect(checkBoxes.at(0).element.checked).to.equal(true);
+    });
+
+    it('should change sending status when checkbox is clicked', () => {
+      const component = shallowMount(HeaderEditor, { store });
+
+      const checkBoxes = component.findAll('.sending-status');
+
+      checkBoxes.at(0).element.checked = false;
+      checkBoxes.at(0).element.dispatchEvent(new Event('change'));
+
+      expect(store.state.request.headers).to.eql([
+        { name: 'content-type', value: 'application/json', sendingStatus: false }
+      ]);
+    });
+    it('should be disabled for the dynamically added last row', () => {
+      const component = shallowMount(HeaderEditor, { store });
+      const checkBoxes = component.findAll('.sending-status');
+
+      expect(checkBoxes.at(1).attributes('disabled')).to.equal('disabled');
+    });
   });
 });
