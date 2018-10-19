@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { Store } from 'vuex';
+import { clone } from 'ramda';
 import Actions from './actions';
 import Getters from './getters';
 import Mutations from './mutations';
@@ -9,25 +10,27 @@ import ContentType from '../../common/content-types';
 
 Vue.use(Vuex);
 
+export const initialState = {
+  networkStatus: 'online',
+  auth: {
+    selected: Auth.NONE,
+    params: {}
+  },
+  request: {
+    method: HttpMethod.GET,
+    url: '',
+    headers: [{ name: 'content-type', value: 'application/json', sendingStatus: true }],
+    body: '',
+    contentType: ContentType.custom
+  },
+  response: {},
+  sentRequestHeaders: null
+};
+
 export default function() {
-  return new Vuex.Store({
+  return new Store({
     strict: process.env.NODE_ENV !== 'production',
-    state: {
-      networkStatus: 'online',
-      auth: {
-        selected: Auth.NONE,
-        params: {}
-      },
-      request: {
-        method: HttpMethod.GET,
-        url: '',
-        headers: [{ name: 'content-type', value: 'application/json', sendingStatus: true }],
-        body: '',
-        contentType: ContentType.custom
-      },
-      response: {},
-      sentRequestHeaders: null
-    },
+    state: clone(initialState),
     getters: Getters,
     mutations: Mutations,
     actions: Actions

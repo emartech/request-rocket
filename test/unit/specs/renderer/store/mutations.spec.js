@@ -1,6 +1,6 @@
 import Mutation from '../../../../../src/renderer/store/mutation-types';
 import HttpMethod from '../../../../../src/common/method-types';
-import createStore from '../../../../../src/renderer/store';
+import createStore, { initialState } from '../../../../../src/renderer/store';
 import ContentType from '../../../../../src/common/content-types';
 import Auth from '../../../../../src/common/auth-types';
 
@@ -15,6 +15,13 @@ describe('mutations', () => {
     it('should set the URL', () => {
       store.commit(Mutation.UPDATE_URL, 'https://some.url');
       expect(store.state.request.url).to.eql('https://some.url');
+    });
+  });
+  describe('RESET_STATE', () => {
+    it('should revert the store back to its initial state', () => {
+      store.commit(Mutation.UPDATE_URL, 'https://some.url');
+      store.commit(Mutation.RESET_STATE);
+      expect(store.state).to.eql(initialState);
     });
   });
   describe('UPDATE_RESPONSE', () => {

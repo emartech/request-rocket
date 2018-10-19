@@ -179,4 +179,11 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.SET_REQUEST_HEADERS, headers);
     });
   });
+  describe('resetState', () => {
+    it('should commit the RESET_STATE mutation', () => {
+      const commit = sinon.spy();
+      Actions[Action.resetState]({ commit });
+      expect(commit).to.be.calledWithExactly(Mutation.RESET_STATE);
+    });
+  });
 });

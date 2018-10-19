@@ -52,5 +52,8 @@ export default {
   },
   [Action.setRequestHeaders]({ commit }, requestHeaders) {
     commit(Mutation.SET_REQUEST_HEADERS, requestHeaders);
+  },
+  [Action.resetState]({ commit }) {
+    commit(Mutation.RESET_STATE);
   }
 };

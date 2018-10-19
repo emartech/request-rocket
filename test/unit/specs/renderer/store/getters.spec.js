@@ -118,9 +118,7 @@ describe('Getters', () => {
           ]
         }
       };
-      const expectedHeaders = [
-        { name: 'my-header', value: 'my-header-value', sendingStatus: true },
-      ];
+      const expectedHeaders = [{ name: 'my-header', value: 'my-header-value', sendingStatus: true }];
       expect(Getter.requestHeadersToSend(state)).to.be.eql(expectedHeaders);
     });
   });

@@ -9,5 +9,6 @@ export default {
   selectHttpMethod: 'selectHttpMethod',
   setRequestBody: 'setRequestBody',
   selectContentType: 'selectContentType',
-  setRequestHeaders: 'setRequestHeaders'
+  setRequestHeaders: 'setRequestHeaders',
+  resetState: 'resetState'
 };

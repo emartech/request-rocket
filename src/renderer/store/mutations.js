@@ -1,8 +1,13 @@
+import { clone } from 'ramda';
 import Mutation from './mutation-types';
+import { initialState } from './index';
 
 export default {
   [Mutation.UPDATE_URL](state, url) {
     state.request.url = url;
+  },
+  [Mutation.RESET_STATE]() {
+    this.replaceState(clone(initialState));
   },
   [Mutation.SET_SENT_REQUEST_HEADERS](state, requestHeaders) {
     state.sentRequestHeaders = requestHeaders;
