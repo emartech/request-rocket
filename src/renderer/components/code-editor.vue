@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="e-box e-box-no_margin e-box-charts">
     <codemirror
       :options="cmOptions"
       :value="code"

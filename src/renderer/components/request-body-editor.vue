@@ -3,12 +3,10 @@
     <div class="e-field">
       <content-type-selector/>
     </div>
-    <div class="e-box e-box-no_margin e-box-charts">
-      <code-editor
-        :code="body"
-        :type="contentType"
-        @input="setRequestBody"/>
-    </div>
+    <code-editor
+      :code="body"
+      :type="contentType"
+      @input="setRequestBody"/>
   </div>
 </template>
 
