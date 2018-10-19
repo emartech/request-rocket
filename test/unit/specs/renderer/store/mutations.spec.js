@@ -97,4 +97,10 @@ describe('mutations', () => {
       expect(store.state.request.headers).to.eql([{ name: 'content-type', value: 'text/plain', sendingStatus: true }]);
     });
   });
+  describe('SET_ERROR_MESSAGE', function() {
+    it('should set the error message', () => {
+      store.commit(Mutation.SET_ERROR_MESSAGE, 'error occurred');
+      expect(store.state.errorMessage).to.equal('error occurred');
+    });
+  });
 });

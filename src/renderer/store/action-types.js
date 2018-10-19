@@ -10,5 +10,6 @@ export default {
   setRequestBody: 'setRequestBody',
   selectContentType: 'selectContentType',
   setRequestHeaders: 'setRequestHeaders',
-  resetState: 'resetState'
+  resetState: 'resetState',
+  setErrorMessage: 'setErrorMessage'
 };

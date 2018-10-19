@@ -16,6 +16,11 @@ describe('Store', () => {
         expect(store.state.networkStatus).to.eql('online');
       });
     });
+    describe('errorMessage', () => {
+      it('should be set to null as initial value', () => {
+        expect(store.state.errorMessage).to.equal(null);
+      });
+    });
     describe('request method', () => {
       it('should have GET http method as initial value', () => {
         expect(store.state.request.method).to.eql(HttpMethod.GET);

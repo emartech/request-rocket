@@ -1,15 +1,6 @@
 <template>
   <div class="e-fullheight__wrapper">
-    <div
-      v-if="errorOccurred"
-      class="e-alert e-alert-fixed e-alert-withicon e-alert-danger"
-      style="top: 0">
-      <span class="e-alert__icon">
-        <!-- eslint-disable -->
-        <e-icon icon="warning"></e-icon>
-      </span>
-      Something went wrong...
-    </div>
+    <error-message v-if="errorOccurred"/>
     <div class="e-fullheight__container">
       <request-editor/>
       <response-inspector/>
@@ -18,12 +9,19 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import RequestEditor from './request-editor';
 import ResponseInspector from './response-inspector';
+import ErrorMessage from './error-message';
 
 export default {
   name: 'MainWindow',
-  components: { RequestEditor, ResponseInspector }
+  components: { RequestEditor, ResponseInspector, ErrorMessage },
+  computed: {
+    ...mapState({
+      errorOccurred: state => state.errorMessage !== null
+    })
+  }
 };
 </script>
 

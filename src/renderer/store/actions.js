@@ -55,5 +55,8 @@ export default {
   },
   [Action.resetState]({ commit }) {
     commit(Mutation.RESET_STATE);
+  },
+  [Action.setErrorMessage]({ commit }, errorMessage) {
+    commit(Mutation.SET_ERROR_MESSAGE, errorMessage);
   }
 };

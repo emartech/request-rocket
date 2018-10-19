@@ -186,4 +186,11 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.RESET_STATE);
     });
   });
+  describe('setErrorMessage', () => {
+    it('should commit the SET_ERROR_MESSAGE mutation', () => {
+      const commit = sinon.spy();
+      Actions[Action.setErrorMessage]({ commit }, 'error occurred');
+      expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_MESSAGE, 'error occurred');
+    });
+  });
 });

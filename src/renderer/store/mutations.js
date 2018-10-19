@@ -42,5 +42,8 @@ export default {
   [Mutation.UPDATE_REQUEST_HEADER](state, updatedHeader) {
     const oldHeader = state.request.headers.find(header => header.name === updatedHeader.name);
     Object.assign(oldHeader, updatedHeader);
+  },
+  [Mutation.SET_ERROR_MESSAGE](state, errorMessage) {
+    state.errorMessage = errorMessage;
   }
 };

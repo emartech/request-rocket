@@ -12,6 +12,7 @@ Vue.use(Vuex);
 
 export const initialState = {
   networkStatus: 'online',
+  errorMessage: null,
   auth: {
     selected: Auth.NONE,
     params: {}
