@@ -15,7 +15,7 @@ describe('WsseEditor.vue', () => {
     expect(component.find('#wsse-key').exists()).to.eql(true);
     expect(component.find('#wsse-secret').exists()).to.eql(true);
   });
-  it('should set the credentials on the store', () => {
+  it('should set wsse key on the store', () => {
     const key = component.find('#wsse-key');
     key.element.value = 'some_key_name';
     key.trigger('input');
