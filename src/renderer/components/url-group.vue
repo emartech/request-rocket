@@ -16,10 +16,12 @@
     <div class="e-cell e-cell-auto e-cell-medium">
       <input
         id="request-editor-url-field"
+        :disabled="!isNetworkAvailable"
         :value="url"
         class="e-input"
         type="text"
-        @input="setUrl($event.target.value)">
+        @input="setUrl($event.target.value)"
+        @keyup.enter="sendRequest">
     </div>
     <div class="e-cell e-cell-medium">
       <button

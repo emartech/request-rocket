@@ -91,6 +91,59 @@ describe('UrlGroup.vue', () => {
     });
   });
 
+  context('pressing enter in the URL field', () => {
+    context('when network is online', () => {
+      it('should dispatch the request', () => {
+        const requestSender = sinon.spy();
+
+        const store = new Vuex.Store({
+          state: {
+            networkStatus: 'online',
+            request: {
+              method: HttpMethod.GET
+            }
+          },
+          getters: Getters,
+          actions: {
+            [Action.sendRequest]: requestSender
+          }
+        });
+
+        const component = shallowMount(UrlGroup, { store });
+
+        const urlField = component.find('#request-editor-url-field');
+
+        urlField.trigger('keyup.enter');
+
+        expect(requestSender.calledOnce).to.eql(true);
+      });
+    });
+
+    context('when network is offline', () => {
+      it('should not send a request', () => {
+        const requestSender = sinon.spy();
+
+        const store = new Vuex.Store({
+          state: {
+            networkStatus: 'offline',
+            request: {
+              method: HttpMethod.GET
+            }
+          },
+          getters: Getters,
+          actions: { [Action.sendRequest]: requestSender }
+        });
+
+        const component = shallowMount(UrlGroup, { store });
+        const urlField = component.find('#request-editor-url-field');
+
+        urlField.trigger('keyup.enter');
+
+        expect(requestSender.calledOnce).to.eql(false);
+      });
+    });
+  });
+
   it('should render selector for http method options', () => {
     const component = shallowMount(UrlGroup, { store });
     const selectElement = component.find('select.http-method');
