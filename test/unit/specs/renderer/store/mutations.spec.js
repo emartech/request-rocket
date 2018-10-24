@@ -103,4 +103,16 @@ describe('mutations', () => {
       expect(store.state.errorMessage).to.equal('error occurred');
     });
   });
+  describe('REQUEST_IN_PROGRESS', function() {
+    it('should indicate that the request is being processed', () => {
+      store.commit(Mutation.REQUEST_IN_PROGRESS);
+      expect(store.state.sendingInProgress).to.equal(true);
+    });
+  });
+  describe('REQUEST_FINISHED_OR_ABORTED', function() {
+    it('should indicate that the no message is is being dispatched', () => {
+      store.commit(Mutation.REQUEST_FINISHED_OR_ABORTED);
+      expect(store.state.sendingInProgress).to.equal(false);
+    });
+  });
 });

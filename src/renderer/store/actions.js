@@ -7,7 +7,9 @@ export default {
   [Action.setUrl]({ commit }, url) {
     commit(Mutation.UPDATE_URL, url);
   },
-  async [Action.sendRequest]({ state, getters }) {
+  async [Action.sendRequest]({ commit, state, getters }) {
+    commit(Mutation.REQUEST_IN_PROGRESS);
+
     const payload = {
       url: state.request.url,
       method: state.request.method,
@@ -16,11 +18,13 @@ export default {
       authType: state.auth.selected,
       authParams: state.auth.params
     };
+
     await ipcRenderer.send('send-request', payload);
   },
   [Action.receiveResponse]({ commit }, response) {
     commit(Mutation.UPDATE_RESPONSE, response.response);
     commit(Mutation.SET_SENT_REQUEST_HEADERS, response.requestHeaders);
+    commit(Mutation.REQUEST_FINISHED_OR_ABORTED);
   },
   [Action.selectAuthType]({ commit }, selectedType) {
     commit(Mutation.SELECT_AUTH_TYPE, selectedType);

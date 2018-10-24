@@ -5,11 +5,14 @@
     <div class="e-fullheight__header">
       <h2>Response</h2>
     </div>
-    <div v-if="!requestAlreadySent">
+    <div v-if="noRequestWasDispatchedYet">
       <empty-state/>
     </div>
+    <div v-if="sendingInProgress">
+      <sending-in-progress/>
+    </div>
     <div
-      v-if="requestAlreadySent"
+      v-if="!noRequestWasDispatchedYet"
       id="response-details"
       class="e-fullheight__body">
       <div class="e-field">
@@ -61,14 +64,15 @@ import CodeEditor from './code-editor';
 import HeaderInspector from './header-inspector';
 import StatusPanel from './status-panel';
 import EmptyState from './empty-state';
+import SendingInProgress from './sending-in-progress';
 
 export default {
   name: 'ResponseInspector',
-  components: { CodeEditor, HeaderInspector, StatusPanel, EmptyState },
+  components: { CodeEditor, HeaderInspector, StatusPanel, EmptyState, SendingInProgress },
   computed: {
-    ...mapState(['response', 'sentRequestHeaders']),
+    ...mapState(['response', 'sentRequestHeaders', 'sendingInProgress']),
     ...mapState({
-      requestAlreadySent: state => !isEmpty(state.response)
+      noRequestWasDispatchedYet: state => isEmpty(state.response)
     }),
     ...mapGetters(['responseType'])
   },

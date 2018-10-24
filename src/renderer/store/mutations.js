@@ -45,5 +45,11 @@ export default {
   },
   [Mutation.SET_ERROR_MESSAGE](state, errorMessage) {
     state.errorMessage = errorMessage;
+  },
+  [Mutation.REQUEST_IN_PROGRESS](state) {
+    state.sendingInProgress = true;
+  },
+  [Mutation.REQUEST_FINISHED_OR_ABORTED](state) {
+    state.sendingInProgress = false;
   }
 };

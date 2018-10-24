@@ -25,7 +25,8 @@ export const initialState = {
     contentType: ContentType.custom
   },
   response: {},
-  sentRequestHeaders: null
+  sentRequestHeaders: null,
+  sendingInProgress: false
 };
 
 export default function() {

@@ -92,6 +92,13 @@ describe('actions', () => {
         sinon.match.has('headers', [{ name: 'content-type', value: 'application/json', sendingStatus: true }])
       );
     });
+    it('should indicate request in progress', () => {
+      const commit = sinon.spy();
+
+      Actions[Action.sendRequest]({ commit });
+
+      expect(commit).to.be.calledWithExactly(Mutation.REQUEST_IN_PROGRESS);
+    });
   });
   describe('receiveResponse', () => {
     it('should store the received response in the store', () => {
@@ -101,6 +108,13 @@ describe('actions', () => {
     it('should store the actual request headers in the store', () => {
       store.dispatch(Action.receiveResponse, { requestHeaders: { 'x-my-header': 'some_value' } });
       expect(store.state.sentRequestHeaders).to.eql({ 'x-my-header': 'some_value' });
+    });
+    it('should indicate finished request', () => {
+      const commit = sinon.spy();
+
+      Actions[Action.receiveResponse]({ commit }, { response: {} });
+
+      expect(commit).to.be.calledWithExactly(Mutation.REQUEST_FINISHED_OR_ABORTED);
     });
   });
   describe('selectAuthType', () => {

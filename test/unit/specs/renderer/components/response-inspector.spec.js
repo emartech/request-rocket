@@ -143,4 +143,18 @@ describe('ResponseInspector.vue', () => {
       expect(responseDetailsElement.exists()).to.equal(false);
     });
   });
+
+  context('when request sending is in progress', () => {
+    it('should display a wait indicator', () => {
+      const component = shallowMount(ResponseInspector, { store });
+
+      store.commit(Mutation.REQUEST_IN_PROGRESS);
+
+      const emptyStateComponent = component.find({ name: 'SendingInProgress' });
+      const responseDetailsElement = component.find('#response-details');
+
+      expect(emptyStateComponent.exists()).to.equal(true);
+      expect(responseDetailsElement.exists()).to.equal(false);
+    });
+  });
 });
