@@ -24,6 +24,7 @@
       </div>
     </div>
     <wsse-editor v-if="isWsseAuthSelected" />
+    <escher-editor v-if="isEscherAuthSelected"/>
   </div>
 </template>
 
@@ -32,12 +33,13 @@ import { mapGetters, mapActions, mapState } from 'vuex';
 import Action from '../store/action-types';
 import WsseEditor from './wsse-editor';
 import authOptions from '../store/auth-options';
+import EscherEditor from './escher-editor';
 
 export default {
   name: 'AuthEditor',
-  components: { WsseEditor },
+  components: { EscherEditor, WsseEditor },
   computed: {
-    ...mapGetters(['isWsseAuthSelected']),
+    ...mapGetters(['isWsseAuthSelected', 'isEscherAuthSelected']),
     ...mapState({
       selectedAuthType: state => state.auth.selected
     }),

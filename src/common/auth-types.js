@@ -1,4 +1,5 @@
 export default {
   NONE: 'NONE',
-  WSSE: 'WSSE'
+  WSSE: 'WSSE',
+  ESCHER: 'ESCHER'
 };

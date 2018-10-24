@@ -8,5 +8,9 @@ export default [
   {
     id: Auth.WSSE,
     label: 'WSSE'
+  },
+  {
+    id: Auth.ESCHER,
+    label: 'Escher'
   }
 ];

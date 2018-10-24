@@ -27,6 +27,7 @@ describe('AuthEditor.vue', () => {
 
     expect(store.state.auth.selected).to.equal(Auth.WSSE);
   });
+
   context('when WSSE auth is selected', () => {
     it('should contain a WSSE editor', () => {
       const select = component.find('select.auth-type');
@@ -36,6 +37,7 @@ describe('AuthEditor.vue', () => {
       expect(component.find({ name: 'WsseEditor' }).exists()).to.eql(true);
     });
   });
+
   context('when no auth was selected', () => {
     it('should not contain a WSSE editor', () => {
       const select = component.find('select.auth-type');
@@ -43,6 +45,23 @@ describe('AuthEditor.vue', () => {
       select.trigger('change');
 
       expect(component.find({ name: 'WsseEditor' }).exists()).to.eql(false);
+    });
+    it('should not contain a Escher editor', () => {
+      const select = component.find('select.auth-type');
+      select.element.value = Auth.NONE;
+      select.trigger('change');
+
+      expect(component.find({ name: 'EscherEditor' }).exists()).to.eql(false);
+    });
+  });
+
+  context('when Escher auth is selected', () => {
+    it('should contain a Escher editor', () => {
+      const select = component.find('select.auth-type');
+      select.element.value = Auth.ESCHER;
+      select.trigger('change');
+
+      expect(component.find({ name: 'EscherEditor' }).exists()).to.eql(true);
     });
   });
 });
