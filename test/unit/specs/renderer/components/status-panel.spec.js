@@ -21,6 +21,30 @@ describe('StatusPanel.vue', () => {
     expect(statusCodeElement.text()).to.eql('200');
   });
 
+  context('when status code indicates failure', () => {
+    it('should set the style to text-color-danger', () => {
+      const response = { status: 400, body: '' };
+      store.commit(Mutation.UPDATE_RESPONSE, response);
+
+      const component = shallowMount(StatusPanel, { store });
+      const statusCodeElement = component.find('#status-code');
+
+      expect(statusCodeElement.classes()).to.include('text-color-danger');
+    });
+  });
+
+  context('when status code indicates success', () => {
+    it('should set the style to text-color-success', () => {
+      const response = { status: 200, body: '' };
+      store.commit(Mutation.UPDATE_RESPONSE, response);
+
+      const component = shallowMount(StatusPanel, { store });
+      const statusCodeElement = component.find('#status-code');
+
+      expect(statusCodeElement.classes()).to.include('text-color-success');
+    });
+  });
+
   it('should render the request round trip time', () => {
     const response = { elapsedTime: 100, body: '' };
     store.commit(Mutation.UPDATE_RESPONSE, response);

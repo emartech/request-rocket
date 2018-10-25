@@ -7,7 +7,8 @@
         </div>
         <div
           id="status-code"
-          class="e-legend__value text-color-info">
+          :class="{ 'text-color-success': !statusCodeIndicatesFailure, 'text-color-danger': statusCodeIndicatesFailure }"
+          class="e-legend__value">
           {{ statusCode }}
         </div>
       </div>
@@ -46,6 +47,7 @@ export default {
   computed: {
     ...mapState({
       statusCode: state => state.response.status,
+      statusCodeIndicatesFailure: state => state.response.status >= 400,
       requestTime: state => state.response.elapsedTime,
       responseSize: state => state.response.body.length
     })
