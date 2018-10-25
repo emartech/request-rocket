@@ -10,13 +10,6 @@ describe('HeaderEditor.vue', () => {
     store = createStore();
   });
 
-  it('should render inputs for content-type header by default', () => {
-    const component = shallowMount(HeaderEditor, { store });
-
-    expect(component.find('input.header-name').element.value).to.eql('content-type');
-    expect(component.find('input.header-value').element.value).to.eql('application/json');
-  });
-
   it('should change input value for a header when header changes in store', () => {
     const component = shallowMount(HeaderEditor, { store });
 
@@ -126,6 +119,10 @@ describe('HeaderEditor.vue', () => {
 
   context('header item checkbox', () => {
     it('should be checked by default', () => {
+      store.commit(Mutation.SET_REQUEST_HEADERS, [
+        { name: 'content-type', value: 'application/json', sendingStatus: true }
+      ]);
+
       const component = shallowMount(HeaderEditor, { store });
 
       const checkBoxes = component.findAll('.sending-status');
@@ -134,6 +131,8 @@ describe('HeaderEditor.vue', () => {
     });
 
     it('should change sending status when checkbox is clicked', () => {
+      store.commit(Mutation.SET_REQUEST_HEADERS, [{ name: 'content-type', value: 'application/json' }]);
+
       const component = shallowMount(HeaderEditor, { store });
 
       const checkBoxes = component.findAll('.sending-status');
@@ -149,7 +148,7 @@ describe('HeaderEditor.vue', () => {
       const component = shallowMount(HeaderEditor, { store });
       const checkBoxes = component.findAll('.sending-status');
 
-      expect(checkBoxes.at(1).attributes('disabled')).to.equal('disabled');
+      expect(checkBoxes.at(0).attributes('disabled')).to.equal('disabled');
     });
   });
 });

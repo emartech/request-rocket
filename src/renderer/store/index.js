@@ -20,7 +20,7 @@ export const initialState = {
   request: {
     method: HttpMethod.GET,
     url: '',
-    headers: [{ name: 'content-type', value: 'application/json', sendingStatus: true }],
+    headers: [],
     body: '',
     contentType: ContentType.custom
   },

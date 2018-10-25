@@ -53,9 +53,11 @@ export default {
   },
   [Action.selectContentType]({ commit, state }, contentType) {
     commit(Mutation.SELECT_CONTENT_TYPE, contentType);
+
     if (contentType !== ContentType.custom) {
       const newHeader = { name: 'content-type', value: contentType, sendingStatus: true };
       const oldHeader = state.request.headers.find(header => header.name === 'content-type');
+
       if (oldHeader) {
         commit(Mutation.UPDATE_REQUEST_HEADER, newHeader);
       } else {

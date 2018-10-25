@@ -187,8 +187,10 @@ describe('actions', () => {
     it('should update the existing content type header', () => {
       const commit = sinon.spy();
       const expectedHeader = { name: 'content-type', value: ContentType.text, sendingStatus: true };
+
       Actions[Action.selectContentType]({ commit, state: store.state }, ContentType.text);
-      expect(commit).to.be.calledWithExactly(Mutation.UPDATE_REQUEST_HEADER, expectedHeader);
+
+      expect(commit).to.be.calledWithExactly(Mutation.ADD_REQUEST_HEADER, expectedHeader);
     });
     it('should add a content type header if not exists', () => {
       store.commit(Mutation.SET_REQUEST_HEADERS, []);
