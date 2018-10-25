@@ -104,6 +104,15 @@ describe('actions', () => {
 
       expect(commit).to.be.calledWithExactly(Mutation.REQUEST_IN_PROGRESS);
     });
+    context('when protocol is not specified', () => {
+      it('should prepend http:// to the URL', () => {
+        store.commit(Mutation.UPDATE_URL, 'request.url');
+
+        store.dispatch(Action.sendRequest);
+
+        expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'http://request.url'));
+      });
+    });
   });
   describe('cancelRequest', () => {
     let ipcSpy;

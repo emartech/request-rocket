@@ -4,6 +4,14 @@ import Mutation from './mutation-types';
 import ContentType from '../../common/content-types';
 import Channels from '../../common/ipc-channels';
 
+function addDefaultProtocolIfNoneSpecified(url) {
+  if (!url.trim().match(/^(.+):\/\//)) {
+    return `http://${url.trim()}`;
+  }
+
+  return url;
+}
+
 export default {
   [Action.setUrl]({ commit }, url) {
     commit(Mutation.UPDATE_URL, url);
@@ -14,7 +22,7 @@ export default {
     commit(Mutation.REQUEST_IN_PROGRESS);
 
     const payload = {
-      url: state.request.url,
+      url: addDefaultProtocolIfNoneSpecified(state.request.url),
       method: state.request.method,
       headers: getters.requestHeadersToSend,
       body: getters.isRequestBodyEditAvailable ? state.request.body : null,
