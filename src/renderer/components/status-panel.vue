@@ -21,7 +21,7 @@
         <div
           id="request-time"
           class="e-legend__value text-color-shade">
-          {{ requestTime }} ms
+          {{ requestTime }}
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@
         <div
           id="response-size"
           class="e-legend__value text-color-shade">
-          {{ responseSize }} B
+          {{ responseSize }}B
         </div>
       </div>
     </div>
@@ -42,13 +42,15 @@
 
 <script>
 import { mapState } from 'vuex';
+import prettyMs from 'pretty-ms';
+
 export default {
   name: 'StatusPanel',
   computed: {
     ...mapState({
       statusCode: state => state.response.status,
       statusCodeIndicatesFailure: state => state.response.status >= 400,
-      requestTime: state => state.response.elapsedTime,
+      requestTime: state => prettyMs(state.response.elapsedTime || 0),
       responseSize: state => state.response.body.length
     })
   }

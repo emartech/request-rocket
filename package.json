@@ -60,6 +60,7 @@
     "axios": "0.18.0",
     "codemirror": "5.40.2",
     "crypto-js": "3.1.9-1",
+    "pretty-ms": "4.0.0",
     "ramda": "0.25.0",
     "vue": "2.5.17",
     "vue-codemirror": "4.0.5",
