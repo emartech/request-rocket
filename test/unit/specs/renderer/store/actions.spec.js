@@ -228,11 +228,16 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.RESET_STATE);
     });
   });
-  describe('setErrorMessage', () => {
+  describe('indicateFatalError', () => {
     it('should commit the SET_ERROR_MESSAGE mutation', () => {
       const commit = sinon.spy();
-      Actions[Action.setErrorMessage]({ commit }, 'error occurred');
+      Actions[Action.indicateFatalError]({ commit }, 'error occurred');
       expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_MESSAGE, 'error occurred');
+    });
+    it('should commit the REQUEST_FINISHED_OR_ABORTED mutation', () => {
+      const commit = sinon.spy();
+      Actions[Action.indicateFatalError]({ commit }, 'error occurred');
+      expect(commit).to.be.calledWithExactly(Mutation.REQUEST_FINISHED_OR_ABORTED);
     });
   });
 });

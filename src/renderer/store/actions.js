@@ -71,7 +71,8 @@ export default {
   [Action.resetState]({ commit }) {
     commit(Mutation.RESET_STATE);
   },
-  [Action.setErrorMessage]({ commit }, errorMessage) {
+  [Action.indicateFatalError]({ commit }, errorMessage) {
     commit(Mutation.SET_ERROR_MESSAGE, errorMessage);
+    commit(Mutation.REQUEST_FINISHED_OR_ABORTED);
   }
 };
