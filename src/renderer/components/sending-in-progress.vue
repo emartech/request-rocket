@@ -6,11 +6,6 @@
       </div>
       <div class="e-emptystate__lead">
         The request is being sent...
-        <br><br>
-        <button class="e-btn">
-          Cancel
-        </button>
-        <br><br>
       </div>
       <e-spinner data-size="large"/>
     </div>

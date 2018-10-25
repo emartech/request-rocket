@@ -9,6 +9,8 @@ export default {
     commit(Mutation.UPDATE_URL, url);
   },
   async [Action.sendRequest]({ commit, state, getters }) {
+    commit(Mutation.UPDATE_RESPONSE, {});
+
     commit(Mutation.REQUEST_IN_PROGRESS);
 
     const payload = {

@@ -46,6 +46,11 @@ describe('actions', () => {
 
       expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'https://request.url'));
     });
+    it('should clear the response data', () => {
+      store.dispatch(Action.sendRequest);
+
+      expect(store.state.response).to.eql({});
+    });
     it('should send the selected authentication with the belonging params', () => {
       const authParams = { key: 'wssekey', secret: 'wssesecret' };
 

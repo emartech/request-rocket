@@ -5,52 +5,54 @@
     <div class="e-fullheight__header">
       <h2>Response</h2>
     </div>
-    <div v-if="noRequestWasDispatchedYet">
-      <empty-state/>
-    </div>
     <div v-if="sendingInProgress">
       <sending-in-progress/>
     </div>
-    <div
-      v-if="!noRequestWasDispatchedYet"
-      id="response-details"
-      class="e-fullheight__body">
-      <div class="e-field">
-        <status-panel/>
+    <div v-else>
+      <div v-if="!responseDataAvailable">
+        <empty-state/>
       </div>
-      <div class="e-accordion e-accordion-stretch">
-        <input
-          id="sent-headers"
-          type="checkbox"
-          checked>
-        <label
-          for="sent-headers"
-          class="e-accordion__title">Request headers</label>
-        <header-inspector
-          id="request-header-inspector"
-          :headers="sentRequestHeaders"/>
-        <input
-          id="response-headers"
-          type="checkbox"
-          checked>
-        <label
-          for="response-headers"
-          class="e-accordion__title">Response headers</label>
-        <header-inspector
-          id="response-header-inspector"
-          :headers="response.headers"/>
-        <input
-          id="body-inspector"
-          type="checkbox"
-          checked>
-        <label
-          for="body-inspector"
-          class="e-accordion__title">Body</label>
-        <div class="e-accordion__content">
-          <code-editor
-            :read-only="true"
-            :code="beautifyBody(response.body)"
-            :type="responseType"/>
+      <div
+        v-if="responseDataAvailable"
+        id="response-details"
+        class="e-fullheight__body">
+        <div class="e-field">
+          <status-panel/>
+        </div>
+        <div class="e-accordion e-accordion-stretch">
+          <input
+            id="sent-headers"
+            type="checkbox"
+            checked>
+          <label
+            for="sent-headers"
+            class="e-accordion__title">Request headers</label>
+          <header-inspector
+            id="request-header-inspector"
+            :headers="sentRequestHeaders"/>
+          <input
+            id="response-headers"
+            type="checkbox"
+            checked>
+          <label
+            for="response-headers"
+            class="e-accordion__title">Response headers</label>
+          <header-inspector
+            id="response-header-inspector"
+            :headers="response.headers"/>
+          <input
+            id="body-inspector"
+            type="checkbox"
+            checked>
+          <label
+            for="body-inspector"
+            class="e-accordion__title">Body</label>
+          <div class="e-accordion__content">
+            <code-editor
+              :read-only="true"
+              :code="beautifyBody(response.body)"
+              :type="responseType"/>
+          </div>
         </div>
       </div>
     </div>
@@ -72,7 +74,7 @@ export default {
   computed: {
     ...mapState(['response', 'sentRequestHeaders', 'sendingInProgress']),
     ...mapState({
-      noRequestWasDispatchedYet: state => isEmpty(state.response)
+      responseDataAvailable: state => !isEmpty(state.response)
     }),
     ...mapGetters(['responseType'])
   },
