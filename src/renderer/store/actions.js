@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extrane
 import Action from './action-types';
 import Mutation from './mutation-types';
 import ContentType from '../../common/content-types';
+import Channels from '../../common/ipc-channels';
 
 export default {
   [Action.setUrl]({ commit }, url) {
@@ -20,6 +21,12 @@ export default {
     };
 
     await ipcRenderer.send('send-request', payload);
+  },
+  async [Action.cancelRequest]() {
+    await ipcRenderer.send(Channels.CANCEL_REQUEST);
+  },
+  [Action.requestCancelled]({ commit }) {
+    commit(Mutation.REQUEST_FINISHED_OR_ABORTED);
   },
   [Action.receiveResponse]({ commit }, response) {
     commit(Mutation.UPDATE_RESPONSE, response.response);

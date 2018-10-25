@@ -53,6 +53,14 @@ ipcMain.on(Channels.SEND_REQUEST, async (event, args) => {
   }
 });
 
+ipcMain.on(Channels.CANCEL_REQUEST, async event => {
+  try {
+    event.sender.send(Channels.REQUEST_CANCELLED);
+  } catch (error) {
+    event.sender.send(Channels.UNEXPECTED_ERROR, error.message);
+  }
+});
+
 /**
  * Auto Updater
  *

@@ -30,3 +30,7 @@ ipcRenderer.on(Channels.RECEIVE_RESPONSE, (event, args) => {
 ipcRenderer.on(Channels.UNEXPECTED_ERROR, (event, errorMessage) => {
   store.dispatch(Action.setErrorMessage, errorMessage);
 });
+
+ipcRenderer.on(Channels.REQUEST_CANCELLED, () => {
+  store.dispatch(Action.requestCancelled);
+});

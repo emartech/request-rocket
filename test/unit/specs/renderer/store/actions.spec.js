@@ -100,6 +100,27 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.REQUEST_IN_PROGRESS);
     });
   });
+  describe('cancelRequest', () => {
+    let ipcSpy;
+
+    beforeEach(() => {
+      ipcSpy = sinon.spy(ipcRenderer, 'send');
+    });
+
+    it('should send the request URL', () => {
+      store.commit(Mutation.UPDATE_URL, 'https://request.url');
+
+      store.dispatch(Action.cancelRequest);
+
+      expect(ipcSpy).to.be.calledWith('cancel-request');
+    });
+  });
+  describe('requestCancelled', () => {
+    it('should store the received response in the store', () => {
+      store.dispatch(Action.requestCancelled);
+      expect(store.state.sendingInProgress).to.equal(false);
+    });
+  });
   describe('receiveResponse', () => {
     it('should store the received response in the store', () => {
       store.dispatch(Action.receiveResponse, { response: { body: '{"key": "value"}' } });
