@@ -63,7 +63,6 @@ describe('StatusPanel.vue', () => {
     const component = shallowMount(StatusPanel, { store });
     const elapsedTimeElement = component.find('#request-time');
 
-    expect(elapsedTimeElement.exists()).to.eql(true);
     expect(elapsedTimeElement.text()).to.eql('1.3s');
   });
 
@@ -75,6 +74,16 @@ describe('StatusPanel.vue', () => {
     const elapsedTimeElement = component.find('#response-size');
 
     expect(elapsedTimeElement.exists()).to.eql(true);
-    expect(elapsedTimeElement.text()).to.eql('4B');
+    expect(elapsedTimeElement.text()).to.eql('4 B');
+  });
+
+  it('should display size in a human readable format', () => {
+    const response = { body: '#'.repeat(1337) };
+    store.commit(Mutation.UPDATE_RESPONSE, response);
+
+    const component = shallowMount(StatusPanel, { store });
+    const elapsedTimeElement = component.find('#response-size');
+
+    expect(elapsedTimeElement.text()).to.eql('1.34 kB');
   });
 });

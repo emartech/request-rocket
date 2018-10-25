@@ -33,7 +33,7 @@
         <div
           id="response-size"
           class="e-legend__value text-color-shade">
-          {{ responseSize }}B
+          {{ responseSize }}
         </div>
       </div>
     </div>
@@ -43,6 +43,7 @@
 <script>
 import { mapState } from 'vuex';
 import prettyMs from 'pretty-ms';
+import prettyBytes from 'pretty-bytes';
 
 export default {
   name: 'StatusPanel',
@@ -51,7 +52,7 @@ export default {
       statusCode: state => state.response.status,
       statusCodeIndicatesFailure: state => state.response.status >= 400,
       requestTime: state => prettyMs(state.response.elapsedTime || 0),
-      responseSize: state => state.response.body.length
+      responseSize: state => prettyBytes(state.response.body.length || 0)
     })
   }
 };
