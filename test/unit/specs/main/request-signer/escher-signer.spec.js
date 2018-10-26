@@ -15,5 +15,12 @@ describe('EscherSigner', () => {
       const signedRequest = signer.signRequest(request);
       expect(signedRequest.headers.host).to.eql('some.url');
     });
+
+    it('should not alter the host header if its already present', () => {
+      const signer = new EscherSigner();
+      const request = { method: 'GET', url: 'https://some.url:443', headers: { host: 'alma.fa' } };
+      const signedRequest = signer.signRequest(request);
+      expect(signedRequest.headers.host).to.eql('alma.fa');
+    });
   });
 });

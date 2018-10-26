@@ -1,16 +1,22 @@
-import { clone } from 'ramda';
+/* eslint-disable */
+import { clone, merge } from 'ramda';
 import { URL } from 'url';
 
-function addHostHeader(request) {
-  request.headers.host = new URL(request.url).hostname;
+function headersWithHost({ url, headers }) {
+  if ('host' in headers) {
+    return headers;
+  }
+
+  const hostFromUrl = new URL(url).hostname;
+
+  return merge(headers, { host: hostFromUrl });
 }
 
 export default class EscherSigner {
-  /* eslint-disable */
   signRequest(request) {
     const clonedRequest = clone(request);
 
-    addHostHeader(clonedRequest);
+    clonedRequest.headers = headersWithHost(request);
 
     return clonedRequest;
   }
