@@ -101,7 +101,19 @@ describe('mutations', () => {
   describe('SET_ERROR_MESSAGE', function() {
     it('should set the error message', () => {
       store.commit(Mutation.SET_ERROR_MESSAGE, 'error occurred');
-      expect(store.state.errorMessage).to.equal('error occurred');
+      expect(store.state.error.message).to.equal('error occurred');
+    });
+  });
+  describe('SET_ERROR_VISIBLE', function() {
+    it('should set the error visibility', () => {
+      store.commit(Mutation.SET_ERROR_VISIBLE, true);
+      expect(store.state.error.visible).to.equal(true);
+    });
+  });
+  describe('SET_ERROR_TIMEOUT_ID', function() {
+    it('should set the timeout ID', () => {
+      store.commit(Mutation.SET_ERROR_TIMEOUT_ID, 0);
+      expect(store.state.error.timeoutID).to.equal(0);
     });
   });
   describe('REQUEST_IN_PROGRESS', function() {

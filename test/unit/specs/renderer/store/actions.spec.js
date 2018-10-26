@@ -239,13 +239,64 @@ describe('actions', () => {
   });
   describe('indicateFatalError', () => {
     it('should commit the SET_ERROR_MESSAGE mutation', () => {
+      const { state } = store;
       const commit = sinon.spy();
-      Actions[Action.indicateFatalError]({ commit }, 'error occurred');
+      Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
       expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_MESSAGE, 'error occurred');
     });
-    it('should commit the REQUEST_FINISHED_OR_ABORTED mutation', () => {
+    it('should commit the SET_ERROR_VISIBLE mutation', () => {
+      const { state } = store;
       const commit = sinon.spy();
-      Actions[Action.indicateFatalError]({ commit }, 'error occurred');
+      Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
+      expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_VISIBLE, true);
+    });
+    it('should commit the SET_ERROR_TIMEOUT_ID mutation with next setTimeout() ID', () => {
+      const { state } = store;
+      const commit = sinon.spy();
+      const nextTimeoutID = setTimeout(() => {}) + 1;
+      Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
+      expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_TIMEOUT_ID, nextTimeoutID);
+    });
+    context('time sensitive tests', () => {
+      const MS_IN_SECOND = 1000;
+
+      let clock;
+
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+      });
+
+      afterEach(() => {
+        clock.restore();
+      });
+
+      it('should commit the SET_ERROR_VISIBLE mutation after 5 seconds', () => {
+        store.dispatch(Action.indicateFatalError, 'error occurred');
+
+        clock.tick(5 * MS_IN_SECOND);
+
+        expect(store.state.error.visible).to.equal(false);
+      });
+      it('should delay the commit of SET_ERROR_VISIBLE mutation if action is called again', () => {
+        store.dispatch(Action.indicateFatalError, 'error occurred');
+
+        clock.tick(3 * MS_IN_SECOND);
+
+        store.dispatch(Action.indicateFatalError, 'another error occurred');
+
+        clock.tick(2 * MS_IN_SECOND);
+
+        expect(store.state.error.visible).to.equal(true);
+
+        clock.tick(5 * MS_IN_SECOND);
+
+        expect(store.state.error.visible).to.equal(false);
+      });
+    });
+    it('should commit the REQUEST_FINISHED_OR_ABORTED mutation', () => {
+      const { state } = store;
+      const commit = sinon.spy();
+      Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
       expect(commit).to.be.calledWithExactly(Mutation.REQUEST_FINISHED_OR_ABORTED);
     });
   });

@@ -12,6 +12,8 @@ function addDefaultProtocolIfNoneSpecified(url) {
   return url;
 }
 
+const MS_IN_SECOND = 1000;
+
 export default {
   [Action.setUrl]({ commit }, url) {
     commit(Mutation.UPDATE_URL, url);
@@ -79,8 +81,18 @@ export default {
   [Action.resetState]({ commit }) {
     commit(Mutation.RESET_STATE);
   },
-  [Action.indicateFatalError]({ commit }, errorMessage) {
+  [Action.indicateFatalError]({ commit, state }, errorMessage) {
     commit(Mutation.SET_ERROR_MESSAGE, errorMessage);
+    commit(Mutation.SET_ERROR_VISIBLE, true);
+
+    clearTimeout(state.error.timeoutID);
+
+    const timeoutID = setTimeout(() => {
+      commit(Mutation.SET_ERROR_VISIBLE, false);
+    }, 5 * MS_IN_SECOND);
+
+    commit(Mutation.SET_ERROR_TIMEOUT_ID, timeoutID);
+
     commit(Mutation.REQUEST_FINISHED_OR_ABORTED);
   }
 };

@@ -44,7 +44,13 @@ export default {
     Object.assign(oldHeader, updatedHeader);
   },
   [Mutation.SET_ERROR_MESSAGE](state, errorMessage) {
-    state.errorMessage = errorMessage;
+    state.error.message = errorMessage;
+  },
+  [Mutation.SET_ERROR_VISIBLE](state, visibility) {
+    state.error.visible = visibility;
+  },
+  [Mutation.SET_ERROR_TIMEOUT_ID](state, timeoutID) {
+    state.error.timeoutID = timeoutID;
   },
   [Mutation.REQUEST_IN_PROGRESS](state) {
     state.sendingInProgress = true;

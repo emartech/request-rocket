@@ -10,13 +10,25 @@ describe('ErrorMessage.vue', () => {
     store = createStore();
   });
 
-  it('should render the error message', () => {
-    store.commit(Mutation.SET_ERROR_MESSAGE, 'error occurred');
+  context('SET_ERROR_MESSAGE', () => {
+    it('should render the error message', () => {
+      store.commit(Mutation.SET_ERROR_MESSAGE, 'error occurred');
 
-    const component = shallowMount(ErrorMessage, { store });
-    const errorMessageElement = component.find('#error-message');
+      const component = shallowMount(ErrorMessage, { store });
+      const errorMessageElement = component.find('#error-message');
 
-    expect(errorMessageElement.exists()).to.eql(true);
-    expect(errorMessageElement.text()).to.eql('error occurred');
+      expect(errorMessageElement.exists()).to.eql(true);
+      expect(errorMessageElement.text()).to.eql('error occurred');
+    });
+  });
+  context('SET_ERROR_VISIBLE', () => {
+    it('should add opened css class', () => {
+      store.commit(Mutation.SET_ERROR_VISIBLE, true);
+
+      const component = shallowMount(ErrorMessage, { store });
+      const errorMessageElement = component.find('#error-message');
+
+      expect(errorMessageElement.classes('opened')).to.equal(true);
+    });
   });
 });

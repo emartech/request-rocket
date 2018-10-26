@@ -16,9 +16,15 @@ describe('Store', () => {
         expect(store.state.networkStatus).to.eql('online');
       });
     });
-    describe('errorMessage', () => {
-      it('should be set to null as initial value', () => {
-        expect(store.state.errorMessage).to.equal(null);
+    describe('error', () => {
+      it('should have a message property as null', () => {
+        expect(store.state.error.message).to.equal(null);
+      });
+      it('should have a show property as false', () => {
+        expect(store.state.error.visible).to.equal(false);
+      });
+      it('should have a timeoutID property as null', () => {
+        expect(store.state.error.timeoutID).to.equal(null);
       });
     });
     describe('request method', () => {
