@@ -9,7 +9,7 @@ export default {
       case Auth.WSSE:
         return new WsseSigner(authParams);
       case Auth.ESCHER:
-        return new EscherSigner();
+        return new EscherSigner(authParams);
       case Auth.NONE:
         return new NoneSigner();
       default:
