@@ -37,6 +37,33 @@ function getUrlStartingFromPath(urlString) {
   return `${url.pathname}${url.search}`;
 }
 
+function transformAxiosRequestToEscherFormat(axiosRequest) {
+  const clonedRequest = clone(axiosRequest);
+
+  clonedRequest.url = getUrlStartingFromPath(clonedRequest.url);
+  clonedRequest.body = clonedRequest.data;
+
+  delete clonedRequest.data;
+
+  const headers = headersWithHost(axiosRequest);
+  clonedRequest.headers = objectToArrayOfArrays(headers);
+
+  return clonedRequest;
+}
+
+function transformEscherRequestToAxiosFormat(escherRequest, originalUrl) {
+  const clonedRequest = clone(escherRequest);
+
+  clonedRequest.url = originalUrl;
+  clonedRequest.data = clonedRequest.body;
+
+  delete clonedRequest.body;
+
+  clonedRequest.headers = arrayOfArraysToObject(clonedRequest.headers);
+
+  return clonedRequest;
+}
+
 function createEscherConfig(keyId, secret, credentialScope) {
   return {
     vendorKey: 'EMS',
@@ -56,24 +83,9 @@ export default class EscherSigner {
   }
 
   signRequest(request) {
-    const clonedRequest = clone(request);
+    const escherRequest = transformAxiosRequestToEscherFormat(request);
+    const signedRequest = this.escher.signRequest(escherRequest, escherRequest.body || '');
 
-    clonedRequest.url = getUrlStartingFromPath(clonedRequest.url);
-    clonedRequest.body = clonedRequest.data;
-    delete clonedRequest.data;
-
-    const headers = headersWithHost(request);
-    clonedRequest.headers = objectToArrayOfArrays(headers);
-
-    const signedRequest = this.escher.signRequest(clonedRequest, clonedRequest.body || '');
-
-    signedRequest.url = request.url;
-    signedRequest.data = signedRequest.body;
-
-    delete signedRequest.body;
-
-    signedRequest.headers = arrayOfArraysToObject(signedRequest.headers);
-
-    return signedRequest;
+    return transformEscherRequestToAxiosFormat(signedRequest, request.url);
   }
 }
