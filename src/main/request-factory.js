@@ -1,9 +1,9 @@
 function convertToKeyValuePairs(headers) {
   return headers.reduce((accumulator, header) => {
     if (header.name in accumulator) {
-      accumulator[header.name] += `,${header.value}`;
+      accumulator[header.name.toLowerCase()] += `,${header.value}`;
     } else {
-      accumulator[header.name] = header.value;
+      accumulator[header.name.toLowerCase()] = header.value;
     }
 
     return accumulator;

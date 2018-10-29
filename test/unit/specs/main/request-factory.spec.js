@@ -56,5 +56,23 @@ describe('RequestFactory', () => {
         data: 'some request body'
       });
     });
+    it('should convert header names to lowercase', () => {
+      const ipcRequest = {
+        method: 'GET',
+        url: 'https://example.com',
+        headers: [
+          { name: 'X-Custom-Header', value: 'some content' },
+          { name: 'X-OtherHeader', value: 'other content' }
+        ],
+        body: 'some request body'
+      };
+
+      expect(RequestFactory.create(ipcRequest)).to.eql({
+        method: 'GET',
+        url: 'https://example.com',
+        headers: { 'x-custom-header': 'some content', 'x-otherheader': 'other content' },
+        data: 'some request body'
+      });
+    });
   });
 });
