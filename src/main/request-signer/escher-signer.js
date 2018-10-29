@@ -59,13 +59,19 @@ export default class EscherSigner {
     const clonedRequest = clone(request);
 
     clonedRequest.url = getUrlStartingFromPath(clonedRequest.url);
+    clonedRequest.body = clonedRequest.data;
+    delete clonedRequest.data;
 
     const headers = headersWithHost(request);
     clonedRequest.headers = objectToArrayOfArrays(headers);
 
-    const signedRequest = this.escher.signRequest(clonedRequest, request.data || '');
+    const signedRequest = this.escher.signRequest(clonedRequest, clonedRequest.body || '');
 
     signedRequest.url = request.url;
+    signedRequest.data = signedRequest.body;
+
+    delete signedRequest.body;
+
     signedRequest.headers = arrayOfArraysToObject(signedRequest.headers);
 
     return signedRequest;
