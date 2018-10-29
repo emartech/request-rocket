@@ -4,7 +4,7 @@
       <e-select>
         <select
           :value="method"
-          class="e-select e-select-inline http-method"
+          class="e-select http-method"
           @change="selectHttpMethod($event.target.value)">
           <option
             v-for="method in httpMethodOptions"
