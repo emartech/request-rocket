@@ -84,7 +84,14 @@ export default class EscherSigner {
 
   signRequest(request) {
     const escherRequest = transformAxiosRequestToEscherFormat(request);
-    const signedRequest = this.escher.signRequest(escherRequest, escherRequest.body || '');
+
+    const additionalHeadersToSign = [];
+
+    if ('x-suite-customerid' in request.headers) {
+      additionalHeadersToSign.push(['x-suite-customerid']);
+    }
+
+    const signedRequest = this.escher.signRequest(escherRequest, escherRequest.body || '', additionalHeadersToSign);
 
     return transformEscherRequestToAxiosFormat(signedRequest, request.url);
   }
