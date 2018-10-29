@@ -30,6 +30,7 @@ export default {
   top: 0;
   transition: transform 0.25s linear;
   transform: translateY(-100%);
+  overflow: hidden;
 }
 .opened {
   transform: translateY(0%);
