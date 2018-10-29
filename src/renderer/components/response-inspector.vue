@@ -5,17 +5,20 @@
     <div class="e-fullheight__header">
       <h2>Response</h2>
     </div>
-    <div v-if="sendingInProgress">
+    <div
+      v-if="sendingInProgress"
+      class="e-fullheight__body">
       <sending-in-progress/>
     </div>
-    <div v-else>
+    <div
+      v-else
+      class="e-fullheight__body">
       <div v-if="!responseDataAvailable">
         <empty-state/>
       </div>
       <div
         v-if="responseDataAvailable"
-        id="response-details"
-        class="e-fullheight__body">
+        id="response-details">
         <div class="e-field">
           <status-panel/>
         </div>
