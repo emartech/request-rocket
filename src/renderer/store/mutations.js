@@ -57,5 +57,15 @@ export default {
   },
   [Mutation.REQUEST_FINISHED_OR_ABORTED](state) {
     state.sendingInProgress = false;
+  },
+  [Mutation.ADD_VALIDATOR_ERROR](state, { type, message }) {
+    state.validatorErrors.push({ type, message });
+  },
+  [Mutation.CLEAR_VALIDATOR_ERRORS](state, type) {
+    if (type == null) {
+      state.validatorErrors = [];
+    } else {
+      state.validatorErrors = state.validatorErrors.filter(error => error.type !== type);
+    }
   }
 };

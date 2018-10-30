@@ -17,6 +17,7 @@ export const initialState = {
     visible: false,
     timeoutID: null
   },
+  validatorErrors: [],
   auth: {
     selected: Auth.NONE,
     params: {}

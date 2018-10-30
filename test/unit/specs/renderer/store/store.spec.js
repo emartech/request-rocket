@@ -17,19 +17,19 @@ describe('Store', () => {
       });
     });
     describe('error', () => {
-      it('should have a message property as null', () => {
+      it('should have a message property', () => {
         expect(store.state.error.message).to.equal(null);
       });
-      it('should have a show property as false', () => {
+      it('should have a visibility property', () => {
         expect(store.state.error.visible).to.equal(false);
       });
-      it('should have a timeoutID property as null', () => {
+      it('should have a timeoutID property', () => {
         expect(store.state.error.timeoutID).to.equal(null);
       });
     });
-    describe('request method', () => {
-      it('should have GET http method as initial value', () => {
-        expect(store.state.request.method).to.eql(HttpMethod.GET);
+    describe('validator errors', () => {
+      it('should be empty by default', () => {
+        expect(store.state.validatorErrors).to.eql([]);
       });
     });
     describe('selected auth type', () => {
@@ -43,6 +43,9 @@ describe('Store', () => {
       });
     });
     describe('request', () => {
+      it('should have GET http method as initial value', () => {
+        expect(store.state.request.method).to.eql(HttpMethod.GET);
+      });
       it('should have url property as string value', () => {
         expect(store.state.request.url).to.eql('');
       });

@@ -128,4 +128,31 @@ describe('mutations', () => {
       expect(store.state.sendingInProgress).to.equal(false);
     });
   });
+
+  describe('validatorErrors', () => {
+    describe('ADD_VALIDATOR_ERROR', function() {
+      it('should add a validator error to the state', () => {
+        store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
+        expect(store.state.validatorErrors).to.eql([{ type: 'url', message: 'URL cannot be empty' }]);
+      });
+    });
+    describe('CLEAR_VALIDATOR_ERRORS', function() {
+      it('should remove validator errors by type if type is specified', () => {
+        store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'header', message: 'Header cannot be empty' });
+        store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
+
+        store.commit(Mutation.CLEAR_VALIDATOR_ERRORS, 'url');
+
+        expect(store.state.validatorErrors).to.eql([{ type: 'header', message: 'Header cannot be empty' }]);
+      });
+      it('should remove all validator errors if type is not specified', () => {
+        store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'header', message: 'Header cannot be empty' });
+        store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
+
+        store.commit(Mutation.CLEAR_VALIDATOR_ERRORS);
+
+        expect(store.state.validatorErrors).to.eql([]);
+      });
+    });
+  });
 });
