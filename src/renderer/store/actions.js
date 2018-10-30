@@ -16,10 +16,15 @@ const MS_IN_SECOND = 1000;
 
 export default {
   [Action.setUrl]({ commit }, url) {
+    commit(Mutation.CLEAR_VALIDATOR_ERRORS, 'url');
     commit(Mutation.UPDATE_URL, url);
   },
-  async [Action.sendRequest]({ commit, state, getters }) {
+  async [Action.sendRequest]({ dispatch, commit, state, getters }) {
     commit(Mutation.UPDATE_RESPONSE, {});
+
+    dispatch(Action.validateForms);
+
+    if (state.validatorErrors.length) return;
 
     commit(Mutation.REQUEST_IN_PROGRESS);
 
@@ -94,5 +99,10 @@ export default {
     commit(Mutation.SET_ERROR_TIMEOUT_ID, timeoutID);
 
     commit(Mutation.REQUEST_FINISHED_OR_ABORTED);
+  },
+  [Action.validateForms]({ commit, state }) {
+    commit(Mutation.CLEAR_VALIDATOR_ERRORS);
+
+    if (!state.request.url) commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
   }
 };

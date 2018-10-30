@@ -31,6 +31,12 @@ describe('actions', () => {
       store.dispatch(Action.setUrl, 'https://new.url');
       expect(store.state.request.url).to.eql('https://new.url');
     });
+    it('should clear URL related validator errors', () => {
+      store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
+      store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'header', message: 'Header cannot be empty' });
+      store.dispatch(Action.setUrl, 'https://new.url');
+      expect(store.state.validatorErrors).to.eql([{ type: 'header', message: 'Header cannot be empty' }]);
+    });
   });
   describe('sendRequest', () => {
     let ipcSpy;
@@ -39,78 +45,100 @@ describe('actions', () => {
       ipcSpy = sinon.spy(ipcRenderer, 'send');
     });
 
-    it('should send the request URL', () => {
-      store.commit(Mutation.UPDATE_URL, 'https://request.url');
-
+    it('should call validateForms action', () => {
       store.dispatch(Action.sendRequest);
 
-      expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'https://request.url'));
+      expect(store.state.validatorErrors).to.not.eql([]);
     });
-    it('should clear the response data', () => {
-      store.dispatch(Action.sendRequest);
+    context('if validator errors occur', () => {
+      it('should not send the request', () => {
+        store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
 
-      expect(store.state.response).to.eql({});
-    });
-    it('should send the selected authentication with the belonging params', () => {
-      const authParams = { key: 'wssekey', secret: 'wssesecret' };
-
-      store.commit(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
-      store.commit(Mutation.SET_AUTH_PARAMS, authParams);
-
-      store.dispatch(Action.sendRequest);
-
-      expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ authType: Auth.WSSE, authParams }));
-    });
-    it('should send the request method', () => {
-      store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
-
-      store.dispatch(Action.sendRequest);
-
-      expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('method', HttpMethod.POST));
-    });
-    [
-      { method: HttpMethod.GET, expectedBody: null },
-      { method: HttpMethod.HEAD, expectedBody: null },
-      { method: HttpMethod.POST, expectedBody: '{"foo": "bar"}' },
-      { method: HttpMethod.PUT, expectedBody: '{"foo": "bar"}' },
-      { method: HttpMethod.PATCH, expectedBody: '{"foo": "bar"}' },
-      { method: HttpMethod.OPTIONS, expectedBody: '{"foo": "bar"}' }
-    ].forEach(({ method, expectedBody }) => {
-      it(`should send the ${method} request with body ${expectedBody}`, () => {
-        store.commit(Mutation.SET_REQUEST_BODY, '{"foo": "bar"}');
-        store.commit(Mutation.SELECT_HTTP_METHOD, method);
         store.dispatch(Action.sendRequest);
 
-        expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('body', expectedBody));
+        expect(ipcSpy).not.to.be.called; // eslint-disable-line
       });
     });
+    context('if validators pass', () => {
+      beforeEach(() => {
+        store.commit(Mutation.UPDATE_URL, 'https://some-valid.url');
+      });
 
-    it('should send the desired request headers', () => {
-      store.commit(Mutation.SET_REQUEST_HEADERS, [
-        { name: 'content-type', value: 'application/json', sendingStatus: true },
-        { name: 'accept', value: '*/*', sendingStatus: false }
-      ]);
-      store.dispatch(Action.sendRequest);
-
-      expect(ipcSpy).to.be.calledWith(
-        'send-request',
-        sinon.match.has('headers', [{ name: 'content-type', value: 'application/json', sendingStatus: true }])
-      );
-    });
-    it('should indicate request in progress', () => {
-      const commit = sinon.spy();
-
-      Actions[Action.sendRequest]({ commit });
-
-      expect(commit).to.be.calledWithExactly(Mutation.REQUEST_IN_PROGRESS);
-    });
-    context('when protocol is not specified', () => {
-      it('should prepend http:// to the URL', () => {
-        store.commit(Mutation.UPDATE_URL, 'request.url');
+      it('should send the request URL', () => {
+        store.commit(Mutation.UPDATE_URL, 'https://request.url');
 
         store.dispatch(Action.sendRequest);
 
-        expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'http://request.url'));
+        expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'https://request.url'));
+      });
+      it('should clear the response data', () => {
+        store.dispatch(Action.sendRequest);
+
+        expect(store.state.response).to.eql({});
+      });
+      it('should send the selected authentication with the belonging params', () => {
+        const authParams = { key: 'wssekey', secret: 'wssesecret' };
+
+        store.commit(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
+        store.commit(Mutation.SET_AUTH_PARAMS, authParams);
+
+        store.dispatch(Action.sendRequest);
+
+        expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ authType: Auth.WSSE, authParams }));
+      });
+      it('should send the request method', () => {
+        store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
+
+        store.dispatch(Action.sendRequest);
+
+        expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('method', HttpMethod.POST));
+      });
+      [
+        { method: HttpMethod.GET, expectedBody: null },
+        { method: HttpMethod.HEAD, expectedBody: null },
+        { method: HttpMethod.POST, expectedBody: '{"foo": "bar"}' },
+        { method: HttpMethod.PUT, expectedBody: '{"foo": "bar"}' },
+        { method: HttpMethod.PATCH, expectedBody: '{"foo": "bar"}' },
+        { method: HttpMethod.OPTIONS, expectedBody: '{"foo": "bar"}' }
+      ].forEach(({ method, expectedBody }) => {
+        it(`should send the ${method} request with body ${expectedBody}`, () => {
+          store.commit(Mutation.SET_REQUEST_BODY, '{"foo": "bar"}');
+          store.commit(Mutation.SELECT_HTTP_METHOD, method);
+          store.dispatch(Action.sendRequest);
+
+          expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('body', expectedBody));
+        });
+      });
+
+      it('should send the desired request headers', () => {
+        store.commit(Mutation.SET_REQUEST_HEADERS, [
+          { name: 'content-type', value: 'application/json', sendingStatus: true },
+          { name: 'accept', value: '*/*', sendingStatus: false }
+        ]);
+        store.dispatch(Action.sendRequest);
+
+        expect(ipcSpy).to.be.calledWith(
+          'send-request',
+          sinon.match.has('headers', [{ name: 'content-type', value: 'application/json', sendingStatus: true }])
+        );
+      });
+      it('should indicate request in progress', () => {
+        const commit = sinon.spy();
+        const dispatch = sinon.spy();
+        const { state } = store;
+
+        Actions[Action.sendRequest]({ dispatch, commit, state });
+
+        expect(commit).to.be.calledWithExactly(Mutation.REQUEST_IN_PROGRESS);
+      });
+      context('when protocol is not specified', () => {
+        it('should prepend http:// to the URL', () => {
+          store.commit(Mutation.UPDATE_URL, 'request.url');
+
+          store.dispatch(Action.sendRequest);
+
+          expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'http://request.url'));
+        });
       });
     });
   });
@@ -298,6 +326,23 @@ describe('actions', () => {
       const commit = sinon.spy();
       Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
       expect(commit).to.be.calledWithExactly(Mutation.REQUEST_FINISHED_OR_ABORTED);
+    });
+  });
+  describe('validateForms', () => {
+    it('should remove all validator errors first', () => {
+      store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
+      store.commit(Mutation.UPDATE_URL, 'http://not-empty.url');
+
+      store.dispatch(Action.validateForms);
+
+      expect(store.state.validatorErrors).to.eql([]);
+    });
+    context('if url is empty', () => {
+      it('should add an invalid url error', () => {
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.validatorErrors).to.eql([{ type: 'url', message: 'URL cannot be empty' }]);
+      });
     });
   });
 });

@@ -13,5 +13,6 @@ export default {
   resetState: 'resetState',
   indicateFatalError: 'indicateFatalError',
   cancelRequest: 'cancelRequest',
-  requestCancelled: 'requestCancelled'
+  requestCancelled: 'requestCancelled',
+  validateForms: 'validateForms'
 };
