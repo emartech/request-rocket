@@ -48,7 +48,8 @@ describe('UrlGroup.vue', () => {
             networkStatus: 'online',
             request: {
               method: HttpMethod.GET
-            }
+            },
+            validatorErrors: []
           },
           getters: Getters,
           actions: {
@@ -75,7 +76,8 @@ describe('UrlGroup.vue', () => {
             networkStatus: 'offline',
             request: {
               method: HttpMethod.GET
-            }
+            },
+            validatorErrors: []
           },
           getters: Getters,
           actions: { [Action.sendRequest]: requestSender }
@@ -101,7 +103,8 @@ describe('UrlGroup.vue', () => {
             networkStatus: 'online',
             request: {
               method: HttpMethod.GET
-            }
+            },
+            validatorErrors: []
           },
           getters: Getters,
           actions: {
@@ -128,7 +131,8 @@ describe('UrlGroup.vue', () => {
             networkStatus: 'offline',
             request: {
               method: HttpMethod.GET
-            }
+            },
+            validatorErrors: []
           },
           getters: Getters,
           actions: { [Action.sendRequest]: requestSender }
@@ -141,6 +145,18 @@ describe('UrlGroup.vue', () => {
 
         expect(requestSender.calledOnce).to.eql(false);
       });
+    });
+  });
+
+  context('when url is invalid', () => {
+    it('should style url input as invalid', () => {
+      const component = shallowMount(UrlGroup, { store });
+      const button = component.find('#request-editor-send-button');
+      const urlField = component.find('#request-editor-url-field');
+
+      button.trigger('click');
+
+      expect(urlField.classes('e-input-error')).to.equal(true);
     });
   });
 

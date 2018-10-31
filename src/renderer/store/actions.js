@@ -100,9 +100,12 @@ export default {
 
     commit(Mutation.REQUEST_FINISHED_OR_ABORTED);
   },
-  [Action.validateForms]({ commit, state }) {
+  [Action.validateForms]({ dispatch, commit, state }) {
     commit(Mutation.CLEAR_VALIDATOR_ERRORS);
 
-    if (!state.request.url) commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
+    if (!state.request.url) {
+      commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
+      dispatch(Action.indicateFatalError, 'URL cannot be empty');
+    }
   }
 };

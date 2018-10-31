@@ -18,6 +18,7 @@
         id="request-editor-url-field"
         :disabled="!isNetworkAvailable"
         :value="url"
+        :class="{ 'e-input-error': isUrlInvalid }"
         class="e-input"
         type="text"
         @input="setUrl($event.target.value)"
@@ -46,7 +47,8 @@ export default {
     ...mapState({
       url: state => state.request.url,
       httpMethodOptions: () => httpMethodOptions,
-      method: state => state.request.method
+      method: state => state.request.method,
+      isUrlInvalid: state => state.validatorErrors.find(error => error.type === 'url')
     })
   },
   methods: {

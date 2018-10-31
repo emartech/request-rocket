@@ -50,16 +50,16 @@ describe('actions', () => {
 
       expect(store.state.validatorErrors).to.not.eql([]);
     });
-    context('if validator errors occur', () => {
+    context('when validator errors occur', () => {
       it('should not send the request', () => {
         store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
 
         store.dispatch(Action.sendRequest);
 
-        expect(ipcSpy).not.to.be.called; // eslint-disable-line
+        expect(ipcSpy.called).to.equal(false);
       });
     });
-    context('if validators pass', () => {
+    context('when validators pass', () => {
       beforeEach(() => {
         store.commit(Mutation.UPDATE_URL, 'https://some-valid.url');
       });
@@ -337,11 +337,27 @@ describe('actions', () => {
 
       expect(store.state.validatorErrors).to.eql([]);
     });
-    context('if url is empty', () => {
+    context('when url is empty', () => {
       it('should add an invalid url error', () => {
         store.dispatch(Action.validateForms);
 
         expect(store.state.validatorErrors).to.eql([{ type: 'url', message: 'URL cannot be empty' }]);
+      });
+
+      it('should display error messages', () => {
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.error.message).to.equal('URL cannot be empty');
+        expect(store.state.error.visible).to.equal(true);
+      });
+    });
+    context('when url is not empty', () => {
+      it('should not display error message', () => {
+        store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.error.message).to.equal(null);
+        expect(store.state.error.visible).to.equal(false);
       });
     });
   });
