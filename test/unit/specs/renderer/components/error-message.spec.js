@@ -11,40 +11,38 @@ describe('ErrorMessage.vue', () => {
     store = createStore();
   });
 
-  context('SET_ERROR_MESSAGE', () => {
-    it('should render the error message', () => {
+  it('should render the error message', () => {
+    const component = shallowMount(ErrorMessage, { store });
+
+    store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
+    store.commit(Mutation.ADD_ERROR_MESSAGE, 'another error occurred');
+
+    const errorMessageElement = component.find('#error-message');
+
+    expect(errorMessageElement.exists()).to.eql(true);
+    expect(errorMessageElement.text()).to.match(/error occurred.*another error occurred/);
+  });
+
+  context('after 5 seconds pass', () => {
+    let clock;
+
+    beforeEach(() => {
+      clock = sinon.useFakeTimers();
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    it('should clear error messages', () => {
       const component = shallowMount(ErrorMessage, { store });
 
       store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
-      store.commit(Mutation.ADD_ERROR_MESSAGE, 'another error occurred');
+      clock.tick(5000);
 
       const errorMessageElement = component.find('#error-message');
 
-      expect(errorMessageElement.exists()).to.eql(true);
-      expect(errorMessageElement.text()).to.match(/error occurred.*another error occurred/);
-    });
-
-    context('after 5 seconds pass', () => {
-      let clock;
-
-      beforeEach(() => {
-        clock = sinon.useFakeTimers();
-      });
-
-      afterEach(() => {
-        clock.restore();
-      });
-
-      it('should clear error messages', () => {
-        const component = shallowMount(ErrorMessage, { store });
-
-        store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
-        clock.tick(5000);
-
-        const errorMessageElement = component.find('#error-message');
-
-        expect(errorMessageElement.exists()).to.eql(false);
-      });
+      expect(errorMessageElement.exists()).to.eql(false);
     });
   });
 });
