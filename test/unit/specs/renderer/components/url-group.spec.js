@@ -148,18 +148,6 @@ describe('UrlGroup.vue', () => {
     });
   });
 
-  context('when url is invalid', () => {
-    it('should style url input as invalid', () => {
-      const component = shallowMount(UrlGroup, { store });
-      const button = component.find('#request-editor-send-button');
-      const urlField = component.find('#request-editor-url-field');
-
-      button.trigger('click');
-
-      expect(urlField.classes('e-input-error')).to.equal(true);
-    });
-  });
-
   it('should render selector for http method options', () => {
     const component = shallowMount(UrlGroup, { store });
     const selectElement = component.find('select.http-method');
