@@ -16,15 +16,9 @@ describe('Store', () => {
         expect(store.state.networkStatus).to.eql('online');
       });
     });
-    describe('error', () => {
-      it('should have a message property', () => {
-        expect(store.state.error.message).to.equal(null);
-      });
-      it('should have a visibility property', () => {
-        expect(store.state.error.visible).to.equal(false);
-      });
-      it('should have a timeoutID property', () => {
-        expect(store.state.error.timeoutID).to.equal(null);
+    describe('errors', () => {
+      it('should have empty array as initial value', () => {
+        expect(store.state.errors).to.eql([]);
       });
     });
     describe('validator errors', () => {
