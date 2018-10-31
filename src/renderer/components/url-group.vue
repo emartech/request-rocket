@@ -20,6 +20,7 @@
         :value="url"
         :class="{ 'e-input-error': isUrlInvalid }"
         class="e-input"
+        placeholder="URL"
         type="text"
         @input="setUrl($event.target.value)"
         @keyup.enter="sendRequest">
