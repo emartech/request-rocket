@@ -104,6 +104,23 @@ describe('mutations', () => {
       expect(store.state.error.message).to.equal('error occurred');
     });
   });
+  describe('ADD_ERROR_MESSAGE', function() {
+    it('should append error messages to the state', () => {
+      store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
+      store.commit(Mutation.ADD_ERROR_MESSAGE, 'another error occurred');
+
+      expect(store.state.errors).to.eql(['error occurred', 'another error occurred']);
+    });
+  });
+  describe('CLEAR_ERRORS', function() {
+    it('should remove all error messages from the state', () => {
+      store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
+
+      store.commit(Mutation.CLEAR_ERRORS);
+
+      expect(store.state.errors).to.eql([]);
+    });
+  });
   describe('SET_ERROR_VISIBLE', function() {
     it('should set the error visibility', () => {
       store.commit(Mutation.SET_ERROR_VISIBLE, true);

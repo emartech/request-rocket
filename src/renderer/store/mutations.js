@@ -46,6 +46,12 @@ export default {
   [Mutation.SET_ERROR_MESSAGE](state, errorMessage) {
     state.error.message = errorMessage;
   },
+  [Mutation.ADD_ERROR_MESSAGE](state, errorMessage) {
+    state.errors.push(errorMessage);
+  },
+  [Mutation.CLEAR_ERRORS](state) {
+    state.errors = [];
+  },
   [Mutation.SET_ERROR_VISIBLE](state, visibility) {
     state.error.visible = visibility;
   },

@@ -1,39 +1,55 @@
 <template>
-  <div
-    id="error-message"
-    :class="animationClass"
-    class="e-alert e-alert-fixed e-alert-withicon e-alert-danger alert-top">
-    <span class="e-alert__icon">
-      <!-- eslint-disable -->
-      <e-icon icon="warning"></e-icon>
-    </span>
-    <span>{{ errorMessage }}</span>
+  <div>
+    <div
+      v-if="hasErrors"
+      id="error-message"
+      class="e-alert e-alert-fixed e-alert-withicon e-alert-danger"
+      style="top: 0">
+      <span class="e-alert__icon">
+        <!-- eslint-disable -->
+        <e-icon icon="warning"></e-icon>
+      </span>
+      <div v-for="(error) in errors">
+        <span>{{ error }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
+import { isEmpty } from 'ramda';
+import Action from '../store/action-types';
 
 export default {
   name: 'ErrorMessage',
+  data() {
+    return {
+      timer: null
+    };
+  },
   computed: {
     ...mapState({
-      errorMessage: state => state.error.message,
-      animationClass: state => (state.error.visible ? 'opened' : '')
+      errors: state => state.errors,
+      hasErrors: state => !isEmpty(state.errors)
     })
+  },
+  watch: {
+    errors(newValue) {
+      clearTimeout(this.timer);
+
+      if (newValue !== []) {
+        this.timer = setTimeout(() => {
+          this.clearErrors();
+        }, 5000);
+      }
+    }
+  },
+  methods: {
+    ...mapActions([Action.clearErrors])
   }
 };
 </script>
 
 <style scoped>
-.alert-top {
-  top: 0;
-  transition: transform 0.25s linear;
-  transform: translateY(-100%);
-  overflow: hidden;
-  white-space: pre-line;
-}
-.opened {
-  transform: translateY(0%);
-}
 </style>
