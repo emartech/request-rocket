@@ -105,7 +105,17 @@ export default {
 
     if (!state.request.url) {
       commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
-      dispatch(Action.indicateFatalError, 'URL cannot be empty');
     }
+
+    state.request.headers.forEach(header => {
+      if (header.sendingStatus && !header.name) {
+        commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'header', message: 'Header name cannot be empty' });
+      }
+    });
+
+    const errorMessages = state.validatorErrors.map(error => error.message);
+    const collectedErrorMessages = errorMessages.join('\n');
+
+    if (collectedErrorMessages) dispatch(Action.indicateFatalError, collectedErrorMessages);
   }
 };

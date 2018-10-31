@@ -7,7 +7,7 @@
       <!-- eslint-disable -->
       <e-icon icon="warning"></e-icon>
     </span>
-    {{ errorMessage }}
+    <span>{{ errorMessage }}</span>
   </div>
 </template>
 
@@ -31,6 +31,7 @@ export default {
   transition: transform 0.25s linear;
   transform: translateY(-100%);
   overflow: hidden;
+  white-space: pre-line;
 }
 .opened {
   transform: translateY(0%);

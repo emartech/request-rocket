@@ -26,11 +26,13 @@ describe('actions', () => {
       expect(store.state.networkStatus).to.eql('offline');
     });
   });
+
   describe('setUrl', () => {
     it('should modify the URL of the state', () => {
       store.dispatch(Action.setUrl, 'https://new.url');
       expect(store.state.request.url).to.eql('https://new.url');
     });
+
     it('should clear URL related validator errors', () => {
       store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
       store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'header', message: 'Header cannot be empty' });
@@ -38,6 +40,7 @@ describe('actions', () => {
       expect(store.state.validatorErrors).to.eql([{ type: 'header', message: 'Header cannot be empty' }]);
     });
   });
+
   describe('sendRequest', () => {
     let ipcSpy;
 
@@ -50,6 +53,7 @@ describe('actions', () => {
 
       expect(store.state.validatorErrors).to.not.eql([]);
     });
+
     context('when validator errors occur', () => {
       it('should not send the request', () => {
         store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
@@ -59,6 +63,7 @@ describe('actions', () => {
         expect(ipcSpy.called).to.equal(false);
       });
     });
+
     context('when validators pass', () => {
       beforeEach(() => {
         store.commit(Mutation.UPDATE_URL, 'https://some-valid.url');
@@ -71,11 +76,13 @@ describe('actions', () => {
 
         expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'https://request.url'));
       });
+
       it('should clear the response data', () => {
         store.dispatch(Action.sendRequest);
 
         expect(store.state.response).to.eql({});
       });
+
       it('should send the selected authentication with the belonging params', () => {
         const authParams = { key: 'wssekey', secret: 'wssesecret' };
 
@@ -86,6 +93,7 @@ describe('actions', () => {
 
         expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ authType: Auth.WSSE, authParams }));
       });
+
       it('should send the request method', () => {
         store.commit(Mutation.SELECT_HTTP_METHOD, HttpMethod.POST);
 
@@ -93,6 +101,7 @@ describe('actions', () => {
 
         expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('method', HttpMethod.POST));
       });
+
       [
         { method: HttpMethod.GET, expectedBody: null },
         { method: HttpMethod.HEAD, expectedBody: null },
@@ -122,6 +131,7 @@ describe('actions', () => {
           sinon.match.has('headers', [{ name: 'content-type', value: 'application/json', sendingStatus: true }])
         );
       });
+
       it('should indicate request in progress', () => {
         const commit = sinon.spy();
         const dispatch = sinon.spy();
@@ -157,21 +167,25 @@ describe('actions', () => {
       expect(ipcSpy).to.be.calledWith('cancel-request');
     });
   });
+
   describe('requestCancelled', () => {
     it('should store the received response in the store', () => {
       store.dispatch(Action.requestCancelled);
       expect(store.state.sendingInProgress).to.equal(false);
     });
   });
+
   describe('receiveResponse', () => {
     it('should store the received response in the store', () => {
       store.dispatch(Action.receiveResponse, { response: { body: '{"key": "value"}' } });
       expect(store.state.response).to.eql({ body: '{"key": "value"}' });
     });
+
     it('should store the actual request headers in the store', () => {
       store.dispatch(Action.receiveResponse, { requestHeaders: { 'x-my-header': 'some_value' } });
       expect(store.state.sentRequestHeaders).to.eql({ 'x-my-header': 'some_value' });
     });
+
     it('should indicate finished request', () => {
       const commit = sinon.spy();
 
@@ -180,18 +194,21 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.REQUEST_FINISHED_OR_ABORTED);
     });
   });
+
   describe('selectAuthType', () => {
     it('should modify the selected auth type of the state', () => {
       const commit = sinon.spy();
       Actions[Action.selectAuthType]({ commit }, Auth.WSSE);
       expect(commit).to.be.calledWithExactly(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
     });
+
     it('should set auth params to their initial value', () => {
       const commit = sinon.spy();
       Actions[Action.selectAuthType]({ commit }, Auth.WSSE);
       expect(commit).to.be.calledWithExactly(Mutation.SET_AUTH_PARAMS, {});
     });
   });
+
   describe('selectHttpMethod', () => {
     it('should modify the selected http method of the state', () => {
       const commit = sinon.spy();
@@ -199,6 +216,7 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.SELECT_HTTP_METHOD, HttpMethod.GET);
     });
   });
+
   describe('setAuthParams', () => {
     it('should modify the parameters of the auth', () => {
       const commit = sinon.spy();
@@ -207,6 +225,7 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.SET_AUTH_PARAMS, wsseParams);
     });
   });
+
   describe('setRequestBody', () => {
     it('should modify the request body', () => {
       const commit = sinon.spy();
@@ -215,12 +234,14 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.SET_REQUEST_BODY, requestBody);
     });
   });
+
   describe('selectContentType', () => {
     it('should modify the selected content type of the state', () => {
       const commit = sinon.spy();
       Actions[Action.selectContentType]({ commit, state: store.state }, ContentType.json);
       expect(commit).to.be.calledWithExactly(Mutation.SELECT_CONTENT_TYPE, ContentType.json);
     });
+
     it('should update the existing content type header', () => {
       const commit = sinon.spy();
       const expectedHeader = { name: 'content-type', value: ContentType.text, sendingStatus: true };
@@ -229,6 +250,7 @@ describe('actions', () => {
 
       expect(commit).to.be.calledWithExactly(Mutation.ADD_REQUEST_HEADER, expectedHeader);
     });
+
     it('should add a content type header if not exists', () => {
       store.commit(Mutation.SET_REQUEST_HEADERS, []);
       const commit = sinon.spy();
@@ -236,12 +258,14 @@ describe('actions', () => {
       Actions[Action.selectContentType]({ commit, state: store.state }, ContentType.text);
       expect(commit).to.be.calledWithExactly(Mutation.ADD_REQUEST_HEADER, expectedHeader);
     });
+
     context('when selected content type is custom', () => {
       it('should not update the content type header', () => {
         const oldHeaders = clone(store.state.request.headers);
         store.dispatch(Action.selectContentType, ContentType.custom);
         expect(store.state.request.headers).to.eql(oldHeaders);
       });
+
       it('should not add the content type header', () => {
         store.commit(Mutation.SET_REQUEST_HEADERS, []);
         const oldHeaders = clone(store.state.request.headers);
@@ -250,6 +274,7 @@ describe('actions', () => {
       });
     });
   });
+
   describe('setRequestHeaders', () => {
     it('should set the request headers', () => {
       const commit = sinon.spy();
@@ -258,6 +283,7 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.SET_REQUEST_HEADERS, headers);
     });
   });
+
   describe('resetState', () => {
     it('should commit the RESET_STATE mutation', () => {
       const commit = sinon.spy();
@@ -265,6 +291,7 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.RESET_STATE);
     });
   });
+
   describe('indicateFatalError', () => {
     it('should commit the SET_ERROR_MESSAGE mutation', () => {
       const { state } = store;
@@ -272,12 +299,14 @@ describe('actions', () => {
       Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
       expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_MESSAGE, 'error occurred');
     });
+
     it('should commit the SET_ERROR_VISIBLE mutation', () => {
       const { state } = store;
       const commit = sinon.spy();
       Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
       expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_VISIBLE, true);
     });
+
     it('should commit the SET_ERROR_TIMEOUT_ID mutation with next setTimeout() ID', () => {
       const { state } = store;
       const commit = sinon.spy();
@@ -285,6 +314,7 @@ describe('actions', () => {
       Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
       expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_TIMEOUT_ID, nextTimeoutID);
     });
+
     context('time sensitive tests', () => {
       const MS_IN_SECOND = 1000;
 
@@ -305,6 +335,7 @@ describe('actions', () => {
 
         expect(store.state.error.visible).to.equal(false);
       });
+
       it('should delay the commit of SET_ERROR_VISIBLE mutation if action is called again', () => {
         store.dispatch(Action.indicateFatalError, 'error occurred');
 
@@ -321,6 +352,7 @@ describe('actions', () => {
         expect(store.state.error.visible).to.equal(false);
       });
     });
+
     it('should commit the REQUEST_FINISHED_OR_ABORTED mutation', () => {
       const { state } = store;
       const commit = sinon.spy();
@@ -328,6 +360,7 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.REQUEST_FINISHED_OR_ABORTED);
     });
   });
+
   describe('validateForms', () => {
     it('should remove all validator errors first', () => {
       store.commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
@@ -337,6 +370,7 @@ describe('actions', () => {
 
       expect(store.state.validatorErrors).to.eql([]);
     });
+
     context('when url is empty', () => {
       it('should add an invalid url error', () => {
         store.dispatch(Action.validateForms);
@@ -351,6 +385,7 @@ describe('actions', () => {
         expect(store.state.error.visible).to.equal(true);
       });
     });
+
     context('when url is not empty', () => {
       it('should not display error message', () => {
         store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
@@ -358,6 +393,45 @@ describe('actions', () => {
 
         expect(store.state.error.message).to.equal(null);
         expect(store.state.error.visible).to.equal(false);
+      });
+    });
+
+    context('when header name is empty', () => {
+      it('should add validator error to state', () => {
+        store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
+        store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: true });
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.validatorErrors).to.eql([{ type: 'header', message: 'Header name cannot be empty' }]);
+      });
+
+      it('should display error message', () => {
+        store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
+        store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: true });
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.error.message).to.equal('Header name cannot be empty');
+        expect(store.state.error.visible).to.equal(true);
+      });
+
+      context('and sending status is false', () => {
+        it('should not add validator error to state', () => {
+          store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
+          store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: false });
+          store.dispatch(Action.validateForms);
+
+          expect(store.state.validatorErrors).to.eql([]);
+        });
+      });
+    });
+
+    context('when multiple validator errors happen', () => {
+      it('should display error message', () => {
+        store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: true });
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.error.message).to.equal(['URL cannot be empty', 'Header name cannot be empty'].join('\n'));
+        expect(store.state.error.visible).to.equal(true);
       });
     });
   });
