@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extrane
 import { isEmpty } from 'ramda';
 import Action from './action-types';
 import Mutation from './mutation-types';
+import Validator from '../lib/validator';
 import ContentType from '../../common/content-types';
 import Channels from '../../common/ipc-channels';
 
@@ -20,6 +21,7 @@ export default {
   },
   async [Action.sendRequest]({ dispatch, commit, state, getters }) {
     commit(Mutation.UPDATE_RESPONSE, {});
+    commit(Mutation.UPDATE_URL, addDefaultProtocolIfNoneSpecified(state.request.url));
 
     dispatch(Action.validateForms);
 
@@ -28,7 +30,7 @@ export default {
     commit(Mutation.REQUEST_IN_PROGRESS);
 
     const payload = {
-      url: addDefaultProtocolIfNoneSpecified(state.request.url),
+      url: state.request.url,
       method: state.request.method,
       headers: getters.requestHeadersToSend,
       body: getters.isRequestBodyEditAvailable ? state.request.body : null,
@@ -95,20 +97,11 @@ export default {
   [Action.validateForms]({ commit, state }) {
     commit(Mutation.CLEAR_VALIDATOR_ERRORS);
 
-    if (!state.request.url) {
-      commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'url', message: 'URL cannot be empty' });
-    }
+    const validationErrors = Validator.execute(state);
 
-    state.request.headers.forEach(header => {
-      if (header.sendingStatus && !header.name) {
-        commit(Mutation.ADD_VALIDATOR_ERROR, { type: 'header', message: 'Header name cannot be empty' });
-      }
+    validationErrors.forEach(error => {
+      commit(Mutation.ADD_VALIDATOR_ERROR, error);
+      commit(Mutation.ADD_ERROR_MESSAGE, error.message);
     });
-
-    if (state.validatorErrors) {
-      state.validatorErrors.forEach(error => {
-        commit(Mutation.ADD_ERROR_MESSAGE, error.message);
-      });
-    }
   }
 };

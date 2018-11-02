@@ -330,53 +330,76 @@ describe('actions', () => {
       it('should add an invalid url error', () => {
         store.dispatch(Action.validateForms);
 
-        expect(store.state.validatorErrors).to.eql([{ type: 'url', message: 'URL cannot be empty' }]);
+        expect(store.state.validatorErrors).to.deep.include({ type: 'url', message: 'URL cannot be empty' });
       });
 
       it('should display error messages', () => {
         store.dispatch(Action.validateForms);
 
-        expect(store.state.errors).to.eql(['URL cannot be empty']);
+        expect(store.state.errors).to.include('URL cannot be empty');
       });
     });
 
     context('when url is not empty', () => {
       it('should not display error message', () => {
-        store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
+        store.commit(Mutation.UPDATE_URL, 'https://httpbin.org/anything');
+
         store.dispatch(Action.validateForms);
 
-        expect(store.state.errors).to.eql([]);
+        expect(store.state.errors).not.to.include('URL cannot be empty');
       });
     });
 
     context('when header name is empty', () => {
       it('should add validator error to state', () => {
-        store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
         store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: true });
 
         store.dispatch(Action.validateForms);
 
-        expect(store.state.validatorErrors).to.eql([{ type: 'header', message: 'Header name cannot be empty' }]);
+        expect(store.state.validatorErrors).to.deep.include({ type: 'header', message: 'Header name cannot be empty' });
       });
 
       it('should display error message', () => {
-        store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
+        store.commit(Mutation.UPDATE_URL, 'https://httpbin.org/anything');
         store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: true });
 
         store.dispatch(Action.validateForms);
 
-        expect(store.state.errors).to.eql(['Header name cannot be empty']);
+        expect(store.state.errors).to.include('Header name cannot be empty');
       });
 
       context('and sending status is false', () => {
         it('should not add validator error to state', () => {
-          store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
           store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: false });
 
           store.dispatch(Action.validateForms);
 
-          expect(store.state.validatorErrors).to.eql([]);
+          expect(store.state.validatorErrors).not.to.deep.include({
+            type: 'header',
+            message: 'Header name cannot be empty'
+          });
         });
+      });
+    });
+
+    context('when auth params are invalid', () => {
+      it('should add validator error to the state', () => {
+        store.commit(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
+
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.validatorErrors).to.deep.include({
+          type: 'auth',
+          message: 'Auth parameters must be provided'
+        });
+      });
+
+      it('should display error message', () => {
+        store.commit(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
+
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.errors).to.include('Auth parameters must be provided');
       });
     });
 
@@ -386,7 +409,7 @@ describe('actions', () => {
 
         store.dispatch(Action.validateForms);
 
-        expect(store.state.errors).to.eql(['URL cannot be empty', 'Header name cannot be empty']);
+        expect(store.state.errors).to.eql(['Header name cannot be empty', 'URL cannot be empty']);
       });
     });
   });
