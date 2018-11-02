@@ -26,6 +26,9 @@ describe('HeaderValidator', () => {
           message: 'Header name cannot be empty'
         });
       });
+      it('should ignore error for headers that will not be sent', () => {
+        expect(HeaderValidator.validationError([{ sendingStatus: false, name: '' }])).to.eql(null);
+      });
     });
   });
 });

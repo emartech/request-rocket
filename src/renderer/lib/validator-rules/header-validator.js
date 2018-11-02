@@ -2,7 +2,7 @@ export default {
   validationError(headersArray) {
     if (headersArray.length > 0) {
       const headersWithoutName = headersArray.reduce((accumulator, header) => {
-        if (!header.name || header.name.trim() === '') {
+        if (header.sendingStatus && (!header.name || header.name.trim() === '')) {
           accumulator.push(header);
         }
 
