@@ -308,44 +308,6 @@ describe('actions', () => {
       expect(commit).to.be.calledWithExactly(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
     });
 
-    // context('time sensitive tests', () => {
-    //   const MS_IN_SECOND = 1000;
-    //
-    //   let clock;
-    //
-    //   beforeEach(() => {
-    //     clock = sinon.useFakeTimers();
-    //   });
-    //
-    //   afterEach(() => {
-    //     clock.restore();
-    //   });
-    //
-    //   it('should commit the SET_ERROR_VISIBLE mutation after 5 seconds', () => {
-    //     store.dispatch(Action.indicateBackendError, 'error occurred');
-    //
-    //     clock.tick(5 * MS_IN_SECOND);
-    //
-    //     expect(store.state.error.visible).to.equal(false);
-    //   });
-    //
-    //   it('should delay the commit of SET_ERROR_VISIBLE mutation if action is called again', () => {
-    //     store.dispatch(Action.indicateBackendError, 'error occurred');
-    //
-    //     clock.tick(3 * MS_IN_SECOND);
-    //
-    //     store.dispatch(Action.indicateBackendError, 'another error occurred');
-    //
-    //     clock.tick(2 * MS_IN_SECOND);
-    //
-    //     expect(store.state.error.visible).to.equal(true);
-    //
-    //     clock.tick(5 * MS_IN_SECOND);
-    //
-    //     expect(store.state.error.visible).to.equal(false);
-    //   });
-    // });
-
     it('should commit the REQUEST_FINISHED_OR_ABORTED mutation', () => {
       const { state } = store;
       const commit = sinon.spy();
