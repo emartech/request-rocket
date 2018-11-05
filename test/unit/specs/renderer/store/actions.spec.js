@@ -292,71 +292,26 @@ describe('actions', () => {
     });
   });
 
-  describe('indicateFatalError', () => {
-    it('should commit the SET_ERROR_MESSAGE mutation', () => {
+  describe('clearErrors', () => {
+    it('should commit the CLEAR_ERRORS mutation', () => {
+      const commit = sinon.spy();
+      Actions[Action.clearErrors]({ commit });
+      expect(commit).to.be.calledWithExactly(Mutation.CLEAR_ERRORS);
+    });
+  });
+
+  describe('indicateBackendError', () => {
+    it('should commit the ADD_ERROR_MESSAGE mutation', () => {
       const { state } = store;
       const commit = sinon.spy();
-      Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
-      expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_MESSAGE, 'error occurred');
-    });
-
-    it('should commit the SET_ERROR_VISIBLE mutation', () => {
-      const { state } = store;
-      const commit = sinon.spy();
-      Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
-      expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_VISIBLE, true);
-    });
-
-    it('should commit the SET_ERROR_TIMEOUT_ID mutation with next setTimeout() ID', () => {
-      const { state } = store;
-      const commit = sinon.spy();
-      const nextTimeoutID = setTimeout(() => {}) + 1;
-      Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
-      expect(commit).to.be.calledWithExactly(Mutation.SET_ERROR_TIMEOUT_ID, nextTimeoutID);
-    });
-
-    context('time sensitive tests', () => {
-      const MS_IN_SECOND = 1000;
-
-      let clock;
-
-      beforeEach(() => {
-        clock = sinon.useFakeTimers();
-      });
-
-      afterEach(() => {
-        clock.restore();
-      });
-
-      it('should commit the SET_ERROR_VISIBLE mutation after 5 seconds', () => {
-        store.dispatch(Action.indicateFatalError, 'error occurred');
-
-        clock.tick(5 * MS_IN_SECOND);
-
-        expect(store.state.error.visible).to.equal(false);
-      });
-
-      it('should delay the commit of SET_ERROR_VISIBLE mutation if action is called again', () => {
-        store.dispatch(Action.indicateFatalError, 'error occurred');
-
-        clock.tick(3 * MS_IN_SECOND);
-
-        store.dispatch(Action.indicateFatalError, 'another error occurred');
-
-        clock.tick(2 * MS_IN_SECOND);
-
-        expect(store.state.error.visible).to.equal(true);
-
-        clock.tick(5 * MS_IN_SECOND);
-
-        expect(store.state.error.visible).to.equal(false);
-      });
+      Actions[Action.indicateBackendError]({ commit, state }, 'error occurred');
+      expect(commit).to.be.calledWithExactly(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
     });
 
     it('should commit the REQUEST_FINISHED_OR_ABORTED mutation', () => {
       const { state } = store;
       const commit = sinon.spy();
-      Actions[Action.indicateFatalError]({ commit, state }, 'error occurred');
+      Actions[Action.indicateBackendError]({ commit, state }, 'error occurred');
       expect(commit).to.be.calledWithExactly(Mutation.REQUEST_FINISHED_OR_ABORTED);
     });
   });
@@ -375,63 +330,86 @@ describe('actions', () => {
       it('should add an invalid url error', () => {
         store.dispatch(Action.validateForms);
 
-        expect(store.state.validatorErrors).to.eql([{ type: 'url', message: 'URL cannot be empty' }]);
+        expect(store.state.validatorErrors).to.deep.include({ type: 'url', message: 'URL cannot be empty' });
       });
 
       it('should display error messages', () => {
         store.dispatch(Action.validateForms);
 
-        expect(store.state.error.message).to.equal('URL cannot be empty');
-        expect(store.state.error.visible).to.equal(true);
+        expect(store.state.errors).to.include('URL cannot be empty');
       });
     });
 
     context('when url is not empty', () => {
       it('should not display error message', () => {
-        store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
+        store.commit(Mutation.UPDATE_URL, 'https://httpbin.org/anything');
+
         store.dispatch(Action.validateForms);
 
-        expect(store.state.error.message).to.equal(null);
-        expect(store.state.error.visible).to.equal(false);
+        expect(store.state.errors).not.to.include('URL cannot be empty');
       });
     });
 
     context('when header name is empty', () => {
       it('should add validator error to state', () => {
-        store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
         store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: true });
+
         store.dispatch(Action.validateForms);
 
-        expect(store.state.validatorErrors).to.eql([{ type: 'header', message: 'Header name cannot be empty' }]);
+        expect(store.state.validatorErrors).to.deep.include({ type: 'header', message: 'Header name cannot be empty' });
       });
 
       it('should display error message', () => {
-        store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
+        store.commit(Mutation.UPDATE_URL, 'https://httpbin.org/anything');
         store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: true });
+
         store.dispatch(Action.validateForms);
 
-        expect(store.state.error.message).to.equal('Header name cannot be empty');
-        expect(store.state.error.visible).to.equal(true);
+        expect(store.state.errors).to.include('Header name cannot be empty');
       });
 
       context('and sending status is false', () => {
         it('should not add validator error to state', () => {
-          store.commit(Mutation.UPDATE_URL, 'httpbin.org/anything');
           store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: false });
+
           store.dispatch(Action.validateForms);
 
-          expect(store.state.validatorErrors).to.eql([]);
+          expect(store.state.validatorErrors).not.to.deep.include({
+            type: 'header',
+            message: 'Header name cannot be empty'
+          });
         });
+      });
+    });
+
+    context('when auth params are invalid', () => {
+      it('should add validator error to the state', () => {
+        store.commit(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
+
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.validatorErrors).to.deep.include({
+          type: 'auth',
+          message: 'Auth parameters must be provided'
+        });
+      });
+
+      it('should display error message', () => {
+        store.commit(Mutation.SELECT_AUTH_TYPE, Auth.WSSE);
+
+        store.dispatch(Action.validateForms);
+
+        expect(store.state.errors).to.include('Auth parameters must be provided');
       });
     });
 
     context('when multiple validator errors happen', () => {
       it('should display error message', () => {
         store.commit(Mutation.ADD_REQUEST_HEADER, { name: '', value: 'some value', sendingStatus: true });
+
         store.dispatch(Action.validateForms);
 
-        expect(store.state.error.message).to.equal(['URL cannot be empty', 'Header name cannot be empty'].join('\n'));
-        expect(store.state.error.visible).to.equal(true);
+        expect(store.state.errors).to.eql(['Header name cannot be empty', 'URL cannot be empty']);
       });
     });
   });

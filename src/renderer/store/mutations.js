@@ -43,14 +43,11 @@ export default {
     const oldHeader = state.request.headers.find(header => header.name === updatedHeader.name);
     Object.assign(oldHeader, updatedHeader);
   },
-  [Mutation.SET_ERROR_MESSAGE](state, errorMessage) {
-    state.error.message = errorMessage;
+  [Mutation.ADD_ERROR_MESSAGE](state, errorMessage) {
+    state.errors.push(errorMessage);
   },
-  [Mutation.SET_ERROR_VISIBLE](state, visibility) {
-    state.error.visible = visibility;
-  },
-  [Mutation.SET_ERROR_TIMEOUT_ID](state, timeoutID) {
-    state.error.timeoutID = timeoutID;
+  [Mutation.CLEAR_ERRORS](state) {
+    state.errors = [];
   },
   [Mutation.REQUEST_IN_PROGRESS](state) {
     state.sendingInProgress = true;

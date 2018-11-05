@@ -11,7 +11,8 @@ export default {
   selectContentType: 'selectContentType',
   setRequestHeaders: 'setRequestHeaders',
   resetState: 'resetState',
-  indicateFatalError: 'indicateFatalError',
+  indicateBackendError: 'indicateBackendError',
+  clearErrors: 'clearErrors',
   cancelRequest: 'cancelRequest',
   requestCancelled: 'requestCancelled',
   validateForms: 'validateForms'

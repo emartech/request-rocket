@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import ErrorMessage from '@/components/error-message';
 import createStore from '@/store';
+import sinon from 'sinon';
 import Mutation from '../../../../../src/renderer/store/mutation-types';
 
 describe('ErrorMessage.vue', () => {
@@ -10,25 +11,38 @@ describe('ErrorMessage.vue', () => {
     store = createStore();
   });
 
-  context('SET_ERROR_MESSAGE', () => {
-    it('should render the error message', () => {
-      store.commit(Mutation.SET_ERROR_MESSAGE, 'error occurred');
+  it('should render the error message', () => {
+    const component = shallowMount(ErrorMessage, { store });
 
-      const component = shallowMount(ErrorMessage, { store });
-      const errorMessageElement = component.find('#error-message');
+    store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
+    store.commit(Mutation.ADD_ERROR_MESSAGE, 'another error occurred');
 
-      expect(errorMessageElement.exists()).to.eql(true);
-      expect(errorMessageElement.text()).to.eql('error occurred');
-    });
+    const errorMessageElement = component.find('#error-message');
+
+    expect(errorMessageElement.exists()).to.eql(true);
+    expect(errorMessageElement.text()).to.match(/error occurred.*another error occurred/);
   });
-  context('SET_ERROR_VISIBLE', () => {
-    it('should add opened css class', () => {
-      store.commit(Mutation.SET_ERROR_VISIBLE, true);
 
+  context('after 5 seconds pass', () => {
+    let clock;
+
+    beforeEach(() => {
+      clock = sinon.useFakeTimers();
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    it('should clear error messages', () => {
       const component = shallowMount(ErrorMessage, { store });
+
+      store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
+      clock.tick(5000);
+
       const errorMessageElement = component.find('#error-message');
 
-      expect(errorMessageElement.classes('opened')).to.equal(true);
+      expect(errorMessageElement.exists()).to.eql(false);
     });
   });
 });

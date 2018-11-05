@@ -98,22 +98,21 @@ describe('mutations', () => {
       expect(store.state.request.headers).to.eql([{ name: 'content-type', value: 'text/plain' }]);
     });
   });
-  describe('SET_ERROR_MESSAGE', function() {
-    it('should set the error message', () => {
-      store.commit(Mutation.SET_ERROR_MESSAGE, 'error occurred');
-      expect(store.state.error.message).to.equal('error occurred');
+  describe('ADD_ERROR_MESSAGE', function() {
+    it('should append error messages to the state', () => {
+      store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
+      store.commit(Mutation.ADD_ERROR_MESSAGE, 'another error occurred');
+
+      expect(store.state.errors).to.eql(['error occurred', 'another error occurred']);
     });
   });
-  describe('SET_ERROR_VISIBLE', function() {
-    it('should set the error visibility', () => {
-      store.commit(Mutation.SET_ERROR_VISIBLE, true);
-      expect(store.state.error.visible).to.equal(true);
-    });
-  });
-  describe('SET_ERROR_TIMEOUT_ID', function() {
-    it('should set the timeout ID', () => {
-      store.commit(Mutation.SET_ERROR_TIMEOUT_ID, 0);
-      expect(store.state.error.timeoutID).to.equal(0);
+  describe('CLEAR_ERRORS', function() {
+    it('should remove all error messages from the state', () => {
+      store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
+
+      store.commit(Mutation.CLEAR_ERRORS);
+
+      expect(store.state.errors).to.eql([]);
     });
   });
   describe('REQUEST_IN_PROGRESS', function() {
