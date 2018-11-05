@@ -1,12 +1,10 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
 import sinon from 'sinon';
 import { shallowMount } from '@vue/test-utils';
 import UrlGroup from '@/components/url-group';
 import createStore from '@/store';
 import Action from '@/store/action-types';
 import Mutation from '@/store/mutation-types';
-import Getters from '../../../../../src/renderer/store/getters';
 import httpMethodOptions from '../../../../../src/renderer/store/method-options';
 import HttpMethod from '../../../../../src/common/method-types';
 
@@ -41,54 +39,27 @@ describe('UrlGroup.vue', () => {
   context('clicking the send button', () => {
     context('when network is online', () => {
       it('should dispatch the request', () => {
-        const requestSender = sinon.spy();
-
-        const store = new Vuex.Store({
-          state: {
-            networkStatus: 'online',
-            request: {
-              method: HttpMethod.GET
-            },
-            validatorErrors: []
-          },
-          getters: Getters,
-          actions: {
-            [Action.sendRequest]: requestSender
-          }
-        });
-
+        const dispatchSpy = sinon.spy(store, 'dispatch');
         const component = shallowMount(UrlGroup, { store });
-
         const button = component.find('#request-editor-send-button');
 
         button.trigger('click');
 
-        expect(requestSender.calledOnce).to.eql(true);
+        expect(dispatchSpy).to.be.calledWith(Action.sendRequest);
       });
     });
 
     context('when network is offline', () => {
       it('should not send a request', () => {
-        const requestSender = sinon.spy();
+        store.commit(Mutation.UPDATE_NETWORK_STATUS, 'offline');
 
-        const store = new Vuex.Store({
-          state: {
-            networkStatus: 'offline',
-            request: {
-              method: HttpMethod.GET
-            },
-            validatorErrors: []
-          },
-          getters: Getters,
-          actions: { [Action.sendRequest]: requestSender }
-        });
-
+        const dispatchSpy = sinon.spy(store, 'dispatch');
         const component = shallowMount(UrlGroup, { store });
         const button = component.find('#request-editor-send-button');
 
         button.trigger('click');
 
-        expect(requestSender.calledOnce).to.eql(false);
+        expect(dispatchSpy.called).to.equal(false);
       });
     });
   });
@@ -96,54 +67,27 @@ describe('UrlGroup.vue', () => {
   context('pressing enter in the URL field', () => {
     context('when network is online', () => {
       it('should dispatch the request', () => {
-        const requestSender = sinon.spy();
-
-        const store = new Vuex.Store({
-          state: {
-            networkStatus: 'online',
-            request: {
-              method: HttpMethod.GET
-            },
-            validatorErrors: []
-          },
-          getters: Getters,
-          actions: {
-            [Action.sendRequest]: requestSender
-          }
-        });
-
+        const dispatchSpy = sinon.spy(store, 'dispatch');
         const component = shallowMount(UrlGroup, { store });
-
         const urlField = component.find('#request-editor-url-field');
 
         urlField.trigger('keyup.enter');
 
-        expect(requestSender.calledOnce).to.eql(true);
+        expect(dispatchSpy).to.be.calledWith(Action.sendRequest);
       });
     });
 
     context('when network is offline', () => {
       it('should not send a request', () => {
-        const requestSender = sinon.spy();
+        store.commit(Mutation.UPDATE_NETWORK_STATUS, 'offline');
 
-        const store = new Vuex.Store({
-          state: {
-            networkStatus: 'offline',
-            request: {
-              method: HttpMethod.GET
-            },
-            validatorErrors: []
-          },
-          getters: Getters,
-          actions: { [Action.sendRequest]: requestSender }
-        });
-
+        const dispatchSpy = sinon.spy(store, 'dispatch');
         const component = shallowMount(UrlGroup, { store });
         const urlField = component.find('#request-editor-url-field');
 
         urlField.trigger('keyup.enter');
 
-        expect(requestSender.calledOnce).to.eql(false);
+        expect(dispatchSpy.called).to.equal(false);
       });
     });
   });
