@@ -1,6 +1,6 @@
 {
   "name": "request-rocket",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "Emarsys <crew-integration@emarsys.com>",
   "description": "Emarsys REST API client",
   "license": "MIT",
@@ -23,7 +23,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "request-rocket",
+    "productName": "Request Rocket",
     "appId": "com.emarsys.request-rocket",
     "directories": {
       "output": "build"
