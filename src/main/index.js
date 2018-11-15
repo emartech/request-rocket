@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
+import { app, BrowserWindow, ipcMain, Menu } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 import Channels from '../common/ipc-channels';
 import RequestDispatcher from './request-dispatcher';
 
@@ -28,6 +28,34 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+
+  const template = [
+    {
+      label: 'Application',
+      submenu: [
+        {
+          label: 'Quit',
+          accelerator: 'Command+Q',
+          click() {
+            app.quit();
+          }
+        }
+      ]
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+        { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+        { type: 'separator' },
+        { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+        { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+        { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' }
+      ]
+    }
+  ];
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
 app.on('ready', createWindow);
