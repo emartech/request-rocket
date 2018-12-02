@@ -8,7 +8,7 @@ export default class RestClient {
       timeout: timeoutInMilliseconds,
       headers: {
         common: {
-          'User-Agent': 'RequestRocket/1.0.1'
+          'User-Agent': 'RequestRocket/1.1.0'
         }
       }
     });
