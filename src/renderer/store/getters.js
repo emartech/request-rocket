@@ -10,7 +10,6 @@ function isEmptyHeaderPresent(headers) {
 export default {
   isWsseAuthSelected: state => state.auth.selected === Auth.WSSE,
   isEscherAuthSelected: state => state.auth.selected === Auth.ESCHER,
-  isNetworkAvailable: state => state.networkStatus === 'online',
   responseType: state => {
     const { headers } = state.response;
 

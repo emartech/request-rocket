@@ -11,11 +11,6 @@ describe('Store', () => {
   });
 
   describe('state', () => {
-    describe('networkStatus', () => {
-      it('should be set online as initial value', () => {
-        expect(store.state.networkStatus).to.eql('online');
-      });
-    });
     describe('errors', () => {
       it('should have empty array as initial value', () => {
         expect(store.state.errors).to.eql([]);

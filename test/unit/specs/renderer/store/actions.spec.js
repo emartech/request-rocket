@@ -20,13 +20,6 @@ describe('actions', () => {
     sinon.restore();
   });
 
-  describe('setNetworkStatus', () => {
-    it('should update the state of the network status', () => {
-      store.dispatch(Action.setNetworkStatus, 'offline');
-      expect(store.state.networkStatus).to.eql('offline');
-    });
-  });
-
   describe('setUrl', () => {
     it('should modify the URL of the state', () => {
       store.dispatch(Action.setUrl, 'https://new.url');

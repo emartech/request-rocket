@@ -21,9 +21,6 @@ export default {
   [Mutation.SET_AUTH_PARAMS](state, authParams) {
     state.auth.params = authParams;
   },
-  [Mutation.UPDATE_NETWORK_STATUS](state, networkStatus) {
-    state.networkStatus = networkStatus;
-  },
   [Mutation.SELECT_HTTP_METHOD](state, httpMethod) {
     state.request.method = httpMethod;
   },

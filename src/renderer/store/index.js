@@ -11,7 +11,6 @@ import ContentType from '../../common/content-types';
 Vue.use(Vuex);
 
 export const initialState = {
-  networkStatus: 'online',
   errors: [],
   validatorErrors: [],
   auth: {

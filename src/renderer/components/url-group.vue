@@ -22,7 +22,6 @@
         inverse>
         <input
           id="request-editor-url-field"
-          :disabled="!isNetworkAvailable"
           :value="url"
           class="e-input"
           placeholder="URL"
@@ -34,7 +33,6 @@
     <div class="e-cell e-cell-medium">
       <button
         id="request-editor-send-button"
-        :disabled="!isNetworkAvailable"
         class="e-btn e-btn-primary"
         type="button"
         @click="sendRequest">Send</button>
@@ -43,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { isEmpty, splitEvery } from 'ramda';
 import Action from '../store/action-types';
 import httpMethodOptions from '../store/method-options';
@@ -51,7 +49,6 @@ import httpMethodOptions from '../store/method-options';
 export default {
   name: 'UrlGroup',
   computed: {
-    ...mapGetters(['isNetworkAvailable']),
     ...mapState({
       url: state => state.request.url,
       httpMethodOptions: () => httpMethodOptions,

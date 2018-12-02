@@ -37,58 +37,26 @@ describe('UrlGroup.vue', () => {
   });
 
   context('clicking the send button', () => {
-    context('when network is online', () => {
-      it('should dispatch the request', () => {
-        const dispatchSpy = sinon.spy(store, 'dispatch');
-        const component = shallowMount(UrlGroup, { store });
-        const button = component.find('#request-editor-send-button');
+    it('should dispatch the request', () => {
+      const dispatchSpy = sinon.spy(store, 'dispatch');
+      const component = shallowMount(UrlGroup, { store });
+      const button = component.find('#request-editor-send-button');
 
-        button.trigger('click');
+      button.trigger('click');
 
-        expect(dispatchSpy).to.be.calledWith(Action.sendRequest);
-      });
-    });
-
-    context('when network is offline', () => {
-      it('should not send a request', () => {
-        store.commit(Mutation.UPDATE_NETWORK_STATUS, 'offline');
-
-        const dispatchSpy = sinon.spy(store, 'dispatch');
-        const component = shallowMount(UrlGroup, { store });
-        const button = component.find('#request-editor-send-button');
-
-        button.trigger('click');
-
-        expect(dispatchSpy.called).to.equal(false);
-      });
+      expect(dispatchSpy).to.be.calledWith(Action.sendRequest);
     });
   });
 
   context('pressing enter in the URL field', () => {
-    context('when network is online', () => {
-      it('should dispatch the request', () => {
-        const dispatchSpy = sinon.spy(store, 'dispatch');
-        const component = shallowMount(UrlGroup, { store });
-        const urlField = component.find('#request-editor-url-field');
+    it('should dispatch the request', () => {
+      const dispatchSpy = sinon.spy(store, 'dispatch');
+      const component = shallowMount(UrlGroup, { store });
+      const urlField = component.find('#request-editor-url-field');
 
-        urlField.trigger('keyup.enter');
+      urlField.trigger('keyup.enter');
 
-        expect(dispatchSpy).to.be.calledWith(Action.sendRequest);
-      });
-    });
-
-    context('when network is offline', () => {
-      it('should not send a request', () => {
-        store.commit(Mutation.UPDATE_NETWORK_STATUS, 'offline');
-
-        const dispatchSpy = sinon.spy(store, 'dispatch');
-        const component = shallowMount(UrlGroup, { store });
-        const urlField = component.find('#request-editor-url-field');
-
-        urlField.trigger('keyup.enter');
-
-        expect(dispatchSpy.called).to.equal(false);
-      });
+      expect(dispatchSpy).to.be.calledWith(Action.sendRequest);
     });
   });
 

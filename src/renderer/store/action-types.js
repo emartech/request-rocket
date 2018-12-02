@@ -5,7 +5,6 @@ export default {
   selectAuthType: 'selectAuthType',
   setAuthParams: 'setAuthParams',
   requestSent: 'requestSent',
-  setNetworkStatus: 'setNetworkStatus',
   selectHttpMethod: 'selectHttpMethod',
   setRequestBody: 'setRequestBody',
   selectContentType: 'selectContentType',

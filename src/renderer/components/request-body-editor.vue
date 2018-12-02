@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Action from '../store/action-types';
 import CodeEditor from './code-editor';
 import ContentTypeSelector from './content-type-selector';
@@ -20,7 +20,6 @@ export default {
   name: 'RequestBodyEditor',
   components: { ContentTypeSelector, CodeEditor },
   computed: {
-    ...mapGetters(['isNetworkAvailable']),
     ...mapState({
       body: state => state.request.body,
       contentType: state => state.request.contentType

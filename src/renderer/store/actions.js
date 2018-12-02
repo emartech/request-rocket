@@ -58,9 +58,6 @@ export default {
   [Action.setAuthParams]({ commit }, authParams) {
     commit(Mutation.SET_AUTH_PARAMS, authParams);
   },
-  [Action.setNetworkStatus]({ commit }, networkStatus) {
-    commit(Mutation.UPDATE_NETWORK_STATUS, networkStatus);
-  },
   [Action.selectHttpMethod]({ commit }, httpMethod) {
     commit(Mutation.SELECT_HTTP_METHOD, httpMethod);
   },

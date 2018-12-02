@@ -3,16 +3,6 @@ import HttpMethods from '../../../../../src/common/method-types';
 import Auth from '../../../../../src/common/auth-types';
 
 describe('Getters', () => {
-  describe('.isNetworkAvailable', () => {
-    it('should return true when networkStatus is online', function() {
-      const state = { networkStatus: 'online' };
-      expect(Getter.isNetworkAvailable(state)).to.be.eql(true);
-    });
-    it('should return false when networkStatus is offline', function() {
-      const state = { networkStatus: 'offline' };
-      expect(Getter.isNetworkAvailable(state)).to.be.eql(false);
-    });
-  });
   describe('.responseType', () => {
     it('should return application/json by default', function() {
       const state = { response: {} };
