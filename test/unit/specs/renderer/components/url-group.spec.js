@@ -109,4 +109,46 @@ describe('UrlGroup.vue', () => {
 
     expect(store.state.request.method).to.equal(HttpMethod.POST);
   });
+
+  context('URL tooltip', () => {
+    it('should be disabled if the URL is empty', () => {
+      store.commit(Mutation.UPDATE_URL, '');
+      const component = shallowMount(UrlGroup, { store });
+      const tooltip = component.find('#request-editor-url-tooltip');
+
+      expect(tooltip.attributes('disabled')).to.equal('true');
+    });
+
+    it('should be enabled if there is an URL', () => {
+      store.commit(Mutation.UPDATE_URL, 'https://some.url');
+      const component = shallowMount(UrlGroup, { store });
+      const tooltip = component.find('#request-editor-url-tooltip');
+
+      expect(tooltip.attributes('disabled')).to.equal(undefined);
+    });
+
+    it('should display the URL', () => {
+      store.commit(Mutation.UPDATE_URL, 'https://some.url');
+      const component = shallowMount(UrlGroup, { store });
+      const tooltip = component.find('#request-editor-url-tooltip');
+
+      expect(tooltip.attributes('content')).to.equal('https://some.url');
+    });
+
+    it('should break long URLs into multiple lines', () => {
+      store.commit(
+        Mutation.UPDATE_URL,
+        'ta6halm28uxk865bapjsvkv1wuwf4qvd5koye5cgw07go142e65klibj8kyh3fmpj049ojy9fugbg7gfp40npnlkdvcqyj4flva64v1acesenvl8ff2rsp9i9v00884t4l05vzgc9b70dj19nm2x8t2pokdq62svqozjx4es14ecfrqdo23sq95g5mc1av0ql1gx7ojwr1fi3xvnybkgh80h2r46uugs74icx1gupk3x5519ji2pkieu3f'
+      );
+      const component = shallowMount(UrlGroup, { store });
+      const tooltip = component.find('#request-editor-url-tooltip');
+
+      tooltip
+        .attributes('content')
+        .split('<br>')
+        .forEach(line => {
+          expect(line).to.have.lengthOf.at.most(100);
+        });
+    });
+  });
 });

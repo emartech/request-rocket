@@ -14,15 +14,22 @@
       </e-select>
     </div>
     <div class="e-cell e-cell-auto e-cell-medium">
-      <input
-        id="request-editor-url-field"
-        :disabled="!isNetworkAvailable"
-        :value="url"
-        class="e-input"
-        placeholder="URL"
-        type="text"
-        @input="setUrl($event.target.value)"
-        @keyup.enter="sendRequest">
+      <e-tooltip
+        id="request-editor-url-tooltip"
+        :content="urlInTooltip"
+        :disabled="shouldDisplayUrlInTooltip"
+        block
+        inverse>
+        <input
+          id="request-editor-url-field"
+          :disabled="!isNetworkAvailable"
+          :value="url"
+          class="e-input"
+          placeholder="URL"
+          type="text"
+          @input="setUrl($event.target.value)"
+          @keyup.enter="sendRequest">
+      </e-tooltip>
     </div>
     <div class="e-cell e-cell-medium">
       <button
@@ -37,6 +44,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex';
+import { isEmpty, splitEvery } from 'ramda';
 import Action from '../store/action-types';
 import httpMethodOptions from '../store/method-options';
 
@@ -47,7 +55,9 @@ export default {
     ...mapState({
       url: state => state.request.url,
       httpMethodOptions: () => httpMethodOptions,
-      method: state => state.request.method
+      method: state => state.request.method,
+      urlInTooltip: state => splitEvery(100, state.request.url).join('<br>'),
+      shouldDisplayUrlInTooltip: state => isEmpty(state.request.url)
     })
   },
   methods: {
