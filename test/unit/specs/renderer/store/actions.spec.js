@@ -1,6 +1,7 @@
 import sinon from 'sinon';
 import { ipcRenderer } from 'electron';
 import { clone } from 'ramda';
+import uuid from 'uuid';
 import Action from '../../../../../src/renderer/store/action-types';
 import Mutation from '../../../../../src/renderer/store/mutation-types';
 import Actions from '../../../../../src/renderer/store/actions';
@@ -130,6 +131,22 @@ describe('actions', () => {
         );
       });
 
+      it('should append a UUID to the request', () => {
+        sinon.stub(uuid, 'v4').returns('some-random-generated-uuid');
+
+        store.dispatch(Action.sendRequest);
+
+        expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ uuid: 'some-random-generated-uuid' }));
+      });
+
+      it('should store the request UUID on the state', () => {
+        sinon.stub(uuid, 'v4').returns('some-random-generated-uuid');
+
+        store.dispatch(Action.sendRequest);
+
+        expect(store.state.uuid).to.eql('some-random-generated-uuid');
+      });
+
       it('should indicate request in progress', () => {
         const commit = sinon.spy();
         const dispatch = sinon.spy();
@@ -139,6 +156,7 @@ describe('actions', () => {
 
         expect(commit).to.be.calledWithExactly(Mutation.REQUEST_IN_PROGRESS);
       });
+
       context('when protocol is not specified', () => {
         it('should prepend http:// to the URL', () => {
           store.commit(Mutation.UPDATE_URL, 'request.url');

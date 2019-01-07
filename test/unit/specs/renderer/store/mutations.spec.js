@@ -147,4 +147,11 @@ describe('mutations', () => {
       });
     });
   });
+
+  describe('SET_REQUEST_ID', function() {
+    it('should update the UUID for the request', () => {
+      store.commit(Mutation.SET_REQUEST_ID, 'some-random-uuid');
+      expect(store.state.uuid).to.equal('some-random-uuid');
+    });
+  });
 });

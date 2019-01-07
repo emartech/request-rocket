@@ -61,5 +61,8 @@ export default {
     } else {
       state.validatorErrors = state.validatorErrors.filter(error => error.type !== type);
     }
+  },
+  [Mutation.SET_REQUEST_ID](state, uuid) {
+    state.uuid = uuid;
   }
 };

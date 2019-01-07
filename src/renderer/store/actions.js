@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 import { isEmpty } from 'ramda';
+import uuid from 'uuid';
 import Action from './action-types';
 import Mutation from './mutation-types';
 import Validator from '../lib/validator';
@@ -28,8 +29,10 @@ export default {
     if (!isEmpty(state.validatorErrors)) return;
 
     commit(Mutation.REQUEST_IN_PROGRESS);
+    commit(Mutation.SET_REQUEST_ID, uuid.v4());
 
     const payload = {
+      uuid: state.uuid,
       requestDetails: {
         url: state.request.url,
         method: state.request.method,

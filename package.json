@@ -64,6 +64,7 @@
     "pretty-bytes": "5.1.0",
     "pretty-ms": "4.0.0",
     "ramda": "0.25.0",
+    "uuid": "3.3.2",
     "vue": "2.5.17",
     "vue-codemirror": "4.0.5",
     "vue-electron": "1.0.6",

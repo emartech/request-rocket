@@ -24,6 +24,7 @@ export const initialState = {
     body: '',
     contentType: ContentType.custom
   },
+  uuid: null,
   response: {},
   sentRequestHeaders: null,
   sendingInProgress: false
