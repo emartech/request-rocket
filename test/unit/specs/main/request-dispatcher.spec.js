@@ -18,10 +18,12 @@ describe('RequestDispatcher', () => {
 
     it('should route the request through its lifecycle', async () => {
       const ipcRequest = {
-        method: 'GET',
-        headers: [{ name: 'content-type', value: 'application/json' }],
-        url: 'https://example.com',
-        body: '',
+        requestDetails: {
+          method: 'GET',
+          headers: [{ name: 'content-type', value: 'application/json' }],
+          url: 'https://example.com',
+          body: ''
+        },
         authType: Auth.WSSE,
         authParams: { key: 'somekey001', secret: '53cr3t' }
       };

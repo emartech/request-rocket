@@ -67,7 +67,10 @@ describe('actions', () => {
 
         store.dispatch(Action.sendRequest);
 
-        expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'https://request.url'));
+        expect(ipcSpy).to.be.calledWith(
+          'send-request',
+          sinon.match({ requestDetails: { url: 'https://request.url' } })
+        );
       });
 
       it('should clear the response data', () => {
@@ -92,7 +95,7 @@ describe('actions', () => {
 
         store.dispatch(Action.sendRequest);
 
-        expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('method', HttpMethod.POST));
+        expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ requestDetails: { method: HttpMethod.POST } }));
       });
 
       [
@@ -108,7 +111,7 @@ describe('actions', () => {
           store.commit(Mutation.SELECT_HTTP_METHOD, method);
           store.dispatch(Action.sendRequest);
 
-          expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('body', expectedBody));
+          expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ requestDetails: { body: expectedBody } }));
         });
       });
 
@@ -121,7 +124,9 @@ describe('actions', () => {
 
         expect(ipcSpy).to.be.calledWith(
           'send-request',
-          sinon.match.has('headers', [{ name: 'content-type', value: 'application/json', sendingStatus: true }])
+          sinon.match({
+            requestDetails: { headers: [{ name: 'content-type', value: 'application/json', sendingStatus: true }] }
+          })
         );
       });
 
@@ -140,7 +145,10 @@ describe('actions', () => {
 
           store.dispatch(Action.sendRequest);
 
-          expect(ipcSpy).to.be.calledWith('send-request', sinon.match.has('url', 'http://request.url'));
+          expect(ipcSpy).to.be.calledWith(
+            'send-request',
+            sinon.match({ requestDetails: { url: 'http://request.url' } })
+          );
         });
       });
     });

@@ -11,7 +11,7 @@ function convertToKeyValuePairs(headers) {
 }
 
 export default {
-  create({ method, url, headers, body }) {
+  create({ requestDetails: { method, url, headers, body } }) {
     return {
       method,
       url,

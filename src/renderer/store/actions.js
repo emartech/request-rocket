@@ -30,10 +30,12 @@ export default {
     commit(Mutation.REQUEST_IN_PROGRESS);
 
     const payload = {
-      url: state.request.url,
-      method: state.request.method,
-      headers: getters.requestHeadersToSend,
-      body: getters.isRequestBodyEditAvailable ? state.request.body : null,
+      requestDetails: {
+        url: state.request.url,
+        method: state.request.method,
+        headers: getters.requestHeadersToSend,
+        body: getters.isRequestBodyEditAvailable ? state.request.body : null
+      },
       authType: state.auth.selected,
       authParams: state.auth.params
     };
