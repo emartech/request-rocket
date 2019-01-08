@@ -1,3 +1,4 @@
 theme: jekyll-theme-minimal
 title: Request Rocket
+logo: /docs/emarsys_logo.png
 description: Emarsys API test tool with WSSE and Escher support.
