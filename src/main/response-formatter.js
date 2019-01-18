@@ -1,8 +1,8 @@
 export default {
-  transform({ data, headers, status, request, elapsedTime }) {
+  transform({ body, headers, statusCode, request, timings }) {
     return {
-      response: { body: data, headers, status, elapsedTime },
-      requestHeaders: request.getHeaders()
+      response: { body, headers, status: statusCode, elapsedTime: timings.end },
+      requestHeaders: request.headers
     };
   }
 };

@@ -2,7 +2,7 @@ import RequestFactory from '../../../../src/main/request-factory';
 
 describe('RequestFactory', () => {
   describe('.create', () => {
-    it('should convert ipcParams to Axios acceptable request options', () => {
+    it('should convert ipcParams to acceptable request options', () => {
       const ipcRequest = {
         requestDetails: {
           method: 'GET',
@@ -16,7 +16,7 @@ describe('RequestFactory', () => {
         method: 'GET',
         url: 'https://example.com',
         headers: {},
-        data: 'some request body'
+        body: 'some request body'
       });
     });
 
@@ -40,7 +40,7 @@ describe('RequestFactory', () => {
           'x-custom-header': 'some content',
           'content-type': 'application/json'
         },
-        data: 'some request body'
+        body: 'some request body'
       });
     });
 
@@ -61,7 +61,7 @@ describe('RequestFactory', () => {
         method: 'GET',
         url: 'https://example.com',
         headers: { 'x-custom-header': 'some content,other content' },
-        data: 'some request body'
+        body: 'some request body'
       });
     });
 
@@ -82,7 +82,7 @@ describe('RequestFactory', () => {
         method: 'GET',
         url: 'https://example.com',
         headers: { 'x-custom-header': 'some content', 'x-otherheader': 'other content' },
-        data: 'some request body'
+        body: 'some request body'
       });
     });
   });

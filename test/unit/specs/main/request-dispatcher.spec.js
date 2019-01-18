@@ -1,7 +1,8 @@
 import sinon from 'sinon';
-import axios from 'axios';
+import nock from 'nock';
 import RequestDispatcher from '../../../../src/main/request-dispatcher';
 import Auth from '../../../../src/common/auth-types';
+const packageInfo = require('../../../../package');
 
 describe('RequestDispatcher', () => {
   describe('.handle', () => {
@@ -17,28 +18,20 @@ describe('RequestDispatcher', () => {
     });
 
     it('should route the request through its lifecycle', async () => {
+      nock('https://example.com')
+        .get('/')
+        .reply(200, {});
+
       const ipcRequest = {
         requestDetails: {
           method: 'GET',
           headers: [{ name: 'content-type', value: 'application/json' }],
           url: 'https://example.com',
-          body: ''
+          body: '{}'
         },
-        authType: Auth.WSSE,
-        authParams: { key: 'somekey001', secret: '53cr3t' }
+        authType: Auth.NONE,
+        authParams: {}
       };
-
-      const axiosRequest = sinon.stub(axios.Axios.prototype, 'request');
-      axiosRequest.resolves({
-        headers: { 'content-type': 'application/json' },
-        data: '{}',
-        status: 200,
-        request: {
-          getHeaders() {
-            return { 'user-agent': 'some-user-agent' };
-          }
-        }
-      });
 
       expect(await RequestDispatcher.handle(ipcRequest)).to.eql({
         response: {
@@ -47,7 +40,11 @@ describe('RequestDispatcher', () => {
           status: 200,
           elapsedTime: 0
         },
-        requestHeaders: { 'user-agent': 'some-user-agent' }
+        requestHeaders: {
+          'user-agent': `RequestRocket/${packageInfo.version}`,
+          'content-type': 'application/json',
+          'content-length': 2
+        }
       });
     });
   });

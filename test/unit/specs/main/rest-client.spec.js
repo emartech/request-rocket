@@ -1,15 +1,12 @@
-import axios from 'axios';
 import sinon from 'sinon';
+import nock from 'nock';
 import RestClient from '../../../../src/main/rest-client';
 
 describe('RestClient', () => {
   describe('#send', () => {
     let subject;
-    let axiosRequest;
 
     beforeEach(() => {
-      axiosRequest = sinon.stub(axios.Axios.prototype, 'request');
-
       subject = new RestClient();
     });
 
@@ -17,94 +14,76 @@ describe('RestClient', () => {
       sinon.restore();
     });
 
-    it('should dispatch a http request using Axios', async () => {
-      axiosRequest.resolves({});
+    it('should dispatch a http request', async () => {
+      nock('https://httpbin.org')
+        .get('/anything')
+        .reply(200, {});
 
       await subject.send({ url: 'https://httpbin.org/anything' });
 
-      expect(axiosRequest).to.be.calledWith({ url: 'https://httpbin.org/anything' });
+      expect(nock.isDone()).to.equal(true);
     });
     it('should return the response object', async () => {
-      const response = { status: 200 };
-      axiosRequest.resolves(response);
+      nock('https://httpbin.org')
+        .get('/anything')
+        .reply(200, {});
 
-      expect(await subject.send({})).to.eql(response);
-    });
-    context('when an unexpected error occurs', () => {
-      it('should indicate unexpected error', async () => {
-        axiosRequest.throws(new Error('some unknown error'));
+      const response = await subject.send({ url: 'https://httpbin.org/anything' });
 
-        try {
-          await subject.send({});
-        } catch (error) {
-          expect(error.message).to.eql('Unexpected error occurred');
-        }
+      expect(response).to.deep.include({
+        headers: { 'content-type': 'application/json' },
+        body: '{}',
+        statusCode: 200
       });
-    });
-    context('when the request results in an error', () => {
-      it('should return the error response', async () => {
-        axiosRequest.rejects({ response: { status: 404 } });
 
-        expect(await subject.send({})).to.eql({ status: 404 });
-      });
+      expect(response).to.have.property('timings');
+      expect(response).to.have.property('request');
     });
     context('when the request times out', () => {
       it('should throw an error', async () => {
-        axiosRequest.rejects({ code: 'ECONNABORTED', message: 'request timed out' });
+        nock('https://httpbin.org')
+          .get('/anything')
+          .replyWithError({ code: 'ECONNABORTED', message: 'Request timed out' });
 
         try {
-          await subject.send({});
+          await subject.send({ url: 'https://httpbin.org/anything' });
         } catch (error) {
-          expect(error.message).to.eql('Request timed out');
+          expect(error.message).to.equal('Request timed out');
         }
       });
     });
     it('should have a user agent header by default', async () => {
-      const packageInfo = require('../../../../package');
-      const commonHeaders = subject.client.defaults.headers.common;
-      expect(commonHeaders).to.have.property('User-Agent', `RequestRocket/${packageInfo.version}`);
+      nock('https://httpbin.org')
+        .get('/anything')
+        .reply(200, {});
+
+      const response = await subject.send({ url: 'https://httpbin.org/anything' });
+
+      const { version } = require('../../../../package');
+
+      expect(response.request.headers).to.have.property('user-agent', `RequestRocket/${version}`);
     });
     it('should not have any headers by default besides common', async () => {
-      Object.keys(subject.client.defaults.headers).forEach(method => {
-        if (method !== 'common') {
-          expect(subject.client.defaults.headers[method]).to.be.empty; // eslint-disable-line
-        }
-      });
+      nock('https://httpbin.org')
+        .get('/anything')
+        .reply(200, {});
+
+      const response = await subject.send({ url: 'https://httpbin.org/anything' });
+
+      const requestHeaders = response.request.headers;
+
+      delete requestHeaders['user-agent'];
+
+      expect(requestHeaders).to.eql({});
     });
     it('should keep response body as string', async () => {
-      const { transformResponse } = subject.client.defaults;
+      nock('https://httpbin.org')
+        .get('/anything')
+        .reply(200, {});
 
-      let response;
+      const response = await subject.send({ url: 'https://httpbin.org/anything' });
 
-      if (typeof transformResponse === 'function') {
-        response = transformResponse('{"foo":"bar"}');
-      } else {
-        response = Array.from(transformResponse).reduce(
-          (response, transformer) => transformer(response),
-          '{"foo":"bar"}'
-        );
-      }
-
-      expect(response).to.eql('{"foo":"bar"}');
-    });
-    it('should track response round trip time', async () => {
-      const clock = sinon.useFakeTimers();
-
-      axiosRequest.returns(
-        new Promise(resolve => {
-          setTimeout(() => resolve({}), 100);
-        })
-      );
-
-      const request = subject.send();
-
-      clock.runAll();
-
-      const response = await request;
-
-      expect(response.elapsedTime).to.equal(100);
-
-      clock.restore();
+      expect(response.body).to.equal('{}');
     });
   });
 });

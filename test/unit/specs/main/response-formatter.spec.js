@@ -3,19 +3,17 @@ import ResponseFormatter from '../../../../src/main/response-formatter';
 describe('ResponseFormatter', () => {
   describe('.transform', () => {
     it('should transform the Axios response to a front-end acceptable format', () => {
-      const axiosResponse = {
+      const response = {
         headers: { 'content-type': 'application/json' },
-        data: '{}',
-        status: 200,
+        body: '{}',
+        statusCode: 200,
         request: {
-          getHeaders() {
-            return { 'user-agent': 'some-user-agent' };
-          }
+          headers: { 'user-agent': 'some-user-agent' }
         },
-        elapsedTime: 101
+        timings: { end: 101 }
       };
 
-      expect(ResponseFormatter.transform(axiosResponse)).to.eql({
+      expect(ResponseFormatter.transform(response)).to.eql({
         response: {
           headers: { 'content-type': 'application/json' },
           body: '{}',

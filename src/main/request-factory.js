@@ -16,7 +16,7 @@ export default {
       method,
       url,
       headers: convertToKeyValuePairs(headers),
-      data: body
+      body
     };
   }
 };

@@ -57,13 +57,13 @@
     }
   },
   "dependencies": {
-    "axios": "0.18.0",
     "codemirror": "5.40.2",
     "crypto-js": "3.1.9-1",
     "escher-auth": "3.0.0",
     "pretty-bytes": "5.1.0",
     "pretty-ms": "4.0.0",
     "ramda": "0.25.0",
+    "request": "2.88.0",
     "uuid": "3.3.2",
     "vue": "2.5.17",
     "vue-codemirror": "4.0.5",
@@ -121,6 +121,7 @@
     "mini-css-extract-plugin": "0.4.4",
     "mocha": "5.2.0",
     "multispinner": "0.2.1",
+    "nock": "10.0.6",
     "node-loader": "0.6.0",
     "prettier": "1.14.3",
     "require-dir": "1.1.0",
