@@ -43,7 +43,7 @@ export default {
       authParams: state.auth.params
     };
 
-    await ipcRenderer.send('send-request', payload);
+    await ipcRenderer.send(Channels.SEND_REQUEST, payload);
   },
   async [Action.cancelRequest]() {
     await ipcRenderer.send(Channels.CANCEL_REQUEST);
