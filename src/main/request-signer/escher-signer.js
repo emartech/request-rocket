@@ -37,21 +37,21 @@ function getUrlStartingFromPath(urlString) {
   return `${url.pathname}${url.search}`;
 }
 
-function transformAxiosRequestToEscherFormat(axiosRequest) {
-  const clonedRequest = clone(axiosRequest);
+function transformRequestToEscherFormat(request) {
+  const clonedRequest = clone(request);
 
   clonedRequest.url = getUrlStartingFromPath(clonedRequest.url);
   clonedRequest.body = clonedRequest.data;
 
   delete clonedRequest.data;
 
-  const headers = headersWithHost(axiosRequest);
+  const headers = headersWithHost(request);
   clonedRequest.headers = objectToArrayOfArrays(headers);
 
   return clonedRequest;
 }
 
-function transformEscherRequestToAxiosFormat(escherRequest, originalUrl) {
+function transformEscherRequestToRequestFormat(escherRequest, originalUrl) {
   const clonedRequest = clone(escherRequest);
 
   clonedRequest.url = originalUrl;
@@ -83,7 +83,7 @@ export default class EscherSigner {
   }
 
   signRequest(request) {
-    const escherRequest = transformAxiosRequestToEscherFormat(request);
+    const escherRequest = transformRequestToEscherFormat(request);
 
     const additionalHeadersToSign = [];
 
@@ -93,6 +93,6 @@ export default class EscherSigner {
 
     const signedRequest = this.escher.signRequest(escherRequest, escherRequest.body || '', additionalHeadersToSign);
 
-    return transformEscherRequestToAxiosFormat(signedRequest, request.url);
+    return transformEscherRequestToRequestFormat(signedRequest, request.url);
   }
 }
