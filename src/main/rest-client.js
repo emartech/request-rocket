@@ -16,21 +16,5 @@ export default class RestClient {
 
   send(requestOptions) {
     return this.makeRequest(requestOptions);
-    // try {
-    //   const timeTracker = new TimeTracker(async () => this.client.request(requestOptions));
-    //   const response = await timeTracker.execute();
-    //   response.elapsedTime = timeTracker.elapsedTime;
-    //
-    //   return response;
-    // } catch (error) {
-    //   if (error.response) {
-    //     return error.response;
-    //   }
-    //   if (error.code === 'ECONNABORTED') {
-    //     throw new Error('Request timed out');
-    //   } else {
-    //     throw new Error('Unexpected error occurred');
-    //   }
-    // }
   }
 }
