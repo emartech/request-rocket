@@ -9,7 +9,9 @@
         <!-- eslint-disable -->
         <e-icon icon="warning"></e-icon>
       </span>
-      <div v-for="(error) in errors">
+      <div
+        v-for="(error, index) in errors"
+        v-bind:key="index">
         <span>{{ error }}</span>
       </div>
     </div>
