@@ -1,6 +1,6 @@
 import { promisify } from 'util';
 import request from 'request';
-const { version } = require('../../../../package');
+const { version } = require('../../package');
 
 export default class RestClient {
   constructor(timeoutInMilliseconds = 60000) {
