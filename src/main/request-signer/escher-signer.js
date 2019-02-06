@@ -17,6 +17,7 @@ function objectToArrayOfArrays(headersObject) {
     const headerValue = headersObject[headerName];
 
     accumulator.push([headerName, headerValue]);
+
     return accumulator;
   }, []);
 }
@@ -41,11 +42,9 @@ function transformRequestToEscherFormat(request) {
   const clonedRequest = clone(request);
 
   clonedRequest.url = getUrlStartingFromPath(clonedRequest.url);
-  clonedRequest.body = clonedRequest.data;
-
-  delete clonedRequest.data;
 
   const headers = headersWithHost(request);
+
   clonedRequest.headers = objectToArrayOfArrays(headers);
 
   return clonedRequest;
@@ -55,10 +54,6 @@ function transformEscherRequestToRequestFormat(escherRequest, originalUrl) {
   const clonedRequest = clone(escherRequest);
 
   clonedRequest.url = originalUrl;
-  clonedRequest.data = clonedRequest.body;
-
-  delete clonedRequest.body;
-
   clonedRequest.headers = arrayOfArraysToObject(clonedRequest.headers);
 
   return clonedRequest;
@@ -84,7 +79,6 @@ export default class EscherSigner {
 
   signRequest(request) {
     const escherRequest = transformRequestToEscherFormat(request);
-
     const additionalHeadersToSign = [];
 
     if ('x-suite-customerid' in request.headers) {

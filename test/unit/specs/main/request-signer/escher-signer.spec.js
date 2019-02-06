@@ -11,7 +11,9 @@ describe('EscherSigner', () => {
       });
 
       const request = { method: 'GET', url: 'http://some.url', headers: {} };
+
       signer.signRequest(request);
+
       expect(request.headers).to.eql({});
     });
 
@@ -74,8 +76,8 @@ describe('EscherSigner', () => {
       });
 
       const signedRequest = signer.signRequest(request);
-      signedRequest.url = '/q/w/e?q=search_term';
 
+      signedRequest.url = '/q/w/e?q=search_term';
       signedRequest.headers = [
         ['host', signedRequest.headers.host],
         ['x-ems-auth', signedRequest.headers['x-ems-auth']],
@@ -112,7 +114,7 @@ describe('EscherSigner', () => {
         method: 'POST',
         url: 'https://some.url:443/q/w/e?q=search_term#qwe',
         headers: {},
-        data: 'some request data'
+        body: 'some request data'
       };
 
       const signer = new EscherSigner({
@@ -124,10 +126,6 @@ describe('EscherSigner', () => {
       const signedRequest = signer.signRequest(request);
 
       signedRequest.url = '/q/w/e?q=search_term';
-      signedRequest.body = signedRequest.data;
-
-      delete signedRequest.data;
-
       signedRequest.headers = [
         ['host', signedRequest.headers.host],
         ['x-ems-auth', signedRequest.headers['x-ems-auth']],
@@ -165,7 +163,7 @@ describe('EscherSigner', () => {
           method: 'POST',
           url: 'https://some.url:443/q/w/e?q=search_term#qwe',
           headers: { 'x-suite-customerid': '112233' },
-          data: 'some request data'
+          body: 'some request data'
         };
 
         const signer = new EscherSigner({
@@ -177,10 +175,6 @@ describe('EscherSigner', () => {
         const signedRequest = signer.signRequest(request);
 
         signedRequest.url = '/q/w/e?q=search_term';
-        signedRequest.body = signedRequest.data;
-
-        delete signedRequest.data;
-
         signedRequest.headers = [
           ['host', signedRequest.headers.host],
           ['x-ems-auth', signedRequest.headers['x-ems-auth']],
