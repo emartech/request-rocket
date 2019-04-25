@@ -2,6 +2,12 @@
 
 > Emarsys REST API client
 
+#### Installation
+
+Releases can be retrieved from the Releases page of the project’s GitHub repository.
+
+To install the application (on macOS), just double-click the .dmg file and drag the “Request Rocket” app to “Applications.”
+
 #### Build Setup
 
 ``` bash
