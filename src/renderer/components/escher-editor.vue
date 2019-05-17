@@ -27,7 +27,7 @@
           id="escher-secret"
           v-model="secret"
           class="e-input"
-          type="text"
+          type="password"
           placeholder="Secret"
           @input="setAuthParams()">
       </div>

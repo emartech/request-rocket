@@ -46,5 +46,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.CodeMirror {
+  height: auto;
+}
 </style>

@@ -99,4 +99,8 @@ export default {
 </script>
 
 <style scoped>
+#request-header-inspector,
+#response-header-inspector {
+  word-break: break-all;
+}
 </style>
