@@ -3,6 +3,16 @@
     <h2>Request</h2>
     <div class="e-fullheight__actions">
       <button
+        class="e-btn e-btn-link previous-state"
+        @click="previousState">
+        previous state
+      </button>
+      <button
+        class="e-btn e-btn-link next-state"
+        @click="nextState">
+        next state
+      </button>
+      <button
         class="e-btn e-btn-link reset-state"
         @click="resetState">
         reset all settings
@@ -17,7 +27,7 @@ import { mapActions } from 'vuex';
 export default {
   name: 'RequestEditorTitle',
   methods: {
-    ...mapActions(['resetState'])
+    ...mapActions(['previousState', 'nextState', 'resetState'])
   }
 };
 </script>

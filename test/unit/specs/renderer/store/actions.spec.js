@@ -68,6 +68,7 @@ describe('actions', () => {
 
         store.dispatch(Action.sendRequest);
 
+        expect(ipcSpy).to.be.calledWith('next-state', sinon.match(store.state));
         expect(ipcSpy).to.be.calledWith(
           'send-request',
           sinon.match({ requestDetails: { url: 'https://request.url' } })
@@ -88,6 +89,7 @@ describe('actions', () => {
 
         store.dispatch(Action.sendRequest);
 
+        expect(ipcSpy).to.be.calledWith('next-state', sinon.match(store.state));
         expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ authType: Auth.WSSE, authParams }));
       });
 
@@ -112,6 +114,7 @@ describe('actions', () => {
           store.commit(Mutation.SELECT_HTTP_METHOD, method);
           store.dispatch(Action.sendRequest);
 
+          expect(ipcSpy).to.be.calledWith('next-state', sinon.match(store.state));
           expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ requestDetails: { body: expectedBody } }));
         });
       });
@@ -123,6 +126,7 @@ describe('actions', () => {
         ]);
         store.dispatch(Action.sendRequest);
 
+        expect(ipcSpy).to.be.calledWith('next-state', sinon.match(store.state));
         expect(ipcSpy).to.be.calledWith(
           'send-request',
           sinon.match({
@@ -136,6 +140,7 @@ describe('actions', () => {
 
         store.dispatch(Action.sendRequest);
 
+        expect(ipcSpy).to.be.calledWith('next-state', sinon.match(store.state));
         expect(ipcSpy).to.be.calledWith('send-request', sinon.match({ uuid: 'some-random-generated-uuid' }));
       });
 
@@ -163,6 +168,7 @@ describe('actions', () => {
 
           store.dispatch(Action.sendRequest);
 
+          expect(ipcSpy).to.be.calledWith('next-state', sinon.match(store.state));
           expect(ipcSpy).to.be.calledWith(
             'send-request',
             sinon.match({ requestDetails: { url: 'http://request.url' } })
@@ -308,6 +314,22 @@ describe('actions', () => {
       const commit = sinon.spy();
       Actions[Action.resetState]({ commit });
       expect(commit).to.be.calledWithExactly(Mutation.RESET_STATE);
+    });
+  });
+
+  describe('nextState', () => {
+    it('should send the next state', () => {
+      const ipcSpy = sinon.spy(ipcRenderer, 'send');
+      Actions[Action.nextState]({ state: 'state' });
+      expect(ipcSpy).to.be.calledWith('next-state', 'state');
+    });
+  });
+
+  describe('previousState', () => {
+    it('should send the previous state', () => {
+      const ipcSpy = sinon.spy(ipcRenderer, 'send');
+      Actions[Action.previousState]({ state: 'state' });
+      expect(ipcSpy).to.be.calledWith('previous-state', 'state');
     });
   });
 

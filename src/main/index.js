@@ -1,6 +1,10 @@
+import { clone, equals } from 'ramda';
+import fs from 'fs';
 import { app, BrowserWindow, ipcMain, Menu } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 import Channels from '../common/ipc-channels';
 import RequestDispatcher from './request-dispatcher';
+import StateHistory from './history';
+import { initialState } from '../renderer/store';
 
 /**
  * Set `__static` path to static files in production
@@ -12,6 +16,8 @@ if (process.env.NODE_ENV !== 'development') {
 
 let mainWindow;
 const winURL = process.env.NODE_ENV === 'development' ? 'http://localhost:9080' : `file://${__dirname}/index.html`;
+const stateHistory = new StateHistory();
+const historyPath = '/tmp/.requestRockerHistory.json';
 
 function createWindow() {
   /**
@@ -26,7 +32,9 @@ function createWindow() {
   mainWindow.loadURL(winURL);
 
   mainWindow.on('closed', () => {
-    mainWindow = null;
+    fs.writeFile(historyPath, JSON.stringify(stateHistory.getStates()), err => {
+      if (!err) mainWindow = null;
+    });
   });
 
   const template = [
@@ -59,7 +67,15 @@ function createWindow() {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+  fs.access(historyPath, fs.F_OK, err => {
+    if (!err) {
+      const rawdata = fs.readFileSync(historyPath);
+      stateHistory.setStates(JSON.parse(rawdata));
+    }
+  });
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -88,6 +104,31 @@ ipcMain.on(Channels.CANCEL_REQUEST, async event => {
   } catch (error) {
     event.sender.send(Channels.UNEXPECTED_ERROR, error.message);
   }
+});
+
+ipcMain.on(Channels.NEXT_STATE, async (event, state, forcePush = false) => {
+  let newState;
+  if (
+    (!stateHistory.currentEquals(state) && !equals(state, initialState)) ||
+    (forcePush && !equals(state, initialState))
+  ) {
+    stateHistory.push(clone(state));
+    newState = stateHistory.nextState();
+  } else {
+    newState = stateHistory.nextState();
+  }
+  event.sender.send(Channels.SET_STATE, newState);
+});
+
+ipcMain.on(Channels.PREVIOUS_STATE, async (event, state) => {
+  let newState;
+  if (!stateHistory.currentEquals(state) && !equals(state, initialState)) {
+    stateHistory.push(clone(state));
+    newState = stateHistory.previousState();
+  } else {
+    newState = stateHistory.previousState();
+  }
+  event.sender.send(Channels.SET_STATE, newState);
 });
 
 /**

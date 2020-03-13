@@ -9,6 +9,15 @@ export default {
   [Mutation.RESET_STATE]() {
     this.replaceState(clone(initialState));
   },
+  [Mutation.SET_STATE](state, newState) {
+    newState.errors = [];
+    newState.validatorErrors = [];
+    newState.uuid = null;
+    newState.response = {};
+    newState.sentRequestHeaders = null;
+    newState.sendingInProgress = false;
+    this.replaceState(newState);
+  },
   [Mutation.SET_SENT_REQUEST_HEADERS](state, requestHeaders) {
     state.sentRequestHeaders = requestHeaders;
   },

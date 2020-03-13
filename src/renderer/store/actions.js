@@ -43,7 +43,8 @@ export default {
       authParams: state.auth.params
     };
 
-    await ipcRenderer.send(Channels.SEND_REQUEST, payload);
+    ipcRenderer.send(Channels.NEXT_STATE, state, true);
+    ipcRenderer.send(Channels.SEND_REQUEST, payload);
   },
   async [Action.cancelRequest]() {
     await ipcRenderer.send(Channels.CANCEL_REQUEST);
@@ -88,6 +89,15 @@ export default {
   },
   [Action.resetState]({ commit }) {
     commit(Mutation.RESET_STATE);
+  },
+  [Action.nextState]({ state }) {
+    ipcRenderer.send(Channels.NEXT_STATE, state);
+  },
+  [Action.previousState]({ state }) {
+    ipcRenderer.send(Channels.PREVIOUS_STATE, state);
+  },
+  [Action.setState]({ commit }, state, newState) {
+    commit(Mutation.SET_STATE, state, newState);
   },
   [Action.indicateBackendError]({ commit }, errorMessage) {
     commit(Mutation.ADD_ERROR_MESSAGE, errorMessage);
