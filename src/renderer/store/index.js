@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import { clone } from 'ramda';
 import Actions from './actions';
 import Getters from './getters';
@@ -36,6 +37,7 @@ export default function() {
     state: clone(initialState),
     getters: Getters,
     mutations: Mutations,
-    actions: Actions
+    actions: Actions,
+    plugins: [createPersistedState()]
   });
 }

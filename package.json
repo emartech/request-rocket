@@ -69,7 +69,8 @@
     "vue-codemirror": "4.0.6",
     "vue-electron": "1.0.6",
     "vue-router": "3.4.3",
-    "vuex": "3.5.1"
+    "vuex": "3.5.1",
+    "vuex-persistedstate": "3.1.0"
   },
   "devDependencies": {
     "@vue/test-utils": "1.0.0-beta.25",
