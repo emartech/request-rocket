@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+import Vue from 'vue';
 import ErrorMessage from '@/components/error-message';
 import createStore from '@/store';
 import sinon from 'sinon';
@@ -11,11 +12,13 @@ describe('ErrorMessage.vue', () => {
     store = createStore();
   });
 
-  it('should render the error message', () => {
+  it('should render the error message', async () => {
     const component = shallowMount(ErrorMessage, { store });
 
     store.commit(Mutation.ADD_ERROR_MESSAGE, 'error occurred');
     store.commit(Mutation.ADD_ERROR_MESSAGE, 'another error occurred');
+
+    await Vue.nextTick();
 
     const errorMessageElement = component.find('#error-message');
 
