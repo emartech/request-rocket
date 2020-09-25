@@ -32,12 +32,17 @@ export const initialState = {
 };
 
 export default function() {
-  return new Store({
+  const options = {
     strict: process.env.NODE_ENV !== 'production',
     state: clone(initialState),
     getters: Getters,
     mutations: Mutations,
-    actions: Actions,
-    plugins: [createPersistedState()]
-  });
+    actions: Actions
+  };
+
+  if (process.env.NODE_ENV !== 'testing') {
+    options.plugins = [createPersistedState()];
+  }
+
+  return new Store(options);
 }

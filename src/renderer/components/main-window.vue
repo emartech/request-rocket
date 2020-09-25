@@ -2,8 +2,13 @@
   <div class="e-fullheight__wrapper">
     <error-message/>
     <div class="e-fullheight__container">
-      <request-editor/>
-      <response-inspector/>
+      <split-pane
+        :min-percent="20"
+        :default-percent="60"
+        split="vertical">
+        <request-editor slot="paneL"/>
+        <response-inspector slot="paneR"/>
+      </split-pane>
     </div>
   </div>
 </template>
@@ -20,4 +25,7 @@ export default {
 </script>
 
 <style>
+.e-fullheight__container {
+  display: block;
+}
 </style>

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="e-fullheight__content e-fullheight__content-box"
-    style="flex-basis: 60%">
+  <div class="e-fullheight__content e-fullheight__content-box">
     <request-editor-title/>
     <div class="e-fullheight__body">
       <div class="e-field">
@@ -76,6 +74,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

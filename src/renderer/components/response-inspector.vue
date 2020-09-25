@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="e-fullheight__content e-fullheight__content-box"
-    style="flex-basis: 40%">
+  <div class="e-fullheight__content e-fullheight__content-box">
     <div class="e-fullheight__header">
       <h2>Response</h2>
     </div>
