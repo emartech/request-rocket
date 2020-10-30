@@ -47,10 +47,10 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "icon": "build/icons/rocket.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/rocket.ico"
     },
     "linux": {
       "icon": "build/icons"
