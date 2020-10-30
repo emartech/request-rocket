@@ -8,6 +8,10 @@ Releases can be retrieved from the Releases page of the project’s GitHub repos
 
 To install the application (on macOS), just double-click the .dmg file and drag the “Request Rocket” app to “Applications.”
 
+To install the application (on linux), make the AppImage file executable (give the file execution permission) and double-click.
+
+To install the application (on windows), double-click on the exe file.
+
 #### Build Setup
 
 ``` bash
@@ -19,6 +23,9 @@ npm run dev
 
 # build electron application for production
 npm run build
+
+# build electron application for production on mac to mac, linux and windows
+npm run build:mwl
 
 # run unit & end-to-end tests
 npm test
