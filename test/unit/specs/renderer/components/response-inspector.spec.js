@@ -145,10 +145,12 @@ describe('ResponseInspector.vue', () => {
   });
 
   context('when request sending is in progress', () => {
-    it('should display a wait indicator', () => {
+    it('should display a wait indicator', async () => {
       const component = shallowMount(ResponseInspector, { store });
 
       store.commit(Mutation.REQUEST_IN_PROGRESS);
+
+      await Vue.nextTick();
 
       const emptyStateComponent = component.find({ name: 'SendingInProgress' });
       const responseDetailsElement = component.find('#response-details');

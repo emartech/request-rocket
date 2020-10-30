@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import { clone } from 'ramda';
 import Actions from './actions';
 import Getters from './getters';
@@ -31,11 +32,17 @@ export const initialState = {
 };
 
 export default function() {
-  return new Store({
+  const options = {
     strict: process.env.NODE_ENV !== 'production',
     state: clone(initialState),
     getters: Getters,
     mutations: Mutations,
     actions: Actions
-  });
+  };
+
+  if (process.env.NODE_ENV !== 'testing') {
+    options.plugins = [createPersistedState()];
+  }
+
+  return new Store(options);
 }

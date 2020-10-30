@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+import Vue from 'vue';
 import HeaderEditor from '@/components/header-editor';
 import createStore from '@/store';
 import Mutation from '../../../../../src/renderer/store/mutation-types';
@@ -10,10 +11,12 @@ describe('HeaderEditor.vue', () => {
     store = createStore();
   });
 
-  it('should change input value for a header when header changes in store', () => {
+  it('should change input value for a header when header changes in store', async () => {
     const component = shallowMount(HeaderEditor, { store });
 
     store.commit(Mutation.SET_REQUEST_HEADERS, [{ name: 'Content-Type', value: 'text/plain' }]);
+
+    await Vue.nextTick();
 
     expect(component.find('input.header-name').element.value).to.eql('Content-Type');
     expect(component.find('input.header-value').element.value).to.eql('text/plain');

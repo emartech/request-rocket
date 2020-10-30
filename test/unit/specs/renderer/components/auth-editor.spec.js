@@ -1,5 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
+import Vue from 'vue';
 import AuthEditor from '@/components/auth-editor';
+import WsseEditor from '@/components/wsse-editor';
+import EscherEditor from '@/components/escher-editor';
 import createStore from '@/store';
 import Auth from '../../../../../src/common/auth-types';
 import AuthOptions from '../../../../../src/renderer/store/auth-options';
@@ -29,39 +32,48 @@ describe('AuthEditor.vue', () => {
   });
 
   context('when WSSE auth is selected', () => {
-    it('should contain a WSSE editor', () => {
+    it('should contain a WSSE editor', async () => {
       const select = component.find('select.auth-type');
       select.element.value = Auth.WSSE;
       select.trigger('change');
 
-      expect(component.find({ name: 'WsseEditor' }).exists()).to.eql(true);
+      await Vue.nextTick();
+
+      expect(component.findComponent(WsseEditor).exists()).to.eql(true);
     });
   });
 
   context('when no auth was selected', () => {
-    it('should not contain a WSSE editor', () => {
+    it('should not contain a WSSE editor', async () => {
       const select = component.find('select.auth-type');
       select.element.value = Auth.NONE;
       select.trigger('change');
 
-      expect(component.find({ name: 'WsseEditor' }).exists()).to.eql(false);
+      await Vue.nextTick();
+
+      expect(component.findComponent(WsseEditor).exists()).to.eql(false);
     });
-    it('should not contain a Escher editor', () => {
+
+    it('should not contain a Escher editor', async () => {
       const select = component.find('select.auth-type');
       select.element.value = Auth.NONE;
       select.trigger('change');
 
-      expect(component.find({ name: 'EscherEditor' }).exists()).to.eql(false);
+      await Vue.nextTick();
+
+      expect(component.findComponent(EscherEditor).exists()).to.eql(false);
     });
   });
 
   context('when Escher auth is selected', () => {
-    it('should contain a Escher editor', () => {
+    it('should contain a Escher editor', async () => {
       const select = component.find('select.auth-type');
       select.element.value = Auth.ESCHER;
       select.trigger('change');
 
-      expect(component.find({ name: 'EscherEditor' }).exists()).to.eql(true);
+      await Vue.nextTick();
+
+      expect(component.findComponent(EscherEditor).exists()).to.eql(true);
     });
   });
 });

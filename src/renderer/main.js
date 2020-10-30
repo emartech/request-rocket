@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import splitPane from 'vue-splitpane';
 import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 
 import App from './app';
@@ -11,6 +12,7 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 
 Vue.config.productionTip = false;
 Vue.config.ignoredElements = [/^e-/];
+Vue.component('split-pane', splitPane);
 
 const store = createStore();
 
