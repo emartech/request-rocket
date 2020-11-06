@@ -1,16 +1,16 @@
 <template>
   <div class="e-grid e-grid-medium">
     <div class="e-cell e-cell-medium">
-      <e-select>
-        <select
-          :value="method"
-          class="e-select http-method"
-          @change="selectHttpMethod($event.target.value)">
-          <option
-            v-for="method in httpMethodOptions"
-            :value="method.id"
-            :key="method.id">{{ method.label }}</option>
-        </select>
+      <e-select
+        :value="method"
+        class="http-method"
+        @change="selectHttpMethod($event.target.value)">
+        <e-select-option
+          v-for="methodOption in httpMethodOptions"
+          :value="methodOption.id"
+          :selected="method === methodOption.id"
+          :key="methodOption.id">{{ methodOption.label }}
+        </e-select-option>
       </e-select>
     </div>
     <div class="e-cell e-cell-auto e-cell-medium">
