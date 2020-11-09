@@ -62,16 +62,16 @@ describe('UrlGroup.vue', () => {
 
   it('should render selector for http method options', () => {
     const component = shallowMount(UrlGroup, { store });
-    const selectElement = component.find('select.http-method');
+    const selectElement = component.find('[data-test=method-selector]');
 
     httpMethodOptions.forEach(option => {
-      expect(selectElement.find(`option[value="${option.id}"]`).text()).to.equal(option.label);
+      expect(selectElement.find(`e-select-option[value="${option.id}"]`).text()).to.equal(option.label);
     });
   });
 
   it('should set the selected http method on the store', () => {
     const component = shallowMount(UrlGroup, { store });
-    const select = component.find('select.http-method');
+    const select = component.find('[data-test=method-selector]');
     select.element.value = HttpMethod.POST;
     select.trigger('change');
 

@@ -2,7 +2,8 @@
   <div>
     <e-select
       id="content-type"
-      inline=""
+      inline
+      data-test="content-type-selector"
       @change="selectContentType($event.target.value)">
       <e-select-option
         v-for="option in contentTypeOptions"

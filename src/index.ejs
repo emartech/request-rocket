@@ -7,6 +7,9 @@
       <!-- Add `node_modules/` to global paths so `require` works properly in development -->
       <script>
         require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
+        window.e = {
+          uiFlippers: ['ui_redesign_available', 'ui_redesign_basics']
+        };
       </script>
     <% } %>
     <link rel='stylesheet' href='./static/app.css'>
