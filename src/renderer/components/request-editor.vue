@@ -1,5 +1,5 @@
 <template>
-  <div class="e-fullheight__content e-fullheight__content-box">
+  <div class="e-fullheight__content e-fullheight__content-box e-border-all">
     <request-editor-title/>
     <div class="e-fullheight__body">
       <div class="e-field">

@@ -12,21 +12,21 @@ describe('ContentTypeSelector.vue', () => {
 
   it('should render selector for content types', () => {
     const component = shallowMount(ContentTypeSelector, { store });
-    const selectElement = component.find('select#content-type');
+    const selectElement = component.find('[data-test=content-type-selector]');
     expect(selectElement.exists()).to.eql(true);
   });
   it('should render an option per content type', () => {
     const component = shallowMount(ContentTypeSelector, { store });
-    const selectElement = component.find('select#content-type');
+    const selectElement = component.find('[data-test=content-type-selector]');
     contentTypeOptions.forEach(option => {
-      const optionElement = selectElement.find(`option[value="${option.id}"]`);
+      const optionElement = selectElement.find(`e-select-option[value="${option.id}"]`);
       expect(optionElement.exists()).to.eql(true);
       expect(optionElement.text()).to.equal(option.label);
     });
   });
   it('should set the selected content type on the store', () => {
     const component = shallowMount(ContentTypeSelector, { store });
-    const selectElement = component.find('select#content-type');
+    const selectElement = component.find('[data-test=content-type-selector]');
     selectElement.element.value = ContentType.json;
     selectElement.trigger('change');
 

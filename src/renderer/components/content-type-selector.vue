@@ -1,16 +1,16 @@
 <template>
   <div>
-    <e-select>
-      <select
-        id="content-type"
-        :value="contentType"
-        class="e-select e-select-inline"
-        @change="selectContentType($event.target.value)">
-        <option
-          v-for="option in contentTypeOptions"
-          :value="option.id"
-          :key="option.id">{{ option.label }}</option>
-      </select>
+    <e-select
+      id="content-type"
+      inline
+      data-test="content-type-selector"
+      @change="selectContentType($event.target.value)">
+      <e-select-option
+        v-for="option in contentTypeOptions"
+        :selected="contentType === option.id"
+        :value="option.id"
+        :key="option.id">{{ option.label }}
+      </e-select-option>
     </e-select>
   </div>
 </template>
