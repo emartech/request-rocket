@@ -4,9 +4,15 @@
 
 #### Installation
 
-Releases can be retrieved from the Releases page of the project’s GitHub repository.
+With homebrew and cask:
+```shell
+$ brew tap emartech/cask
+$ brew cask install request-rocket
+```
 
-To install the application (on macOS), just double-click the .dmg file and drag the “Request Rocket” app to “Applications.”
+Manually:
+- Releases can be retrieved from the Releases page of the project’s GitHub repository.
+- To install the application (on macOS), just double-click the .dmg file and drag the “Request Rocket” app to “Applications.”
 
 To install the application (on linux), make the AppImage file executable (give the file execution permission) and double-click.
 
