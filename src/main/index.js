@@ -23,7 +23,8 @@ function createWindow() {
     width: 1000,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
+      enableRemoteModule: true
     }
   });
 
