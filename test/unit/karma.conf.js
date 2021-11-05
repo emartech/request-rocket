@@ -45,7 +45,8 @@ module.exports = config => {
         flags: ['--headless'],
         browserWindowOptions: {
           webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false
           }
         }
       }
