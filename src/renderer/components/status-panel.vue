@@ -10,6 +10,10 @@
           :class="{ 'text-color-success': !statusCodeIndicatesFailure, 'text-color-danger': statusCodeIndicatesFailure }"
           class="e-legend__value">
           {{ statusCode }}
+          <e-tooltip
+            id="status-text"
+            :content="statusText"
+            type="helper"/>
         </div>
       </div>
     </div>
@@ -44,6 +48,7 @@
 import { mapState } from 'vuex';
 import prettyMs from 'pretty-ms';
 import prettyBytes from 'pretty-bytes';
+import * as httpStatusCodes from 'http-status-codes';
 
 export default {
   name: 'StatusPanel',
@@ -51,6 +56,7 @@ export default {
     ...mapState({
       statusCode: state => state.response.status,
       statusCodeIndicatesFailure: state => state.response.status >= 400,
+      statusText: state => httpStatusCodes.getReasonPhrase(state.response.status),
       requestTime: state => prettyMs(state.response.elapsedTime || 0),
       responseSize: state => prettyBytes(state.response.body.length || 0)
     })

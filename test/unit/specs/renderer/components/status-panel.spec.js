@@ -21,6 +21,17 @@ describe('StatusPanel.vue', () => {
     expect(statusCodeElement.text()).to.eql('200');
   });
 
+  it('should render the status text tooltip', () => {
+    const response = { status: 200, body: '' };
+    store.commit(Mutation.UPDATE_RESPONSE, response);
+
+    const component = shallowMount(StatusPanel, { store });
+    const statusCodeElement = component.find('#status-text');
+
+    expect(statusCodeElement.exists()).to.eql(true);
+    expect(statusCodeElement.attributes('content')).to.eql('OK');
+  });
+
   context('when status code indicates failure', () => {
     it('should set the style to text-color-danger', () => {
       const response = { status: 400, body: '' };
@@ -46,7 +57,7 @@ describe('StatusPanel.vue', () => {
   });
 
   it('should render the request round trip time', () => {
-    const response = { elapsedTime: 100, body: '' };
+    const response = { status: 200, elapsedTime: 100, body: '' };
     store.commit(Mutation.UPDATE_RESPONSE, response);
 
     const component = shallowMount(StatusPanel, { store });
@@ -57,7 +68,7 @@ describe('StatusPanel.vue', () => {
   });
 
   it('should render the time in human readable format', () => {
-    const response = { elapsedTime: 1300, body: '' };
+    const response = { status: 200, elapsedTime: 1300, body: '' };
     store.commit(Mutation.UPDATE_RESPONSE, response);
 
     const component = shallowMount(StatusPanel, { store });
@@ -67,7 +78,7 @@ describe('StatusPanel.vue', () => {
   });
 
   it('should render the response size', () => {
-    const response = { body: 'abcd' };
+    const response = { status: 200, body: 'abcd' };
     store.commit(Mutation.UPDATE_RESPONSE, response);
 
     const component = shallowMount(StatusPanel, { store });
@@ -78,7 +89,7 @@ describe('StatusPanel.vue', () => {
   });
 
   it('should display size in a human readable format', () => {
-    const response = { body: '#'.repeat(1337) };
+    const response = { status: 200, body: '#'.repeat(1337) };
     store.commit(Mutation.UPDATE_RESPONSE, response);
 
     const component = shallowMount(StatusPanel, { store });
