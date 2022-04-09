@@ -14,5 +14,8 @@ export default {
   clearErrors: 'clearErrors',
   cancelRequest: 'cancelRequest',
   requestCancelled: 'requestCancelled',
-  validateForms: 'validateForms'
+  validateForms: 'validateForms',
+  saveToFile: 'saveToFile',
+  fileSaveResult: 'fileSaveResult',
+  clearInfoMessage: 'clearInfoMessage'
 };

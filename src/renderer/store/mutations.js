@@ -64,5 +64,11 @@ export default {
   },
   [Mutation.SET_REQUEST_ID](state, uuid) {
     state.uuid = uuid;
+  },
+  [Mutation.ADD_INFO_MESSAGE](state, message) {
+    state.infoMessage = message;
+  },
+  [Mutation.CLEAR_INFO_MESSAGE](state) {
+    state.infoMessage = '';
   }
 };

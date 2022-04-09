@@ -35,3 +35,7 @@ ipcRenderer.on(Channels.UNEXPECTED_ERROR, (event, errorMessage) => {
 ipcRenderer.on(Channels.REQUEST_CANCELLED, () => {
   store.dispatch(Action.requestCancelled);
 });
+
+ipcRenderer.on(Channels.FILE_SAVE_RESULT, (event, fileSaveResult) => {
+  store.dispatch(Action.fileSaveResult, fileSaveResult);
+});

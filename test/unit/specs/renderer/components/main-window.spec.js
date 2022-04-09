@@ -24,4 +24,10 @@ describe('MainWindow.vue', () => {
 
     expect(component.find({ name: 'ErrorMessage' }).exists()).to.equal(true);
   });
+
+  it('should contain an info message component', () => {
+    const component = shallowMount(MainWindow, { store });
+
+    expect(component.find({ name: 'InfoMessage' }).exists()).to.equal(true);
+  });
 });
