@@ -10,6 +10,7 @@ export default class FileContent {
       url: this.state.request.url,
       headers: this.mapHeaders(this.state.request.headers),
       body: this.state.request.body,
+      contentType: this.state.request.contentType,
       auth: {
         type: this.state.auth.selected,
         params: {

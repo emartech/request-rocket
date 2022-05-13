@@ -50,6 +50,7 @@ describe('toJson', () => {
         }
       ],
       body: 'body',
+      contentType: 'application/json',
       auth: {
         type: 'ESCHER',
         params: {
