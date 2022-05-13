@@ -15,7 +15,7 @@
             <e-icon
               icon="e-reset"
               type="table"/>
-            reset settings
+            Reset settings
           </a>
           <a
             id="save-as"
@@ -24,7 +24,7 @@
             <e-icon
               icon="ac-icon_save"
               type="table"/>
-            save as...
+            Save as...
           </a>
         </div>
       </e-dropdown>
