@@ -2,9 +2,10 @@ import { shallowMount } from '@vue/test-utils';
 import RequestEditorTitle from '@/components/request-editor-title';
 import createStore from '@/store';
 import sinon from 'sinon';
+import { ipcRenderer } from 'electron';
 import { initialState } from '../../../../../src/renderer/store';
 import Mutation from '../../../../../src/renderer/store/mutation-types';
-import Action from '@/store/action-types';
+import FileContent from '../../../../../src/common/file-content';
 
 describe('RequestEditorTitle.vue', () => {
   let store;
@@ -56,15 +57,17 @@ describe('RequestEditorTitle.vue', () => {
       sandbox.restore();
     });
 
-    it('should call store save action', () => {
-      const dispatchStub = sandbox.stub();
-      const mockStore = { dispatch: dispatchStub };
-      const component = shallowMount(RequestEditorTitle, { store: mockStore });
+    it('should call ipcRenderer.send with fileContent', () => {
+      const sendStub = sandbox.stub(ipcRenderer, 'send').resolves();
+      const toJsonStub = sinon.stub(FileContent.prototype, 'toJson').returns('dummyFileContent');
+      const store = createStore();
+      const component = shallowMount(RequestEditorTitle, { store });
       const saveButton = component.find('#save-as');
 
       saveButton.trigger('click');
 
-      expect(dispatchStub).to.be.calledWith(Action.saveToFile);
+      expect(sendStub).to.be.calledWith('show-save-dialog', 'dummyFileContent');
+      expect(toJsonStub).to.be.calledWith();
     });
   });
 });

@@ -34,12 +34,18 @@
 
 <script>
 import { mapActions } from 'vuex';
-import Action from '@/store/action-types';
+import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
+import Channels from '../../common/ipc-channels';
+import FileContent from '../../common/file-content';
 
 export default {
   name: 'RequestEditorTitle',
   methods: {
-    ...mapActions(['resetState', Action.saveToFile])
+    ...mapActions(['resetState']),
+    saveToFile() {
+      const fileContent = new FileContent(this.$store.state).toJson();
+      ipcRenderer.send(Channels.FILE_SAVE, fileContent);
+    }
   }
 };
 </script>

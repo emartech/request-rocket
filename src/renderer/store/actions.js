@@ -6,7 +6,6 @@ import Mutation from './mutation-types';
 import Validator from '../lib/validator';
 import ContentType from '../../common/content-types';
 import Channels from '../../common/ipc-channels';
-import FileContent from '../../common/file-content';
 
 function addDefaultProtocolIfNoneSpecified(url) {
   if (!url.trim().match(/^(.+):\/\//)) {
@@ -106,9 +105,6 @@ export default {
       commit(Mutation.ADD_VALIDATOR_ERROR, error);
       commit(Mutation.ADD_ERROR_MESSAGE, error.message);
     });
-  },
-  async [Action.saveToFile]({ state }) {
-    await ipcRenderer.send(Channels.FILE_SAVE, new FileContent(state).toJson());
   },
   [Action.fileSaveResult]({ commit }, fileSaveResult) {
     if (fileSaveResult.cancelled) {

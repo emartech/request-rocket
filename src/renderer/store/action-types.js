@@ -15,7 +15,6 @@ export default {
   cancelRequest: 'cancelRequest',
   requestCancelled: 'requestCancelled',
   validateForms: 'validateForms',
-  saveToFile: 'saveToFile',
   fileSaveResult: 'fileSaveResult',
   clearInfoMessage: 'clearInfoMessage'
 };

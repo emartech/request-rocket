@@ -435,23 +435,6 @@ describe('actions', () => {
     });
   });
 
-  describe('saveToFile', () => {
-    let ipcSpy;
-    let toJsonStub;
-
-    beforeEach(() => {
-      ipcSpy = sinon.spy(ipcRenderer, 'send');
-      toJsonStub = sinon.stub(FileContent.prototype, 'toJson').returns('dummyFileContent');
-    });
-
-    it('should call ipcRenderer/show-save-dialog with the filecontent', () => {
-      store.dispatch(Action.saveToFile);
-
-      expect(ipcSpy).to.be.calledWith('show-save-dialog', 'dummyFileContent');
-      expect(toJsonStub).to.be.calledWith();
-    });
-  });
-
   describe('fileSaveResult', () => {
     it('should add cancelled info message when file save was cancelled', () => {
       store.dispatch(Action.fileSaveResult, FileSaveResult.fromCancelled());
