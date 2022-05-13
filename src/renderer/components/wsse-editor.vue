@@ -12,8 +12,7 @@
           v-model="key"
           class="e-input"
           type="text"
-          placeholder="Key"
-          @input="setAuthParams()">
+          placeholder="Key">
       </div>
     </div>
     <div class="e-grid e-grid-medium">
@@ -28,31 +27,38 @@
           v-model="secret"
           class="e-input"
           type="password"
-          placeholder="Secret"
-          @input="setAuthParams()">
+          placeholder="Secret">
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Action from '../store/action-types';
+import Mutation from '../store/mutation-types';
 
 export default {
   name: 'WsseEditor',
-  data() {
-    return {
-      key: null,
-      secret: null
-    };
+  computed: {
+    key: {
+      get() {
+        return this.$store.state.auth.params.key;
+      },
+      set(key) {
+        this.mergeAuthParams({ key });
+      }
+    },
+    secret: {
+      get() {
+        return this.$store.state.auth.params.secret;
+      },
+      set(secret) {
+        this.mergeAuthParams({ secret });
+      }
+    }
   },
   methods: {
-    setAuthParams() {
-      const authParams = {
-        key: this.key,
-        secret: this.secret
-      };
-      this.$store.dispatch(Action.setAuthParams, authParams);
+    mergeAuthParams(param) {
+      this.$store.commit(Mutation.MERGE_AUTH_PARAMS, param);
     }
   }
 };
