@@ -59,7 +59,7 @@ describe('RequestEditorTitle.vue', () => {
 
     it('should call ipcRenderer.send with fileContent', () => {
       const sendStub = sandbox.stub(ipcRenderer, 'send').resolves();
-      const toJsonStub = sinon.stub(FileContent.prototype, 'toJson').returns('dummyFileContent');
+      const toJsonStub = sinon.stub(FileContent, 'toJson').returns('dummyFileContent');
       const store = createStore();
       const component = shallowMount(RequestEditorTitle, { store });
       const saveButton = component.find('#save-as');

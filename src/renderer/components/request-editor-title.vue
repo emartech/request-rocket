@@ -43,7 +43,7 @@ export default {
   methods: {
     ...mapActions(['resetState']),
     saveToFile() {
-      const fileContent = new FileContent(this.$store.state).toJson();
+      const fileContent = FileContent.toJson(this.$store.state);
       ipcRenderer.send(Channels.FILE_SAVE, fileContent);
     }
   }

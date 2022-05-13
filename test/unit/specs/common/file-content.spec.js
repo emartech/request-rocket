@@ -23,12 +23,12 @@ const STATE = {
 
 describe('toJson', () => {
   it('discards authentication secret', () => {
-    const result = new FileContent(STATE).toJson();
+    const result = FileContent.toJson(STATE);
     expect(result.includes('secret')).to.eql(false);
   });
 
   it('adds version field', () => {
-    const result = new FileContent(STATE).toJson();
+    const result = FileContent.toJson(STATE);
     expect(result.includes('"version":1')).to.eql(true);
   });
 
@@ -60,7 +60,7 @@ describe('toJson', () => {
       }
     };
 
-    const result = new FileContent(STATE).toJson();
+    const result = FileContent.toJson(STATE);
     expect(JSON.stringify(expectedFileContent)).to.eql(result);
   });
 });
