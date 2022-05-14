@@ -9,7 +9,6 @@ import createStore from '../../../../../src/renderer/store';
 import HttpMethod from '../../../../../src/common/method-types';
 import Auth from '../../../../../src/common/auth-types';
 import ContentType from '../../../../../src/common/content-types';
-import FileContent from '../../../../../src/common/file-content';
 import FileSaveResult from '../../../../../src/main/file-handler/file-save-result';
 
 describe('actions', () => {
