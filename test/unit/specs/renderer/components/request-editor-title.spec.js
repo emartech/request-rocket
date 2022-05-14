@@ -70,4 +70,27 @@ describe('RequestEditorTitle.vue', () => {
       expect(toJsonStub).to.be.calledWith();
     });
   });
+
+  context('when "open file" button is clicked', () => {
+    let sandbox;
+
+    beforeEach(() => {
+      sandbox = sinon.createSandbox();
+    });
+
+    afterEach(() => {
+      sandbox.restore();
+    });
+
+    it('should call ipcRenderer.send on correct channel', () => {
+      const sendStub = sandbox.stub(ipcRenderer, 'send').resolves();
+      const store = createStore();
+      const component = shallowMount(RequestEditorTitle, { store });
+      const saveButton = component.find('#load-file');
+
+      saveButton.trigger('click');
+
+      expect(sendStub).to.be.calledWith('show-load-dialog');
+    });
+  });
 });

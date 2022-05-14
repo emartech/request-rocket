@@ -9,6 +9,9 @@ export default {
   [Mutation.RESET_STATE]() {
     this.replaceState(clone(initialState));
   },
+  [Mutation.REPLACE_STATE](state, newState) {
+    this.replaceState(newState);
+  },
   [Mutation.SET_SENT_REQUEST_HEADERS](state, requestHeaders) {
     state.sentRequestHeaders = requestHeaders;
   },

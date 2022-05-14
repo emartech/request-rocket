@@ -1,3 +1,6 @@
+import { clone } from 'ramda';
+import { initialState } from '../renderer/store';
+
 const CURRENT_VERSION = 1;
 
 export default class FileContent {
@@ -19,6 +22,27 @@ export default class FileContent {
     };
 
     return JSON.stringify(fileContent);
+  }
+
+  static isCompatibleFile(rawFileContent) {
+    const parsedContent = JSON.parse(rawFileContent);
+    return parsedContent.version <= CURRENT_VERSION;
+  }
+
+  static fromJson(rawFileContent) {
+    const parsedContent = JSON.parse(rawFileContent);
+    const newState = clone(initialState);
+    newState.request.method = parsedContent.method;
+    newState.request.url = parsedContent.url;
+    newState.request.headers = this.mapHeaders(parsedContent.headers);
+    newState.request.body = parsedContent.body;
+    newState.request.contentType = parsedContent.contentType;
+    newState.auth.selected = parsedContent.auth.type;
+    newState.auth.params = {
+      key: parsedContent.auth.params.key,
+      credentialScope: parsedContent.auth.params.credentialScope
+    };
+    return newState;
   }
 
   static mapHeaders(originalHeaders) {

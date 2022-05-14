@@ -39,3 +39,7 @@ ipcRenderer.on(Channels.REQUEST_CANCELLED, () => {
 ipcRenderer.on(Channels.FILE_SAVE_RESULT, (event, fileSaveResult) => {
   store.dispatch(Action.fileSaveResult, fileSaveResult);
 });
+
+ipcRenderer.on(Channels.FILE_LOAD_RESULT, (event, fileLoadResult) => {
+  store.dispatch(Action.fileLoadResult, fileLoadResult);
+});

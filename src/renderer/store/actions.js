@@ -6,6 +6,7 @@ import Mutation from './mutation-types';
 import Validator from '../lib/validator';
 import ContentType from '../../common/content-types';
 import Channels from '../../common/ipc-channels';
+import FileContent from '../../common/file-content';
 
 function addDefaultProtocolIfNoneSpecified(url) {
   if (!url.trim().match(/^(.+):\/\//)) {
@@ -115,5 +116,15 @@ export default {
   },
   [Action.clearInfoMessage]({ commit }) {
     commit(Mutation.CLEAR_INFO_MESSAGE);
+  },
+  [Action.fileLoadResult]({ commit }, fileLoadResult) {
+    if (fileLoadResult.cancelled) {
+      commit(Mutation.ADD_INFO_MESSAGE, 'Open was cancelled.');
+    } else if (!FileContent.isCompatibleFile(fileLoadResult.rawFileContent)) {
+      commit(Mutation.ADD_ERROR_MESSAGE, 'Could not open incompatible file. Please upgrade Request Rocket!');
+    } else {
+      const newState = FileContent.fromJson(fileLoadResult.rawFileContent);
+      commit(Mutation.REPLACE_STATE, newState);
+    }
   }
 };

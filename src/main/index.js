@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, Menu } from 'electron'; // eslint-disable-
 import Channels from '../common/ipc-channels';
 import RequestDispatcher from './request-dispatcher';
 import FileHandler from './file-handler/file-handler';
+import FileLoader from './file-handler/file-loader';
 
 /**
  * Set `__static` path to static files in production
@@ -102,6 +103,15 @@ ipcMain.on(Channels.FILE_SAVE, async (event, payload) => {
     event.sender.send(Channels.UNEXPECTED_ERROR, fileSaveResult.error.message);
   } else {
     event.sender.send(Channels.FILE_SAVE_RESULT, fileSaveResult);
+  }
+});
+
+ipcMain.on(Channels.FILE_LOAD, async event => {
+  const fileLoadResult = await new FileLoader().load();
+  if (fileLoadResult.error) {
+    event.sender.send(Channels.UNEXPECTED_ERROR, fileLoadResult.error.message);
+  } else {
+    event.sender.send(Channels.FILE_LOAD_RESULT, fileLoadResult);
   }
 });
 

@@ -154,4 +154,13 @@ describe('mutations', () => {
       expect(store.state.uuid).to.equal('some-random-uuid');
     });
   });
+
+  describe('REPLACE_STATE', function() {
+    it('should replace state with the given object', () => {
+      const newState = { a: 'b' };
+      store.commit(Mutation.RESET_STATE);
+      store.commit(Mutation.REPLACE_STATE, newState);
+      expect(store.state).to.eql(newState);
+    });
+  });
 });

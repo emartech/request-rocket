@@ -5,5 +5,7 @@ export default {
   CANCEL_REQUEST: 'cancel-request',
   REQUEST_CANCELLED: 'request-cancelled',
   FILE_SAVE: 'show-save-dialog',
-  FILE_SAVE_RESULT: 'successful-save'
+  FILE_SAVE_RESULT: 'successful-save',
+  FILE_LOAD: 'show-load-dialog',
+  FILE_LOAD_RESULT: 'successful-load'
 };
