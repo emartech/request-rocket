@@ -9,6 +9,7 @@ import createStore from '../../../../../src/renderer/store';
 import HttpMethod from '../../../../../src/common/method-types';
 import Auth from '../../../../../src/common/auth-types';
 import ContentType from '../../../../../src/common/content-types';
+import FileSaveResult from '../../../../../src/main/file-handler/file-save-result';
 
 describe('actions', () => {
   let store;
@@ -430,6 +431,32 @@ describe('actions', () => {
 
         expect(store.state.errors).to.eql(['Header name cannot be empty', 'URL cannot be empty']);
       });
+    });
+  });
+
+  describe('fileSaveResult', () => {
+    it('should add cancelled info message when file save was cancelled', () => {
+      store.dispatch(Action.fileSaveResult, FileSaveResult.fromCancelled());
+
+      expect(store.state.infoMessage).to.be.eql('Save was cancelled.');
+    });
+
+    it('should add successful save info message when file save succeeded', () => {
+      store.dispatch(Action.fileSaveResult, FileSaveResult.fromSuccess('filepath'));
+
+      expect(store.state.infoMessage).to.be.eql('Request settings were saved to filepath.');
+    });
+  });
+
+  describe('clearInfoMessage', () => {
+    it('should reset info message in state', () => {
+      store.commit(Mutation.ADD_INFO_MESSAGE, 'csira');
+
+      expect(store.state.infoMessage).to.be.eql('csira');
+
+      store.dispatch(Action.clearInfoMessage);
+
+      expect(store.state.infoMessage).to.be.eql('');
     });
   });
 });

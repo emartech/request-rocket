@@ -28,7 +28,8 @@ export const initialState = {
   uuid: null,
   response: {},
   sentRequestHeaders: null,
-  sendingInProgress: false
+  sendingInProgress: false,
+  infoMessage: ''
 };
 
 export default function() {

@@ -1,6 +1,7 @@
 <template>
   <div class="e-fullheight__wrapper">
     <error-message/>
+    <info-message/>
     <div class="e-fullheight__container">
       <split-pane
         :min-percent="20"
@@ -17,10 +18,11 @@
 import RequestEditor from './request-editor';
 import ResponseInspector from './response-inspector';
 import ErrorMessage from './error-message';
+import InfoMessage from './info-message';
 
 export default {
   name: 'MainWindow',
-  components: { RequestEditor, ResponseInspector, ErrorMessage }
+  components: { InfoMessage, RequestEditor, ResponseInspector, ErrorMessage }
 };
 </script>
 

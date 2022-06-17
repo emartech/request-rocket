@@ -1,23 +1,51 @@
 <template>
   <div class="e-fullheight__header">
     <h2>Request</h2>
+
     <div class="e-fullheight__actions">
-      <button
-        class="e-btn e-btn-link reset-state"
-        @click="resetState">
-        reset all settings
-      </button>
+
+      <e-dropdown
+        data-markup-content="<e-icon icon='cog'/>"
+        data-markup-class="e-btn e-btn-dropdown"
+        data-autoclose="true">
+        <div class="e-dropdown__content">
+          <a
+            class="e-dropdown__item reset-state"
+            @click="resetState">
+            <e-icon
+              icon="e-reset"
+              type="table"/>
+            Reset settings
+          </a>
+          <a
+            id="save-as"
+            class="e-dropdown__item"
+            @click="saveToFile">
+            <e-icon
+              icon="ac-icon_save"
+              type="table"/>
+            Save as...
+          </a>
+        </div>
+      </e-dropdown>
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import { ipcRenderer } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
+import Channels from '../../common/ipc-channels';
+import FileContent from '../../common/file-content';
 
 export default {
   name: 'RequestEditorTitle',
   methods: {
-    ...mapActions(['resetState'])
+    ...mapActions(['resetState']),
+    saveToFile() {
+      const fileContent = new FileContent(this.$store.state).toJson();
+      ipcRenderer.send(Channels.FILE_SAVE, fileContent);
+    }
   }
 };
 </script>

@@ -105,5 +105,15 @@ export default {
       commit(Mutation.ADD_VALIDATOR_ERROR, error);
       commit(Mutation.ADD_ERROR_MESSAGE, error.message);
     });
+  },
+  [Action.fileSaveResult]({ commit }, fileSaveResult) {
+    if (fileSaveResult.cancelled) {
+      commit(Mutation.ADD_INFO_MESSAGE, 'Save was cancelled.');
+    } else {
+      commit(Mutation.ADD_INFO_MESSAGE, `Request settings were saved to ${fileSaveResult.filePath}.`);
+    }
+  },
+  [Action.clearInfoMessage]({ commit }) {
+    commit(Mutation.CLEAR_INFO_MESSAGE);
   }
 };
