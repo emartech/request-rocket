@@ -105,7 +105,10 @@ describe('isCompatibleFile', () => {
 describe('fromJson', () => {
   it('maps all relevant fields from json ', () => {
     const result = FileContent.fromJson(FILE_CONTENT);
-    const stateWithNoSecret = dissocPath(['auth', 'params', 'secret'], STATE);
-    expect(result).to.eql(stateWithNoSecret);
+
+    const stateWithoutSecret = { ...STATE };
+    delete stateWithoutSecret.auth.params.secret;
+
+    expect(result).to.eql(stateWithoutSecret);
   });
 });
