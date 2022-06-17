@@ -7,6 +7,7 @@ import Validator from '../lib/validator';
 import ContentType from '../../common/content-types';
 import Channels from '../../common/ipc-channels';
 import FileContent from '../../common/file-content';
+import FileOperationStatus from '../../main/file-handler/file-operation-status';
 
 function addDefaultProtocolIfNoneSpecified(url) {
   if (!url.trim().match(/^(.+):\/\//)) {
@@ -118,13 +119,15 @@ export default {
     commit(Mutation.CLEAR_INFO_MESSAGE);
   },
   [Action.fileLoadResult]({ commit }, fileLoadResult) {
-    if (fileLoadResult.cancelled) {
+    if (fileLoadResult.status === FileOperationStatus.CANCELLED) {
       commit(Mutation.ADD_INFO_MESSAGE, 'Open was cancelled.');
-    } else if (!FileContent.isCompatibleFile(fileLoadResult.rawFileContent)) {
-      commit(Mutation.ADD_ERROR_MESSAGE, 'Could not open incompatible file. Please upgrade Request Rocket!');
-    } else {
-      const newState = FileContent.fromJson(fileLoadResult.rawFileContent);
-      commit(Mutation.REPLACE_STATE, newState);
+      return;
     }
+    if (!FileContent.isCompatibleFile(fileLoadResult.rawFileContent)) {
+      commit(Mutation.ADD_ERROR_MESSAGE, 'Could not open incompatible file. Please upgrade Request Rocket!');
+      return;
+    }
+    const newState = FileContent.fromJson(fileLoadResult.rawFileContent);
+    commit(Mutation.REPLACE_STATE, newState);
   }
 };

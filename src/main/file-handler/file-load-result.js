@@ -1,19 +1,16 @@
-export default class FileLoadResult {
-  constructor(rawFileContent, cancelled, error) {
-    this.rawFileContent = rawFileContent;
-    this.cancelled = cancelled;
-    this.error = error;
-  }
+import FileOperationStatus from './file-operation-status';
 
-  static fromError(error) {
-    return new FileLoadResult(null, false, error);
+export default class FileLoadResult {
+  constructor(status, rawFileContent = null) {
+    this.rawFileContent = rawFileContent;
+    this.status = status;
   }
 
   static fromCancelled() {
-    return new FileLoadResult(null, true, null);
+    return new FileLoadResult(FileOperationStatus.CANCELLED);
   }
 
   static fromSuccess(rawFileContent) {
-    return new FileLoadResult(rawFileContent, false, null);
+    return new FileLoadResult(FileOperationStatus.SUCCESSFUL, rawFileContent);
   }
 }

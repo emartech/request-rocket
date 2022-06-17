@@ -2,6 +2,7 @@ import sinon from 'sinon';
 import { promises as fs } from 'fs';
 import electron from 'electron';
 import FileLoader from '../../../../../src/main/file-handler/file-loader';
+import FileOperationStatus from '../../../../../src/main/file-handler/file-operation-status';
 
 const SELECTED_FILE_PATH = 'file';
 const PAYLOAD = 'payload';
@@ -28,39 +29,23 @@ describe('load', () => {
     const showOpenDialogStub = stubShowOpenDialog({ canceled: true });
     const readFileStub = sandbox.stub(fs, 'readFile');
 
-    const result = await new FileLoader().load();
+    const result = await FileLoader.load();
 
     assert(readFileStub.notCalled);
     assert(showOpenDialogStub.called);
-    expect(result.cancelled).to.eql(true);
+    expect(result.status).to.eql(FileOperationStatus.CANCELLED);
     expect(result.rawFileContent).to.eql(null);
-    expect(result.error).to.eql(null);
   });
 
   it('returns raw file content when open dialog succeeded', async () => {
     const showOpenDialogStub = stubShowOpenDialog({ filePaths: [SELECTED_FILE_PATH] });
     const readFileStub = sandbox.stub(fs, 'readFile').resolves(PAYLOAD);
 
-    const result = await new FileLoader().load();
+    const result = await FileLoader.load();
 
     assert(showOpenDialogStub.called);
     assert(readFileStub.calledWith(SELECTED_FILE_PATH, 'utf8'));
-    expect(result.cancelled).to.eql(false);
+    expect(result.status).to.eql(FileOperationStatus.SUCCESSFUL);
     expect(result.rawFileContent).to.eql(PAYLOAD);
-    expect(result.error).to.eql(null);
-  });
-
-  it('returns error result when readFile fails', async () => {
-    const error = { failed: true };
-    const showOpenDialogStub = stubShowOpenDialog({ filePaths: [SELECTED_FILE_PATH] });
-    const readFileStub = sandbox.stub(fs, 'readFile').throws(error);
-
-    const result = await new FileLoader().load();
-
-    assert(showOpenDialogStub.called);
-    assert(readFileStub.calledWith(SELECTED_FILE_PATH, 'utf8'));
-    expect(result.cancelled).to.eql(false);
-    expect(result.rawFileContent).to.eql(null);
-    expect(result.error).to.eql(error);
   });
 });

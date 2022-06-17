@@ -107,11 +107,11 @@ ipcMain.on(Channels.FILE_SAVE, async (event, payload) => {
 });
 
 ipcMain.on(Channels.FILE_LOAD, async event => {
-  const fileLoadResult = await new FileLoader().load();
-  if (fileLoadResult.error) {
-    event.sender.send(Channels.UNEXPECTED_ERROR, fileLoadResult.error.message);
-  } else {
+  try {
+    const fileLoadResult = await FileLoader.load();
     event.sender.send(Channels.FILE_LOAD_RESULT, fileLoadResult);
+  } catch (error) {
+    event.sender.send(Channels.UNEXPECTED_ERROR, error.message);
   }
 });
 
