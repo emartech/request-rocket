@@ -1,12 +1,11 @@
 import { clone } from 'ramda';
 import { initialState } from '../renderer/store';
-
-const CURRENT_VERSION = 1;
+import FileContentVersion from './file-content-version';
 
 export default class FileContent {
   static toJson(state) {
     const fileContent = {
-      version: CURRENT_VERSION,
+      version: FileContentVersion.CURRENT_VERSION,
       method: state.request.method,
       url: state.request.url,
       headers: this.mapHeaders(state.request.headers),
@@ -26,7 +25,7 @@ export default class FileContent {
 
   static isCompatibleFile(rawFileContent) {
     const parsedContent = JSON.parse(rawFileContent);
-    return parsedContent.version <= CURRENT_VERSION;
+    return parsedContent.version <= FileContentVersion.CURRENT_VERSION;
   }
 
   static fromJson(rawFileContent) {

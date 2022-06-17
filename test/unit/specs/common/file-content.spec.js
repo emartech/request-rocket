@@ -1,5 +1,6 @@
-import { dissocPath } from 'ramda';
+import sinon from 'sinon';
 import FileContent from '../../../../src/common/file-content';
+import FileContentVersion from '../../../../src/common/file-content-version';
 
 const FILE_CONTENT = JSON.stringify({
   version: 1,
@@ -74,6 +75,14 @@ describe('toJson', () => {
 });
 
 describe('isCompatibleFile', () => {
+  beforeEach(() => {
+    sinon.stub(FileContentVersion, 'CURRENT_VERSION').value(420);
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  });
+
   it('returns false when file version is larger than current version', () => {
     const fileContent = JSON.stringify({ version: 666 });
     const result = FileContent.isCompatibleFile(fileContent);
@@ -81,7 +90,7 @@ describe('isCompatibleFile', () => {
   });
 
   it('returns true when file version equals current version', () => {
-    const fileContent = JSON.stringify({ version: 1 });
+    const fileContent = JSON.stringify({ version: 420 });
     const result = FileContent.isCompatibleFile(fileContent);
     expect(result).to.eql(true);
   });
