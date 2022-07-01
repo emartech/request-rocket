@@ -1,21 +1,21 @@
-export default class FileContent {
-  constructor(state) {
-    this.state = state;
-  }
+import { clone } from 'ramda';
+import { initialState } from '../renderer/store';
+import FileContentVersion from './file-content-version';
 
-  toJson() {
+export default class FileContent {
+  static toJson(state) {
     const fileContent = {
-      version: 1,
-      method: this.state.request.method,
-      url: this.state.request.url,
-      headers: this.mapHeaders(this.state.request.headers),
-      body: this.state.request.body,
-      contentType: this.state.request.contentType,
+      version: FileContentVersion.CURRENT_VERSION,
+      method: state.request.method,
+      url: state.request.url,
+      headers: this.mapHeaders(state.request.headers),
+      body: state.request.body,
+      contentType: state.request.contentType,
       auth: {
-        type: this.state.auth.selected,
+        type: state.auth.selected,
         params: {
-          key: this.state.auth.params.key,
-          credentialScope: this.state.auth.params.credentialScope
+          key: state.auth.params.key,
+          credentialScope: state.auth.params.credentialScope
         }
       }
     };
@@ -23,8 +23,28 @@ export default class FileContent {
     return JSON.stringify(fileContent);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  mapHeaders(originalHeaders) {
+  static isCompatibleFile(rawFileContent) {
+    const parsedContent = JSON.parse(rawFileContent);
+    return parsedContent.version <= FileContentVersion.CURRENT_VERSION;
+  }
+
+  static fromJson(rawFileContent) {
+    const parsedContent = JSON.parse(rawFileContent);
+    const newState = clone(initialState);
+    newState.request.method = parsedContent.method;
+    newState.request.url = parsedContent.url;
+    newState.request.headers = this.mapHeaders(parsedContent.headers);
+    newState.request.body = parsedContent.body;
+    newState.request.contentType = parsedContent.contentType;
+    newState.auth.selected = parsedContent.auth.type;
+    newState.auth.params = {
+      key: parsedContent.auth.params.key,
+      credentialScope: parsedContent.auth.params.credentialScope
+    };
+    return newState;
+  }
+
+  static mapHeaders(originalHeaders) {
     if (!originalHeaders) {
       return [];
     }

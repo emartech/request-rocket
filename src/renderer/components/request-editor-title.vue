@@ -18,6 +18,15 @@
             Reset settings
           </a>
           <a
+            id="load-file"
+            class="e-dropdown__item"
+            @click="loadFile">
+            <e-icon
+              icon="folder-open"
+              type="table"/>
+            Open...
+          </a>
+          <a
             id="save-as"
             class="e-dropdown__item"
             @click="saveToFile">
@@ -43,8 +52,11 @@ export default {
   methods: {
     ...mapActions(['resetState']),
     saveToFile() {
-      const fileContent = new FileContent(this.$store.state).toJson();
+      const fileContent = FileContent.toJson(this.$store.state);
       ipcRenderer.send(Channels.FILE_SAVE, fileContent);
+    },
+    loadFile() {
+      ipcRenderer.send(Channels.FILE_LOAD);
     }
   }
 };

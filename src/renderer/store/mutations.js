@@ -1,4 +1,4 @@
-import { clone } from 'ramda';
+import { mergeLeft, clone } from 'ramda';
 import Mutation from './mutation-types';
 import { initialState } from './index';
 
@@ -8,6 +8,9 @@ export default {
   },
   [Mutation.RESET_STATE]() {
     this.replaceState(clone(initialState));
+  },
+  [Mutation.REPLACE_STATE](state, newState) {
+    this.replaceState(newState);
   },
   [Mutation.SET_SENT_REQUEST_HEADERS](state, requestHeaders) {
     state.sentRequestHeaders = requestHeaders;
@@ -20,6 +23,9 @@ export default {
   },
   [Mutation.SET_AUTH_PARAMS](state, authParams) {
     state.auth.params = authParams;
+  },
+  [Mutation.MERGE_AUTH_PARAMS](state, authParams) {
+    state.auth.params = mergeLeft(authParams, state.auth.params);
   },
   [Mutation.SELECT_HTTP_METHOD](state, httpMethod) {
     state.request.method = httpMethod;

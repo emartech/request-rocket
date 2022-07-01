@@ -59,7 +59,7 @@ describe('RequestEditorTitle.vue', () => {
 
     it('should call ipcRenderer.send with fileContent', () => {
       const sendStub = sandbox.stub(ipcRenderer, 'send').resolves();
-      const toJsonStub = sinon.stub(FileContent.prototype, 'toJson').returns('dummyFileContent');
+      const toJsonStub = sinon.stub(FileContent, 'toJson').returns('dummyFileContent');
       const store = createStore();
       const component = shallowMount(RequestEditorTitle, { store });
       const saveButton = component.find('#save-as');
@@ -68,6 +68,29 @@ describe('RequestEditorTitle.vue', () => {
 
       expect(sendStub).to.be.calledWith('show-save-dialog', 'dummyFileContent');
       expect(toJsonStub).to.be.calledWith();
+    });
+  });
+
+  context('when "open file" button is clicked', () => {
+    let sandbox;
+
+    beforeEach(() => {
+      sandbox = sinon.createSandbox();
+    });
+
+    afterEach(() => {
+      sandbox.restore();
+    });
+
+    it('should call ipcRenderer.send on correct channel', () => {
+      const sendStub = sandbox.stub(ipcRenderer, 'send').resolves();
+      const store = createStore();
+      const component = shallowMount(RequestEditorTitle, { store });
+      const saveButton = component.find('#load-file');
+
+      saveButton.trigger('click');
+
+      expect(sendStub).to.be.calledWith('show-load-dialog');
     });
   });
 });

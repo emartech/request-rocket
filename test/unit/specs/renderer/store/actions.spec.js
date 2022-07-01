@@ -10,6 +10,8 @@ import HttpMethod from '../../../../../src/common/method-types';
 import Auth from '../../../../../src/common/auth-types';
 import ContentType from '../../../../../src/common/content-types';
 import FileSaveResult from '../../../../../src/main/file-handler/file-save-result';
+import FileLoadResult from '../../../../../src/main/file-handler/file-load-result';
+import FileContent from '../../../../../src/common/file-content';
 
 describe('actions', () => {
   let store;
@@ -457,6 +459,34 @@ describe('actions', () => {
       store.dispatch(Action.clearInfoMessage);
 
       expect(store.state.infoMessage).to.be.eql('');
+    });
+  });
+
+  describe('fileLoadResult', () => {
+    it('should add cancelled info message when file load was cancelled', () => {
+      store.dispatch(Action.fileLoadResult, FileLoadResult.fromCancelled());
+
+      expect(store.state.infoMessage).to.be.eql('Open was cancelled.');
+    });
+
+    it('should add error message when file version is incompatible', () => {
+      const rawFileContent = '{}';
+      sinon.stub(FileContent, 'isCompatibleFile').returns(false);
+
+      store.dispatch(Action.fileLoadResult, FileLoadResult.fromSuccess(rawFileContent));
+
+      expect(store.state.errors[0]).to.be.eql('Could not open incompatible file. Please upgrade Request Rocket!');
+    });
+
+    it('should replace state when file load was successful', () => {
+      const rawFileContent = '{}';
+      const newState = { a: 'b' };
+      sinon.stub(FileContent, 'isCompatibleFile').returns(true);
+      sinon.stub(FileContent, 'fromJson').returns(newState);
+
+      store.dispatch(Action.fileLoadResult, FileLoadResult.fromSuccess(rawFileContent));
+
+      expect(store.state).to.be.eql(newState);
     });
   });
 });
