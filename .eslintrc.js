@@ -31,6 +31,11 @@ module.exports = {
     'no-multi-assign': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-alert': 0
+    'no-alert': 0,
+    'vue/html-closing-bracket-newline': 0,
+    'vue/multiline-html-element-content-newline': 0,
+    'vue/attributes-order': 0,
+    'vue/html-closing-bracket-spacing': 0,
+    'vue/no-unused-components': 0
   }
 }
